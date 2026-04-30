@@ -6,7 +6,7 @@ class_name Chart
 @export_group("Chart Data")
 
 @export_range(0.0, 5.0, 0.1) var scroll_speed = 1.0
-## Says the [code]offset[/code] of the chart, negative is [b]early[/b], positive is [b]late[/b]
+## Audio latency.
 @export var offset = 0.0
 
 # Actual Chart Storage

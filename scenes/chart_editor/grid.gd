@@ -1,4 +1,5 @@
 extends Node2D
+class_name Grid
 
 @export_group("Zoom")
 @export var zoom: Vector2 = Vector2(1, 1):

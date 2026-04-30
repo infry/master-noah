@@ -228,7 +228,10 @@ func _process(delta):
 		GameManager.song_position = position_lerp
 		sync_timer -= delta
 	
-	conductor.tempo = get_tempo_at(clamp(GameManager.song_position, 0, instrumental.stream.get_length()))
+	conductor.tempo = chart.get_tempo_at(GameManager.song_position)
+	var meter: Array = chart.get_meter_at(GameManager.song_position)
+	conductor.beats_per_measure = meter[0]
+	conductor.steps_per_measure = meter[1]
 	
 	# Instead of before where I would do a linear search per section, a faster method
 	# would just be to iterate through as the song is playing, making it faster
@@ -244,7 +247,7 @@ func _process(delta):
 				var length: float = note[2]
 				var type = note[3]
 				
-				emit_signal("create_note", time, lane, length, type, get_tempo_at(time))
+				emit_signal("create_note", time, lane, length, type, chart.get_tempo_at(time))
 				current_note += 1
 	
 	if instrumental.playing:
@@ -261,28 +264,11 @@ func _process(delta):
 					basic_event(time, event_name, event_parameters)
 					current_event += 1
 
-##  Gets the tempo at a certain time in seconds
-func get_tempo_at(time: float) -> float:
-	time = max(time, 0)
-	var tempo_dict = chart.get_tempos_data()
-	var keys = tempo_dict.keys()
-	
-	var tempo_output = 0.0
-	
-	for i in keys.size():
-		var dict_time = keys[i]
-		if time >= dict_time:
-			tempo_output = tempo_dict.get(keys[i])
-		else:
-			continue
-	
-	return tempo_output
-
 
 func play_song(time: float):
 	GameManager.started_song(song_data)
 	conductor.stream_player = instrumental
-	conductor.tempo = get_tempo_at(-chart.offset + time)
+	conductor.tempo = chart.get_tempo_at(-chart.offset + time)
 	conductor.seconds_per_beat = 60.0 / conductor.tempo
 	conductor.offset = chart.offset + SettingsManager.get_value(SettingsManager.SEC_GAMEPLAY, "offset")
 	var seconds_per_beat = (60.0 / conductor.tempo)
@@ -300,7 +286,7 @@ func play_song(time: float):
 	else:
 		var countdown_instance = countdown_node.instantiate()
 		
-		countdown_instance.speed_scale = get_tempo_at(time - chart.offset) / 60.0
+		countdown_instance.speed_scale = chart.get_tempo_at(time - chart.offset) / 60.0
 		
 		ui.add_child(countdown_instance)
 		
