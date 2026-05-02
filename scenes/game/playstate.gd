@@ -452,7 +452,8 @@ func new_beat(current_beat, measure_relative):
 
 func new_step(current_step, measure_relative):
 	if current_step % bop_rate == 0:
-		camera.setZoom(camera.getZoom() + camera_bop_strength * camera.getZoom())
+		var strength = camera_bop_strength if camera.get_direct() is Camera2D else camera_bop_strength.x
+		camera.setZoom(camera.getZoom() + strength * camera.getZoom())
 		if SettingsManager.get_value(SettingsManager.SEC_PREFERENCES, "ui_bops"):
 			ui.scale += ui_bop_strength
 
