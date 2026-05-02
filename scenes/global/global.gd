@@ -7,6 +7,23 @@ var fullscreen: bool = false
 
 var transitioning: bool = false
 
+func _correctWindowSize():
+	
+	if not OS.get_name().to_lower().contains('windows'): 
+		return
+	
+	var dpi = DisplayServer.screen_get_dpi() / 96.0
+	
+	var new_size = get_window().size * dpi
+	
+	DisplayServer.window_set_size(new_size)
+	
+	var w_pos = DisplayServer.screen_get_position(DisplayServer.window_get_current_screen())
+	
+	var w_size = DisplayServer.screen_get_size(DisplayServer.window_get_current_screen())
+	
+	get_window().position.x = w_pos.x + (w_size.x - new_size.x) / 2
+	get_window().position.y = w_pos.y + (w_size.y - new_size.y) / 2
 
 func _ready():
 	# FPS Booster
@@ -14,6 +31,7 @@ func _ready():
 	PhysicsServer3D.set_active(false)
 	# Input responsiveness
 	# Input.set_use_accumulated_input(false)
+	_correctWindowSize()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
