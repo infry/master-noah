@@ -3,7 +3,7 @@ extends Node
 class_name Character
 
 @export_group("Animation Offset")
-@export var idle_animation: String = "idle"
+@export var idle_animation: StringName = "idle"
 @export var animation_names: Dictionary[StringName, StringName] = {}
 @export var offsets: Dictionary[StringName, Vector2] = {}
 @export var hold_frames: Dictionary[StringName, int] = {}

@@ -36,13 +36,11 @@ shader_parameter/brightness = -20.0
 [node name="Darnell Bf Mix" type="Node2D" unique_id=161033940]
 script = ExtResource("1_5tuvg")
 
-[node name="PlayState Host" parent="." unique_id=1341256185 node_paths=PackedStringArray("host", "ui", "camera", "rating_position", "combo_position") instance=ExtResource("2_6qtee")]
+[node name="PlayState Host" parent="." unique_id=1341256185 node_paths=PackedStringArray("host", "ui", "camera") instance=ExtResource("2_6qtee")]
 process_mode = 1
 host = NodePath("..")
 ui = NodePath("../UI")
 camera = NodePath("../CameraController")
-rating_position = NodePath("../World/Rating Marker")
-combo_position = NodePath("../World/Combo Marker")
 note_skin = ExtResource("4_p6l71")
 ui_skin = ExtResource("5_gelov")
 combo_scale_multiplier = Vector2(1.2, 1.2)
@@ -110,6 +108,7 @@ layer = 10
 [node name="CameraController" type="Node" parent="." unique_id=1880177853 node_paths=PackedStringArray("parent_2D")]
 script = ExtResource("12_h0per")
 parent_2D = NodePath("../Camera")
+target_zoom = Vector2(0.85, 0.85)
 metadata/_custom_type_script = "uid://b4lmffueni5k"
 
 [connection signal="combo_break" from="PlayState Host" to="." method="_on_combo_break"]

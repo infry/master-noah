@@ -1,13 +1,13 @@
 extends Node
-class_name CameraController 
+class_name CameraController
 
 @onready var noise = FastNoiseLite.new()
 @onready var rand = RandomNumberGenerator.new()
 
 @export_subgroup("Essentials")
 
-@export var parent_2D:Camera2D
-@export var parent_3D:Camera3D
+@export var parent_2D: Camera2D
+@export var parent_3D: Camera3D
 
 @export_custom(PROPERTY_HINT_LINK, 'x') var target_zoom: Vector2 = Vector2(1, 1)
 @export_range(1, 25) var lerp_weight: float = 5
@@ -22,9 +22,9 @@ class_name CameraController
 @export var shake_time: float = 0.0
 @export var shaking: bool = false
 
-var default_offset:Vector2
-var _position_2d:Vector2 = Vector2.ZERO
-var _position_3d:Vector3 = Vector3.ZERO
+var default_offset: Vector2
+var _position_2d: Vector2 = Vector2.ZERO
+var _position_3d: Vector3 = Vector3.ZERO
 
 # How quickly to move through the noise
 @export var shake_speed: float = 30.0
@@ -195,8 +195,8 @@ func get_noise_offset(delta: float, speed: float, strength: float) -> Vector2:
 		noise.get_noise_2d(100, noise_i) * strength
 	)
 
-func vec3_to_vec2(vec3:Vector3) -> Vector2:
-	return Vector2(vec3.x,vec3.y)
+func vec3_to_vec2(vec3: Vector3) -> Vector2:
+	return Vector2(vec3.x, vec3.y)
 
 func lerp_position(cur:Variant, intended:Variant, delta:float):
 	var c = position_smoothing_speed * delta

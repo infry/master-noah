@@ -4,6 +4,9 @@ extends CanvasLayer
 @onready var player_icon = $"Health Bar/Icon Manager/Player"
 @onready var enemy_icon = $"Health Bar/Icon Manager/Enemy"
 
+@onready var rating_marker = $"Rating Marker"
+@onready var combo_marker = $"Combo Marker"
+
 @export var target_scale = Vector2(1, 1)
 @export_range(1, 25) var lerp_weight: float = 5.0
 @export var lerping = true

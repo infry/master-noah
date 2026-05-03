@@ -89,6 +89,7 @@ layer = 10
 [node name="CameraController" type="Node" parent="." unique_id=336274463 node_paths=PackedStringArray("parent_2D")]
 script = ExtResource("11_1yy12")
 parent_2D = NodePath("../Camera")
+target_zoom = Vector2(0.85, 0.85)
 metadata/_custom_type_script = "uid://b4lmffueni5k"
 
 [connection signal="combo_break" from="PlayState Host" to="." method="_on_combo_break"]

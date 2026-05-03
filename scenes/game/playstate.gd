@@ -15,8 +15,6 @@ signal new_event(time: float, event_name: String, event_parameters: Array)
 signal combo_break()
 signal setup_finished()
 
-@onready var rating_node = load("res://scenes/game/rating.tscn")
-@onready var combo_numbers_manager_node = load("res://scenes/game/combo_numbers_manager.tscn")
 @onready var countdown_node = load("res://scenes/game/countdown.tscn")
 @onready var song_data: Song
 @onready var vocals: AudioStreamPlayer
@@ -32,12 +30,6 @@ signal setup_finished()
 @export var ui: CanvasLayer
 ## Camera with built-in functions.
 @export var camera: CameraController
-
-@export_group("Positions")
-## Where the "Sick!" or "Good!" sprites will spawn
-@export var rating_position: Marker2D
-## Where the combo number will spawn, origin is to the left.
-@export var combo_position: Marker2D
 
 @export_group("Resources")
 @export var note_skin: NoteSkin
@@ -175,6 +167,7 @@ func _process(delta):
 	
 	health = clamp(health, 0.0, 100.0)
 	ui.target_health = health
+	update_ui_stats()
 	
 	if health <= 0:
 		GameManager.deaths += 1
@@ -271,7 +264,7 @@ func play_song(time: float):
 	conductor.tempo = chart.get_tempo_at(-chart.offset + time)
 	conductor.seconds_per_beat = 60.0 / conductor.tempo
 	conductor.offset = chart.offset + SettingsManager.get_value(SettingsManager.SEC_GAMEPLAY, "offset")
-	var seconds_per_beat = (60.0 / conductor.tempo)
+	var seconds_per_beat: float = conductor.seconds_per_beat
 	
 	GameManager.seconds_per_beat = seconds_per_beat
 	GameManager.offset = conductor.offset
@@ -468,7 +461,7 @@ func note_hit(time, lane, note_type, hit_time, strum_manager):
 		if SettingsManager.get_value(SettingsManager.SEC_PREFERENCES, "hit_sounds"):
 			SoundManager.hit.play()
 		
-		var rating = get_rating(abs(hit_time))
+		var rating: String = get_rating(abs(hit_time))
 		var strum_node = strum_manager.get_strumline(lane)
 		
 		GameManager.tallies[rating] += 1
@@ -503,8 +496,6 @@ func note_hit(time, lane, note_type, hit_time, strum_manager):
 		accuracy = (timings_sum / entries)
 		if GameManager.tallies.sick == GameManager.tallies.total_notes:
 			rating = "fc_" + rating
-		
-		show_combo(rating, combo)
 		update_ui_stats()
 
 func note_holding(time, lane, length, note_type, strum_manager):
@@ -519,8 +510,6 @@ func note_holding(time, lane, length, note_type, strum_manager):
 		entries += time
 		
 		accuracy = (timings_sum / entries)
-		
-		update_ui_stats()
 
 func note_miss(time, lane, length, note_type, hit_time, strum_manager):
 	var playback = vocals.get_stream_playback()
@@ -530,7 +519,6 @@ func note_miss(time, lane, length, note_type, hit_time, strum_manager):
 		if int(note_type) == -1:
 			score -= 10
 			health -= 1
-			update_ui_stats()
 		else:
 			score -= 100
 			health -= clamp(4 + combo / 20.0 + (length * HOLD_HEALTH), 0, 20)
@@ -542,43 +530,10 @@ func note_miss(time, lane, length, note_type, hit_time, strum_manager):
 			entries += 1 + length
 			accuracy = (timings_sum / entries)
 			
-			show_combo("miss", combo)
 			emit_signal("combo_break")
-			update_ui_stats()
 
 func update_ui_stats():
 	ui.accuracy = accuracy
 	ui.misses = misses
 	ui.target_health = health
 	ui.score = score
-
-# Visual Util
-func show_combo(rating: String, _combo: int):
-	var rating_instance = rating_node.instantiate()
-	
-	rating_instance.ui_skin = ui_skin
-	rating_instance.rating = rating
-	
-	var combo_numbers_manager_instance = combo_numbers_manager_node.instantiate()
-	
-	combo_numbers_manager_instance.ui_skin = ui_skin
-	combo_numbers_manager_instance.combo = _combo
-	if GameManager.tallies.max_combo == GameManager.tallies.total_notes:
-		combo_numbers_manager_instance.fc = true
-	
-	if SettingsManager.get_value(SettingsManager.SEC_PREFERENCES, "combo_ui"):
-		rating_instance.position = Vector2(-32, 182)
-		combo_numbers_manager_instance.position = Vector2(96, 232)
-		
-		ui.add_child(rating_instance)
-		ui.add_child(combo_numbers_manager_instance)
-	else:
-		rating_instance.position = rating_position.global_position
-		rating_instance.z_index = 1000
-		rating_instance.scale *= combo_scale_multiplier
-		combo_numbers_manager_instance.position = combo_position.global_position
-		combo_numbers_manager_instance.scale *= combo_scale_multiplier
-		combo_numbers_manager_instance.z_index = 1000
-		
-		self.add_child(rating_instance)
-		self.add_child(combo_numbers_manager_instance)

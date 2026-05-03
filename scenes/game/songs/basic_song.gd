@@ -7,6 +7,12 @@ extends Node
 @onready var player = %Player
 @onready var enemy = %Enemy
 
+@onready var rating_marker = $"World/Rating Marker"
+@onready var combo_marker = $"World/Combo Marker"
+
+@onready var rating_node = load("res://scenes/game/rating.tscn")
+@onready var combo_numbers_manager_node = load("res://scenes/game/combo_numbers_manager.tscn")
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	assert(playstate_host, "Playstate host not found")
@@ -56,7 +62,11 @@ func _on_create_note(time, lane, note_length, note_type, tempo):
 func note_hit(time, lane, note_type, hit_time, strum_manager):
 	var group: StringName = get_group(strum_manager)
 	get_tree().call_group(group, &"play_animation", get_direction(lane % 4))
+	
 	playstate_host.note_hit(time, lane, note_type, hit_time, strum_manager)
+	
+	if group == &"player":
+		show_combo(PlayState.get_rating(hit_time), playstate_host.combo)
 
 
 func note_holding(time, lane, length, note_type, strum_manager):
@@ -99,8 +109,46 @@ func get_direction(direction: int):
 func _on_new_event(time, event_name, event_parameters):
 	match event_name:
 		"play_animation":
-			get_tree().call_group(event_parameters[0], &"play_animation", event_parameters[1], event_parameters[2])
+			get_tree().call_group(event_parameters[0], &"play_animation",
+			event_parameters[1], event_parameters[2])
 
 
 func _on_combo_break():
-	pass
+	show_combo("miss", 0)
+
+
+func show_combo(rating: String, _combo: int):
+	var rating_instance = rating_node.instantiate()
+	
+	rating_instance.ui_skin = playstate_host.ui_skin
+	rating_instance.rating = rating
+	
+	var combo_numbers_manager_instance = combo_numbers_manager_node.instantiate()
+	
+	combo_numbers_manager_instance.ui_skin = playstate_host.ui_skin
+	combo_numbers_manager_instance.combo = _combo
+	if GameManager.tallies.max_combo == GameManager.tallies.total_notes:
+		combo_numbers_manager_instance.fc = true
+	
+	if SettingsManager.get_value(SettingsManager.SEC_PREFERENCES, "combo_ui"):
+		if playstate_host.ui.rating_marker:
+			rating_instance.position = playstate_host.ui.rating_marker.position
+		
+		if playstate_host.ui.combo_marker:
+			combo_numbers_manager_instance.position = playstate_host.ui.combo_marker.position
+		
+		playstate_host.ui.add_child(rating_instance)
+		playstate_host.ui.add_child(combo_numbers_manager_instance)
+	else:
+		if rating_marker:
+			rating_instance.position = rating_marker.global_position
+			rating_instance.scale *= playstate_host.combo_scale_multiplier
+			rating_instance.z_index = 1000
+		
+		if combo_marker:
+			combo_numbers_manager_instance.position = combo_marker.global_position
+			combo_numbers_manager_instance.scale *= playstate_host.combo_scale_multiplier
+			combo_numbers_manager_instance.z_index = 1000
+		
+		self.add_child(rating_instance)
+		self.add_child(combo_numbers_manager_instance)
