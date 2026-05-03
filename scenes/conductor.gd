@@ -34,6 +34,7 @@ var beats_per_measure: int = 4:
 	set(v):
 		if beats_per_measure != v:
 			emit_signal(&"new_beats_per_measure", v)
+		
 		beats_per_measure = v
 	get():
 		return beats_per_measure
@@ -43,6 +44,7 @@ var steps_per_measure: int = 4 * beats_per_measure:
 	set(v):
 		if steps_per_measure != v:
 			emit_signal(&"new_steps_per_measure", v)
+		
 		steps_per_measure = v
 		seconds_per_step = seconds_per_beat / (steps_per_measure / beats_per_measure)
 	get():
@@ -85,10 +87,10 @@ func _process(_delta):
 	current_step = get_step_at(time)
 
 func get_beat_at(_time: float) -> int:
-	return int((_time - offset) / seconds_per_beat)
+	return floor((_time - offset) / seconds_per_beat)
 
 func get_step_at(_time: float) -> int:
-	return int((_time - offset) / (seconds_per_beat / (steps_per_measure / beats_per_measure)))
+	return floor((_time - offset) / (seconds_per_beat / (steps_per_measure / beats_per_measure)))
 
 func get_measure_at(_time: float) -> int:
-	return int((_time - offset) / (seconds_per_beat * beats_per_measure))
+	return floor((_time - offset) / (seconds_per_beat * beats_per_measure))
