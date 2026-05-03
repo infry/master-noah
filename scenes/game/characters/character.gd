@@ -1,5 +1,5 @@
 @icon("res://assets/sprites/nodes/character.png")
-extends Node2D
+extends Node
 class_name Character
 
 @export_group("Animation Offset")
@@ -90,8 +90,16 @@ func play_animation(animation_name: StringName = &"", time: float = -1.0):
 		animation_player.set_frame_and_progress(0, 0)
 		
 		if offsets.has(real_animation_name):
-			if offsets.get(animation_player.animation) is PackedVector2Array: animation_player.position = offsets.get(animation_player.animation)[animation_player.frame - 1]
-			else: animation_player.position = offsets.get(real_animation_name)
+			var offsets_to_use = offsets.get(real_animation_name)
+			if offsets.get(animation_player.animation) is PackedVector2Array:
+				offsets_to_use = offsets.get(animation_player.animation)[animation_player.frame - 1]
+				
+			if animation_player is AnimatedSprite3D:
+				animation_player.offset.x = offsets_to_use.x
+				animation_player.offset.y = -offsets_to_use.y
+			else:
+				animation_player.position.x = offsets_to_use.x
+				animation_player.position.y = offsets_to_use.y
 	else:
 		animation_player.set_frame_and_progress(0, 0)
 		printerr("Animation ", animation_name, " not found")
