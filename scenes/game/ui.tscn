@@ -176,3 +176,11 @@ text = "Score: 0 • Misses: 0"
 label_settings = SubResource("LabelSettings_578am")
 horizontal_alignment = 2
 vertical_alignment = 1
+
+[node name="Rating Marker" type="Marker2D" parent="." unique_id=509594647]
+position = Vector2(-32, 182)
+gizmo_extents = 30.0
+
+[node name="Combo Marker" type="Marker2D" parent="." unique_id=189707835]
+position = Vector2(96, 232)
+gizmo_extents = 40.0

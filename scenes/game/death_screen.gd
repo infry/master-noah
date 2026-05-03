@@ -1,9 +1,9 @@
 extends Node2D
 class_name DeathScreen
 
-static var player_position: Vector2 = Vector2.ONE
+static var player_position: Variant = Vector2.ONE
 static var player_scale: Vector2 = Vector2.ONE
-static var camera_zoom: Vector2 = Vector2.ONE
+static var camera_zoom: Variant = Vector2.ONE
 
 var can_press = true
 
@@ -11,15 +11,20 @@ var can_press = true
 func _ready():
 	Global.set_window_title("Dead")
 	$AnimationPlayer.play(&"intro")
+	 
+	if %Player is Node2D:
+		player_position = Vector2(player_position.x,player_position.y)
 	
-	%Player.position = player_position 
-	$Camera2D.position = %Player.global_position
+	%Player.position = player_position
+	$CameraController.set_position(%Player.global_position)
 	
 	var tween = create_tween()
 	tween.set_parallel(true)
 	tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	tween.tween_property(%Player, "scale", player_scale, 2)
-	tween.tween_property($Camera2D, "zoom", camera_zoom, 2)
+	tween.tween_property(%Player, "scale:x", player_scale.x, 2)
+	tween.tween_property(%Player, "scale:y", player_scale.y, 2)
+	
+	tween.tween_property($CameraController, "zoom", camera_zoom, 2)
 	
 	$Conductor.tempo = $Audio/Music.stream.get_bpm()
 

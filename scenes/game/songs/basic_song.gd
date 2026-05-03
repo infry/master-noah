@@ -1,4 +1,4 @@
-extends Node2D
+extends Node
 
 @onready var camera_positions = []
 @onready var playstate_host: PlayState = $"PlayState Host"
@@ -6,6 +6,15 @@ extends Node2D
 @onready var stage = %Stage
 @onready var player = %Player
 @onready var enemy = %Enemy
+
+@onready var rating_marker = $"World/Rating Marker"
+@onready var combo_marker = $"World/Combo Marker"
+
+@onready var rating_node = load("res://scenes/game/rating.tscn")
+@onready var combo_numbers_manager_node = load("res://scenes/game/combo_numbers_manager.tscn")
+
+# How often the camera bops. Based off the step rate in the conductor.
+var bop_rate: int = 16
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -15,7 +24,7 @@ func _ready():
 		playstate_host.ui.set_player_icons(player.icons)
 		playstate_host.ui.set_player_color(player.color)
 		DeathScreen.player_position = player.global_position
-		DeathScreen.player_scale = player.scale
+		DeathScreen.player_scale = Vector2(player.scale.x,player.scale.y)
 	
 	if enemy:
 		playstate_host.ui.set_enemy_icons(enemy.icons)
@@ -27,13 +36,13 @@ func _ready():
 		playstate_host.conductor.connect(&"new_beat", stage._on_conductor_new_beat)
 	
 	playstate_host.conductor.connect(&"new_beat", self._on_conductor_new_beat)
+	playstate_host.conductor.connect(&"new_step", self._on_conductor_new_step)
 	
 	playstate_host.connect(&"combo_break", self._on_combo_break)
 	playstate_host.connect(&"create_note", self._on_create_note)
 	playstate_host.connect(&"new_event", self._on_new_event)
 
 # Conductor Util
-
 func _on_conductor_new_beat(current_beat, measure_relative):
 	if measure_relative % 2 == 0:
 		get_tree().call_group(&"player", &"play_animation", &"idle")
@@ -44,9 +53,18 @@ func _on_conductor_new_beat(current_beat, measure_relative):
 		
 		get_tree().call_group(&"metronome", &"play_animation", &"idle", GameManager.seconds_per_beat * 2)
 	
-	print(playstate_host.conductor.current_beat)
+	playstate_host.ui.icon_bop(playstate_host.conductor.seconds_per_beat * 0.5 *
+	(1 / playstate_host.instrumental.pitch_scale))
 
-# Util
+
+func _on_conductor_new_step(current_step, measure_relative):
+	if current_step % bop_rate == 0:
+		var strength = playstate_host.camera_bop_strength if playstate_host.camera.get_direct() is Camera2D else playstate_host.camera_bop_strength.x
+		playstate_host.camera.zoom += strength * playstate_host.camera.zoom
+		
+		if SettingsManager.get_value(SettingsManager.SEC_PREFERENCES, "ui_bops"):
+			playstate_host.ui.scale += playstate_host.ui_bop_strength
+
 
 func _on_create_note(time, lane, note_length, note_type, tempo):
 	if (lane > 3):
@@ -58,7 +76,11 @@ func _on_create_note(time, lane, note_length, note_type, tempo):
 func note_hit(time, lane, note_type, hit_time, strum_manager):
 	var group: StringName = get_group(strum_manager)
 	get_tree().call_group(group, &"play_animation", get_direction(lane % 4))
+	
 	playstate_host.note_hit(time, lane, note_type, hit_time, strum_manager)
+	
+	if group == &"player":
+		show_combo(PlayState.get_rating(hit_time), playstate_host.combo)
 
 
 func note_holding(time, lane, length, note_type, strum_manager):
@@ -81,6 +103,7 @@ func note_miss(time, lane, length, note_type, hit_time, strum_manager):
 			get_tree().call_group(
 			&"enemy" if strum_manager.enemy_slot else &"player", &"metronome",
 			&"cry")
+			show_combo("miss", 0)
 	
 	get_tree().call_group(
 		&"enemy" if strum_manager.enemy_slot else &"player", &"play_animation",
@@ -101,8 +124,46 @@ func get_direction(direction: int):
 func _on_new_event(time, event_name, event_parameters):
 	match event_name:
 		"play_animation":
-			get_tree().call_group(event_parameters[0], &"play_animation", event_parameters[1], event_parameters[2])
+			get_tree().call_group(event_parameters[0], &"play_animation",
+			event_parameters[1], event_parameters[2])
 
 
 func _on_combo_break():
 	pass
+
+
+func show_combo(rating: String, _combo: int):
+	var rating_instance = rating_node.instantiate()
+	
+	rating_instance.ui_skin = playstate_host.ui_skin
+	rating_instance.rating = rating
+	
+	var combo_numbers_manager_instance = combo_numbers_manager_node.instantiate()
+	
+	combo_numbers_manager_instance.ui_skin = playstate_host.ui_skin
+	combo_numbers_manager_instance.combo = _combo
+	if GameManager.tallies.max_combo == GameManager.tallies.total_notes:
+		combo_numbers_manager_instance.fc = true
+	
+	if SettingsManager.get_value(SettingsManager.SEC_PREFERENCES, "combo_ui"):
+		if playstate_host.ui.rating_marker:
+			rating_instance.position = playstate_host.ui.rating_marker.position
+		
+		if playstate_host.ui.combo_marker:
+			combo_numbers_manager_instance.position = playstate_host.ui.combo_marker.position
+		
+		playstate_host.ui.add_child(rating_instance)
+		playstate_host.ui.add_child(combo_numbers_manager_instance)
+	else:
+		if rating_marker:
+			rating_instance.position = rating_marker.global_position
+			rating_instance.scale *= playstate_host.combo_scale_multiplier
+			rating_instance.z_index = 1000
+		
+		if combo_marker:
+			combo_numbers_manager_instance.position = combo_marker.global_position
+			combo_numbers_manager_instance.scale *= playstate_host.combo_scale_multiplier
+			combo_numbers_manager_instance.z_index = 1000
+		
+		self.add_child(rating_instance)
+		self.add_child(combo_numbers_manager_instance)

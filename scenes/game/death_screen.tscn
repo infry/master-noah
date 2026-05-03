@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bd083xcqslcsd"]
+[gd_scene format=3 uid="uid://bd083xcqslcsd"]
 
 [ext_resource type="Script" uid="uid://brbf61eud6vql" path="res://scenes/game/death_screen.gd" id="1_3knol"]
 [ext_resource type="AudioStream" uid="uid://c7jqa5mdxivnd" path="res://assets/sounds/menu sounds/lose sfx.ogg" id="1_l87ty"]
@@ -6,6 +6,7 @@
 [ext_resource type="AudioStream" uid="uid://cqoad5jx15ele" path="res://assets/songs/menu songs/game over/gameOver.ogg" id="3_3040t"]
 [ext_resource type="AudioStream" uid="uid://dbdx3d7yv6085" path="res://assets/sounds/menu sounds/game over end.ogg" id="5_23pry"]
 [ext_resource type="PackedScene" uid="uid://de1orr6su5xmc" path="res://scenes/game/characters/boyfriend_dead.tscn" id="6_0wmjs"]
+[ext_resource type="Script" path="res://scenes/game/camera_controller.gd" id="7_553pn"]
 
 [sub_resource type="Animation" id="Animation_shx3s"]
 length = 0.001
@@ -121,47 +122,45 @@ _data = {
 &"intro": SubResource("Animation_tdai2")
 }
 
-[node name="Death Screen" type="Node2D"]
+[node name="Death Screen" type="Node2D" unique_id=450809868]
 script = ExtResource("1_3knol")
 
-[node name="Conductor" type="Node" parent="." node_paths=PackedStringArray("stream_player")]
+[node name="Conductor" type="Node" parent="." unique_id=314766461 node_paths=PackedStringArray("stream_player")]
 script = ExtResource("2_24go6")
 stream_player = NodePath("../Audio/Music")
 
-[node name="Audio" type="Node" parent="."]
+[node name="Audio" type="Node" parent="." unique_id=224790053]
 
-[node name="Intro Sound" type="AudioStreamPlayer" parent="Audio"]
+[node name="Intro Sound" type="AudioStreamPlayer" parent="Audio" unique_id=731903518]
 bus = &"SFX"
 
-[node name="Music" type="AudioStreamPlayer" parent="Audio"]
+[node name="Music" type="AudioStreamPlayer" parent="Audio" unique_id=1357694202]
 stream = ExtResource("3_3040t")
 bus = &"Music"
 
-[node name="Continue Sound" type="AudioStreamPlayer" parent="Audio"]
+[node name="Continue Sound" type="AudioStreamPlayer" parent="Audio" unique_id=748026636]
 bus = &"SFX"
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1345073482]
 position = Vector2(640, 360)
 position_smoothing_enabled = true
 position_smoothing_speed = 3.0
 drag_vertical_offset = -0.5
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_6l7ld")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1543728560]
+libraries/ = SubResource("AnimationLibrary_6l7ld")
 
-[node name="UI" type="CanvasLayer" parent="."]
+[node name="UI" type="CanvasLayer" parent="." unique_id=1852945465]
 follow_viewport_enabled = true
 
-[node name="Player" parent="UI" instance=ExtResource("6_0wmjs")]
+[node name="Player" parent="UI" unique_id=1016376170 instance=ExtResource("6_0wmjs")]
 unique_name_in_owner = true
 scale = Vector2(0.6, 0.6)
 
-[node name="Background" type="CanvasLayer" parent="."]
+[node name="Background" type="CanvasLayer" parent="." unique_id=1166834372]
 layer = 0
 
-[node name="ColorRect" type="ColorRect" parent="Background"]
+[node name="ColorRect" type="ColorRect" parent="Background" unique_id=368343697]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -170,10 +169,10 @@ grow_vertical = 2
 color = Color(0, 0, 0, 1)
 metadata/_edit_lock_ = true
 
-[node name="Over" type="CanvasLayer" parent="."]
+[node name="Over" type="CanvasLayer" parent="." unique_id=549449629]
 layer = 1000
 
-[node name="ColorRect" type="ColorRect" parent="Over"]
+[node name="ColorRect" type="ColorRect" parent="Over" unique_id=548428366]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -181,6 +180,11 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0)
 metadata/_edit_lock_ = true
+
+[node name="CameraController" type="Node" parent="." unique_id=1913434865 node_paths=PackedStringArray("parent_2D")]
+script = ExtResource("7_553pn")
+parent_2D = NodePath("../Camera2D")
+metadata/_custom_type_script = "uid://b4lmffueni5k"
 
 [connection signal="new_beat" from="Conductor" to="." method="_on_conductor_new_beat"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
