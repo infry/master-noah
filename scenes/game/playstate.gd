@@ -47,9 +47,6 @@ signal setup_finished()
 ## The scene that will be switched to when the song ends.
 @export_file('*.tscn') var next_scene = "res://scenes/results/results.tscn"
 
-# How often the damera bops. Based off the step rate in the conductor.
-var bop_rate: int = 16
-
 var song_started: bool = false
 var song_start_offset: float = -4.0
 var song_start_time: float = 0.0
@@ -392,9 +389,9 @@ func basic_event(time: float, event_name: String, event_parameters: Array):
 			tween.tween_property(camera, "target_zoom", new_zoom, zoom_time * song_speed)
 			tween.tween_property(camera, "zoom", new_zoom, zoom_time * song_speed)
 		"bop_rate":
-			bop_rate = int(event_parameters[0])
+			host.bop_rate = int(event_parameters[0])
 		"bop_delay":
-			bop_rate = int(event_parameters[0])
+			host.bop_rate = int(event_parameters[0])
 		"camera_bop_strength":
 			camera_bop_strength = Vector2(float(event_parameters[0]), float(event_parameters[0]))
 		"ui_bop_strength":
@@ -441,15 +438,10 @@ func song_finished():
 
 # Conductor Util
 func new_beat(current_beat, measure_relative):
-	ui.icon_bop(conductor.seconds_per_beat * 0.5 * (1 / instrumental.pitch_scale))
+	pass
 
 func new_step(current_step, measure_relative):
-	if current_step % bop_rate == 0:
-		var strength = camera_bop_strength if camera.get_direct() is Camera2D else camera_bop_strength.x
-		camera.zoom +=strength * camera.zoom
-		
-		if SettingsManager.get_value(SettingsManager.SEC_PREFERENCES, "ui_bops"):
-			ui.scale += ui_bop_strength
+	pass
 
 # Strum Util
 func note_hit(time, lane, note_type, hit_time, strum_manager):

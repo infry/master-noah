@@ -6,20 +6,18 @@
 [ext_resource type="Resource" uid="uid://cykk1h52kdqv2" path="res://assets/sprites/playstate/default/default_ui_skin.tres" id="4_x8oul"]
 [ext_resource type="PackedScene" uid="uid://dg6rnkjn5f5gm" path="res://scenes/game/characters/boyfriend.tscn" id="7_wsbru"]
 [ext_resource type="PackedScene" uid="uid://dcuxa2yfg27xc" path="res://scenes/game/characters/boyfriend pixel.tscn" id="8_cda0r"]
-[ext_resource type="Script" uid="uid://b4lmffueni5k" path="res://scenes/game/camera_controller.gd" id="10_82qc2"]
+[ext_resource type="Script" path="res://scenes/game/camera_controller.gd" id="10_82qc2"]
 [ext_resource type="PackedScene" uid="uid://bpv5demojrg67" path="res://scenes/game/characters/girlfriend.tscn" id="10_owhbd"]
 [ext_resource type="PackedScene" uid="uid://cigsmwajnw2jq" path="res://scenes/game/ui.tscn" id="11_vka10"]
 
 [node name="Test" type="Node2D" unique_id=138125275]
 script = ExtResource("1_2dtky")
 
-[node name="PlayState Host" parent="." unique_id=1668852 node_paths=PackedStringArray("host", "ui", "camera", "rating_position", "combo_position") instance=ExtResource("2_16ha0")]
+[node name="PlayState Host" parent="." unique_id=1668852 node_paths=PackedStringArray("host", "ui", "camera") instance=ExtResource("2_16ha0")]
 process_mode = 1
 host = NodePath("..")
 ui = NodePath("../UI")
 camera = NodePath("../CameraController")
-rating_position = NodePath("../World/Rating Marker")
-combo_position = NodePath("../World/Combo Marker")
 note_skin = ExtResource("3_wo673")
 ui_skin = ExtResource("4_x8oul")
 combo_scale_multiplier = Vector2(0.8, 0.8)

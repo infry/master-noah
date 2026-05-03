@@ -13,6 +13,9 @@ extends Node
 @onready var rating_node = load("res://scenes/game/rating.tscn")
 @onready var combo_numbers_manager_node = load("res://scenes/game/combo_numbers_manager.tscn")
 
+# How often the camera bops. Based off the step rate in the conductor.
+var bop_rate: int = 16
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	assert(playstate_host, "Playstate host not found")
@@ -33,13 +36,13 @@ func _ready():
 		playstate_host.conductor.connect(&"new_beat", stage._on_conductor_new_beat)
 	
 	playstate_host.conductor.connect(&"new_beat", self._on_conductor_new_beat)
+	playstate_host.conductor.connect(&"new_step", self._on_conductor_new_step)
 	
 	playstate_host.connect(&"combo_break", self._on_combo_break)
 	playstate_host.connect(&"create_note", self._on_create_note)
 	playstate_host.connect(&"new_event", self._on_new_event)
 
 # Conductor Util
-
 func _on_conductor_new_beat(current_beat, measure_relative):
 	if measure_relative % 2 == 0:
 		get_tree().call_group(&"player", &"play_animation", &"idle")
@@ -49,8 +52,18 @@ func _on_conductor_new_beat(current_beat, measure_relative):
 				node.can_idle = true
 		
 		get_tree().call_group(&"metronome", &"play_animation", &"idle", GameManager.seconds_per_beat * 2)
+	
+	playstate_host.ui.icon_bop(playstate_host.conductor.seconds_per_beat * 0.5 *
+	(1 / playstate_host.instrumental.pitch_scale))
 
-# Util
+func _on_conductor_new_step(current_step, measure_relative):
+	if current_step % bop_rate == 0:
+		var strength = playstate_host.camera_bop_strength if playstate_host.camera.get_direct() is Camera2D else playstate_host.camera_bop_strength.x
+		playstate_host.camera.zoom += strength * playstate_host.camera.zoom
+		
+		if SettingsManager.get_value(SettingsManager.SEC_PREFERENCES, "ui_bops"):
+			playstate_host.ui.scale += playstate_host.ui_bop_strength
+
 
 func _on_create_note(time, lane, note_length, note_type, tempo):
 	if (lane > 3):
