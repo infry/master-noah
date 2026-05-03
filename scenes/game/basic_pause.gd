@@ -149,7 +149,7 @@ func select_option(i: int):
 		
 		"options":
 			self.process_mode = Node.PROCESS_MODE_DISABLED
-			Global.change_scene_to("res://scenes/options/options.tscn", "down")
+			Global.change_scene_to("uid://stil5xd6xto6")
 		
 		"restart":
 			get_tree().paused = false
@@ -160,14 +160,14 @@ func select_option(i: int):
 			self.process_mode = Node.PROCESS_MODE_DISABLED
 			
 			if GameManager.freeplay:
-				Global.change_scene_to("res://scenes/freeplay/freeplay.tscn", "down")
+				Global.change_scene_to("uid://gbra80y44814")
 			else:
-				Global.change_scene_to("uid://lh8hi5dk1sja", "down")
+				Global.change_scene_to("uid://lh8hi5dk1sja")
 		
 		"chart_editor":
 			GameManager.reset_stats()
 			self.process_mode = Node.PROCESS_MODE_DISABLED
-			Global.change_scene_to("res://scenes/chart_editor/chart_editor.tscn", "down")
+			Global.change_scene_to("uid://c3lux2ajoe1g6")
 		
 		"change_difficulty":
 			load_page("difficulties")

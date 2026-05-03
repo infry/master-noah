@@ -184,7 +184,7 @@ func select(i: int, chart: bool = false):
 	if can_click:
 		var song_file = options[get_tree().get_nodes_in_group("instances")[i].index]
 		
-		if chart:
+		if chart and OS.is_debug_build():
 			$Audio/Music.volume_linear = 0
 			chart_song(song_file, difficulty)
 			return

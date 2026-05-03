@@ -24,7 +24,8 @@ func _ready():
 	tween.tween_property(%Player, "scale:x", player_scale.x, 2)
 	tween.tween_property(%Player, "scale:y", player_scale.y, 2)
 	
-	tween.tween_property($CameraController, "zoom", camera_zoom, 2)
+	tween.tween_property($CameraController.get_direct(), "zoom", camera_zoom, 2)
+	tween.tween_property($CameraController, "target_zoom", camera_zoom, 2)
 	
 	$Conductor.tempo = $Audio/Music.stream.get_bpm()
 
@@ -33,11 +34,26 @@ func _on_conductor_new_beat(current_beat, measure_relative):
 		%Player.play_animation(&"idle")
 
 func _input(event):
-	if event.is_action_pressed("ui_accept"):
-		if can_press:
+	if can_press:
+		if event.is_action_pressed(&"ui_accept"):
 			can_press = false
 			%Player.play_animation(&"accept")
 			$AnimationPlayer.play(&"end")
+		
+		if event.is_action_pressed(&"ui_cancel"):
+			can_press = false
+			
+			GameManager.reset_stats()
+			
+			if GameManager.freeplay:
+				match GameManager.play_mode:
+					GameManager.PLAY_MODE.CHARTING:
+						Global.change_scene_to("uid://c3lux2ajoe1g6")
+					
+					_:
+						Global.change_scene_to("uid://gbra80y44814")
+			else:
+				Global.change_scene_to("uid://lh8hi5dk1sja")
 
 func exit_scene():
 	Transitions.transition(&"fade")
