@@ -187,9 +187,8 @@ func _process(delta):
 	
 	# Why is this a thing I have to do
 	if get_tree() != null:
-		get_tree().call_group("note", "update_y")
+		get_tree().call_group(&"note", &"update_y")
 	
-	if Input.is_action_just_pressed("ui_cancel") or Input.is_action_just_pressed("ui_accept"):
 		Global.manual_pause = true
 		pause()
 	
@@ -274,17 +273,17 @@ func play_song(time: float):
 	conductor.tempo = chart.get_tempo_at(-chart.offset + time)
 	conductor.seconds_per_beat = 60.0 / conductor.tempo
 	conductor.offset = chart.offset + SettingsManager.get_value(SettingsManager.SEC_GAMEPLAY, "offset")
-	var seconds_per_beat = (60.0 / conductor.tempo)
 	
-	GameManager.seconds_per_beat = seconds_per_beat
+	GameManager.seconds_per_beat = conductor.seconds_per_beat
 	GameManager.offset = conductor.offset
 	
 	song_started = false
 	song_start_time = time + chart.offset
-	song_start_offset = song_start_time - (seconds_per_beat * 4)
+	song_start_offset = song_start_time - (conductor.seconds_per_beat * 4)
 	GameManager.song_position = song_start_offset
+	conductor.time = song_start_time
 	
-	if time >= seconds_per_beat * 4:
+	if time >= conductor.seconds_per_beat * 4:
 		play_audios(song_start_offset)
 	else:
 		var countdown_instance = countdown_node.instantiate()

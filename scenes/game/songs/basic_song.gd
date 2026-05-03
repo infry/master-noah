@@ -43,6 +43,8 @@ func _on_conductor_new_beat(current_beat, measure_relative):
 				node.can_idle = true
 		
 		get_tree().call_group(&"metronome", &"play_animation", &"idle", GameManager.seconds_per_beat * 2)
+	
+	print(playstate_host.conductor.current_beat)
 
 # Util
 
