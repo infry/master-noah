@@ -14,7 +14,8 @@ func flush():
 
 func _load():
 	if !FileAccess.file_exists(LOAD_PATH):
-		printerr("(SaveManager) Save File does not exist")
+		printerr("(SaveManager) Save File does not exist. Creating a new Save File.")
+		flush()
 		return
 	
 	instance = load(LOAD_PATH)
