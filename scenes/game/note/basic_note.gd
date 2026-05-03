@@ -12,7 +12,7 @@ var can_press: bool = false
 
 var time_difference: float = INF
 
-var on_screen = false
+var on_screen: bool = false
 
 # Applying Note Skin
 func _ready(): 
