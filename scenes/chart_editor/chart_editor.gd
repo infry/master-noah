@@ -1559,7 +1559,7 @@ func window_button_item_pressed(id):
 func test_button_item_pressed(id):
 	match id:
 		0:
-			if FileAccess.file_exists(scene):
+			if ResourceLoader.exists(scene):
 				GameManager.current_song = ChartManager.song
 				GameManager.difficulty = ChartManager.difficulty
 				GameManager.freeplay = true
