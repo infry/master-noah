@@ -2,21 +2,23 @@
 extends Node
 class_name Character
 
-const SING_DURATION: int = 6
-
-@export_group("Animation Offset")
-@export var idle_animation: StringName = "idle"
+@export_group("Animation Data")
 @export var animation_names: Dictionary[StringName, StringName] = {}
 @export var offsets: Dictionary[StringName, Vector2] = {}
 @export var hold_frames: Dictionary[StringName, int] = {}
 @export var forced_animations: Array[StringName]
-@export var animation_prefix: StringName = &""
 
-@export_group("Playstate")
+@export_group("Gameplay")
+@export var idle_animation: StringName = "idle"
+@export var animation_prefix: StringName = &""
+## How many steps an animation can play before being able to revert to idle.
+@export var sing_duration: int = 6
+
+@export_group("UI")
 @export var icons: SpriteFrames = load("res://assets/sprites/playstate/icons/face.tres")
 @export var color: Color = Color(0.168627, 0.121569, 0.203922)
 
-@export var animation_player:Node = null
+@export var animation_player: Node = null
 
 var current_animation: StringName = idle_animation
 var can_idle: bool = true
@@ -167,6 +169,9 @@ func _on_animated_sprite_2d_frame_changed():
 		print("Frame: ", animation_player.frame, " Offset: ", offsets.get(animation_player.animation)[animation_player.frame])
 
 
-func set_sing_timer(time: float):
+func set_sing_timer(time: float = -1):
+	if time == -1:
+		time = sing_duration * GameManager.seconds_per_step
+	
 	sing_time = time
 	can_idle = false
