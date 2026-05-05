@@ -131,6 +131,10 @@ func _on_combo_break():
 
 
 func show_combo(rating: String, _combo: int):
+	if rating != "miss":
+		if GameManager.tallies.sick == GameManager.tallies.total_notes:
+			rating = "fc_" + rating
+	
 	var rating_instance = rating_node.instantiate()
 	
 	rating_instance.ui_skin = playstate_host.ui_skin
