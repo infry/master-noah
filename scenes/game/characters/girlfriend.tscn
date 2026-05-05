@@ -47,6 +47,7 @@ animations = [{
 script = ExtResource("1_krhuq")
 animation_names = Dictionary[StringName, StringName]({
 &"cheer": &"GF Cheer",
+&"cheer_200": &"GF Cheer",
 &"cry": &"gf sad",
 &"down": &"GF Down Note",
 &"idle": &"GF Dancing Beat",
@@ -75,7 +76,6 @@ color = Color(0.619608, 0.0784314, 0.282353, 1)
 use_parent_material = true
 position = Vector2(0, -320)
 sprite_frames = ExtResource("3_0woem")
-animation = &"gf sad"
-frame = 21
+animation = &"GF Dancing Beat"
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]

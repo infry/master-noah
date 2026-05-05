@@ -47,7 +47,6 @@ func _on_conductor_new_beat(current_beat, measure_relative):
 	if measure_relative % 2 == 0:
 		for node in get_tree().get_nodes_in_group(&"metronome"):
 			if (node.current_animation == node.idle_animation):
-				node.holding = false
 				node.can_idle = true
 		
 		get_tree().call_group(&"player", &"play_animation", &"idle")
@@ -83,6 +82,11 @@ func note_hit(time, lane, note_type, hit_time, strum_manager):
 	
 	if group == &"player":
 		show_combo(PlayState.get_rating(hit_time), playstate_host.combo)
+		
+		if (playstate_host.combo % 200 == 0):
+			get_tree().call_group(&"metronome", &"play_animation", &"cheer_200")
+		elif (playstate_host.combo % 50 == 0):
+			get_tree().call_group(&"metronome", &"play_animation", &"cheer")
 
 
 func note_holding(time, lane, length, note_type, strum_manager):

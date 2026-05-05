@@ -21,12 +21,12 @@ var maxFrequency = 20000.0
 var update_timer: float
 
 func _ready():
-	
 	super()
 	update_timer = update_rate
 
 
 func _process(delta):
+	super(delta)
 	
 	var frequency = minFrequency
 	var interval = (maxFrequency - minFrequency) / definition
