@@ -159,11 +159,13 @@ func hold_animation():
 	if !animation_player: return
 	
 	var hold_frame: int = 0
-	var animation_name: StringName
+	var animation_name: StringName = get_animation_name(current_animation)
 	var length: int
 	
-	if animation_player is AnimateSymbol: 
-		animation_name = get_animation_name(current_animation)
+	if animation_player is AnimateSymbol:
+		if animation_player.looped:
+			return
+		
 		length = animation_player.get_animation_length()
 		hold_frame = hold_frames.get(animation_name, length - 1)
 		
@@ -172,7 +174,9 @@ func hold_animation():
 		
 		animation_player.playing = true
 	else:
-		animation_name = get_animation_name(current_animation)
+		if animation_player.sprite_frames.get_animation_loop(animation_name):
+			return
+		
 		length = animation_player.sprite_frames.get_frame_count(animation_name)
 		hold_frame = hold_frames.get(animation_name, length - 1)
 		
