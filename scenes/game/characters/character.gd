@@ -3,7 +3,7 @@ extends Node
 ## The main class for characters in a song, such as the player, enemy, or metronome.
 class_name Character
 
-## When calling an animation, it is important to also call context with it: 
+## When calling an animation, it is important to also call context with it:
 enum AnimContext {
 	## Sing poses (ex: left, down, up, right)
 	SING,
@@ -23,26 +23,32 @@ enum AnimContext {
 @export var hold_frames: Dictionary[StringName, int] = {}
 
 @export_group("Gameplay")
+## The idle animations. Whenever the character "dance's" they will cycle through this list.
 @export var dance_animations: Array[StringName] = [&"idle"]
 ## How often [b](in beats)[/b] the dance will be played.
-@export var dance_rate: int = 2
+@export_range(1, 1, 1, "suffix:beats", "or_greater") var dance_rate: int = 2
 @export var animation_prefix: StringName = &""
 ## How many steps an animation can play before being able to revert to idle.
-@export var sing_duration: int = 6
+@export_custom(PROPERTY_HINT_NONE, 'suffix:steps') var sing_duration: float = 6
 
 @export_group("UI")
 @export var icons: SpriteFrames = load("res://assets/sprites/playstate/icons/face.tres")
 @export var color: Color = Color(0.168627, 0.121569, 0.203922)
 
+##The actual sprite node that will be used to play the anims. If not assigned, it will fallback to
+##[AnimatedSprite2D] or [AnimateSymbol]
 @export var animation_player: Node = null
 
 var current_dance: int = 0
 ## The current animation ID.
 var current_animation: StringName = dance_animations[0]
-var can_dance: bool = true
-var holding: bool = false
-var sing_time: float = 0
+## The current [AnimContext]
 var current_context: AnimContext = AnimContext.NONE
+var can_dance: bool = true
+## Used to make an animation loop at the given [code]hold_frame[/code] until given another animation.
+var holding: bool = false
+## Time elapsed since the char has started singing
+var sing_time: float = 0
 
 func _ready():
 	if not animation_player:
