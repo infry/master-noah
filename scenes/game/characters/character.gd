@@ -181,7 +181,6 @@ func dance(restart: bool = true, time: float = -1) -> void:
 	if not can_dance:
 		return
 	
-	current_context = AnimContext.DANCE
 	var dance_to_play: StringName = dance_animations[current_dance]
 	play_animation(dance_to_play, AnimContext.DANCE, restart, time)
 	
