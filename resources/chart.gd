@@ -16,7 +16,6 @@ class_name Chart
 	"events": [],
 	"tempos": {0.0: 60},
 	"meters": {0.0: [4, 16]},
-	
 }
 
 func get_notes_data() -> Array: return chart_data.get("notes")
@@ -55,3 +54,11 @@ func get_tempo_time_at(time: float) -> float:
 			output = point
 	
 	return output
+
+
+static func load(path:String) -> Chart:
+	
+	if path.get_extension() == 'res': ##probably a chart already
+		return load(path)
+
+	return null

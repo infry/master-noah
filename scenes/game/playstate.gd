@@ -114,7 +114,7 @@ func _ready():
 	pause_preload = load(pause_scene)
 	GameManager.song_scene = LoadingScreen.scene
 	
-	chart = load(song_data.difficulties[GameManager.difficulty].chart)
+	chart = Chart.load(song_data.difficulties[GameManager.difficulty].chart)
 	assert(chart, 'Failed to load chart. is (%s) correct?' % (song_data.difficulties[GameManager.difficulty].chart))
 	
 	song_speed = SettingsManager.get_value(SettingsManager.SEC_GAMEPLAY, "song_speed")
