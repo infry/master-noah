@@ -107,6 +107,8 @@ animation_names = Dictionary[StringName, StringName]({
 &"cheer_200": &"fawn nene instance 1",
 &"cry": &"laughing nene instance 1",
 &"idle": &"Nene Abot Idle instance 1",
+&"idle_left": &"idle_left",
+&"idle_right": &"idle_right",
 &"knife_idle": &"knife high held instance 1",
 &"knife_lower": &"knife lower instance 1",
 &"knife_raise": &"knife raise instance 1",
@@ -123,6 +125,8 @@ offsets = Dictionary[StringName, Vector2]({
 &"knife toss instance 1": Vector2(14, -416),
 &"laughing nene instance 1": Vector2(-49, -387)
 })
+dance_animations = Array[StringName]([&"idle_left", &"idle_right"])
+dance_rate = 1
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=750018879]
 use_parent_material = true
