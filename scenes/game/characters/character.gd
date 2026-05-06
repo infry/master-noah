@@ -178,7 +178,7 @@ func hold_animation():
 
 ## Play the current idle animation.
 func dance(restart: bool = true, time: float = -1) -> void:
-	if not can_dance:
+	if !can_dance and !dance_animations.has(current_animation):
 		return
 	
 	var dance_to_play: StringName = dance_animations[current_dance]
