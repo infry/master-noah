@@ -9,7 +9,7 @@ class_name Character
 @export var forced_animations: Array[StringName]
 
 @export_group("Gameplay")
-@export var idle_animation: StringName = "idle"
+@export var idle_animation: StringName = &"idle"
 @export var animation_prefix: StringName = &""
 ## How many steps an animation can play before being able to revert to idle.
 @export var sing_duration: int = 6
