@@ -1,5 +1,3 @@
-@icon("res://assets/sprites/nodes/character.png")
-
 extends Character
 
 @onready var spectrum = AudioServer.get_bus_effect_instance(1, 0)
@@ -32,7 +30,8 @@ func _process(delta):
 	var interval = (maxFrequency - minFrequency) / definition
 	
 	update_timer -= delta
-	if (update_timer <= 0): update_timer = update_rate
+	if (update_timer <= 0):
+		update_timer = update_rate
 	
 	for i in range(definition):
 		

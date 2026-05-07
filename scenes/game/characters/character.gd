@@ -32,6 +32,7 @@ enum AnimContext {
 @export_custom(PROPERTY_HINT_NONE, 'suffix:steps') var sing_duration: float = 6
 
 @export_group("UI")
+## Icons that are displayed in the ui. Can include [code]default[/code], [code]winning[/code] or [code]losing[/code].
 @export var icons: SpriteFrames = load("res://assets/sprites/playstate/icons/face.tres")
 @export var color: Color = Color(0.168627, 0.121569, 0.203922)
 
