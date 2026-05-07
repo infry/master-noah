@@ -55,10 +55,53 @@ func get_tempo_time_at(time: float) -> float:
 	
 	return output
 
+enum ChartType {
+	CODENAME,
+	VSLICE,
+	PSYCH,
+	PSYCH_V1,
+	UNDEFINED
+}
 
 static func load(path:String) -> Chart:
 	
 	if path.get_extension() == 'res': ##probably a chart already
 		return load(path)
-
+	elif path.get_extension() == 'json':
+		
+		var file_content = FileAccess.open(path, FileAccess.READ)
+		if file_content:
+			var json = JSON.parse_string(file_content.get_as_text())
+			if json and json is Dictionary:
+				print(chart_type_to_str(resolve_chart_type(json)))
+	
+	
 	return null
+
+static func resolve_chart_type(raw_json:Dictionary) -> ChartType:
+	
+	if raw_json.has('format'):
+		var format:String = raw_json.get('format')
+		if format.contains('psych_v1'):
+			return ChartType.PSYCH_V1
+	
+	if raw_json.has('codenameChart'):
+		return ChartType.CODENAME
+	
+	if raw_json.has('version') and raw_json.has('scrollSpeed'):
+		return ChartType.VSLICE
+	
+	if raw_json.has('song') and raw_json.get('song').has('gfVersion'):
+		return ChartType.PSYCH
+	
+	return ChartType.UNDEFINED
+
+
+static func chart_type_to_str(type:ChartType) -> String:
+	match type:
+		ChartType.CODENAME: return "Codename"
+		ChartType.VSLICE: return 'VSlice'
+		ChartType.PSYCH: return 'Psych Legacy'
+		ChartType.PSYCH_V1: return 'Psych V1'
+	
+	return "Undefined"
