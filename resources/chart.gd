@@ -1,7 +1,22 @@
 @icon("res://assets/sprites/nodes/chart_file.png")
+class_name Chart extends Resource
 
-extends Resource
-class_name Chart
+enum ChartType {
+	CODENAME,
+	VSLICE,
+	PSYCH,
+	PSYCH_V1,
+	UNDEFINED
+}
+
+static func chart_type_to_str(type:ChartType) -> String:
+	match type:
+		ChartType.CODENAME: return "Codename"
+		ChartType.VSLICE: return 'VSlice'
+		ChartType.PSYCH: return 'Psych Legacy'
+		ChartType.PSYCH_V1: return 'Psych V1'
+	
+	return "Undefined"
 
 @export_group("Chart Data")
 
@@ -56,19 +71,10 @@ func get_tempo_time_at(time: float) -> float:
 	
 	return output
 
-enum ChartType {
-	CODENAME,
-	VSLICE,
-	PSYCH,
-	PSYCH_V1,
-	UNDEFINED
-}
-
 static func load(path:String) -> Chart:
 	
 	if path.begins_with('uid'):
 		path = ResourceUID.uid_to_path(path)
-	
 	
 	if path.get_extension() == 'res' or path.get_extension() == 'tres': ##probably a chart already
 		return load(path)
@@ -80,10 +86,32 @@ static func load(path:String) -> Chart:
 			if json and json is Dictionary:
 				match resolve_chart_type(json):
 					ChartType.PSYCH:
+						var events = []
+						var events_file = FileAccess.open(path.get_base_dir() + '/events.json', FileAccess.READ)
 						
-						return convert_psych(json, {}, false)
+						if events_file:
+							var events_json = JSON.parse_string(events_file.get_as_text())
+							if events_json:
+								if not events_json.has('events'):
+									events_json = events_json.get('song')
+								
+								events = events_json.get('events', [])
+								
+						return convert_psych(json, events, false)
 					ChartType.PSYCH_V1:
-						return convert_psych(json)
+						var events = []
+						var events_file = FileAccess.open(path.get_base_dir() + '/events.json', FileAccess.READ)
+						
+						if events_file: #maybe check if the events file is cne ?
+							var events_json = JSON.parse_string(events_file.get_as_text())
+							if events_json:
+								if not events_json.has('events'):
+									events_json = events_json.get('song')
+								
+								events = events_json.get('events', [])
+						
+						
+						return convert_psych(json, events)
 						
 					ChartType.VSLICE:
 						
@@ -102,10 +130,20 @@ static func load(path:String) -> Chart:
 						
 						assert(FileAccess.file_exists(meta_path), 'failed to find cne chart meta.json')
 						
+						var events = []
+						var events_file = FileAccess.open(path.get_base_dir() + '/events.json', FileAccess.READ)
+						
+						if events_file:
+							var events_json = JSON.parse_string(events_file.get_as_text())
+							if events_json:
+								if events_json is Dictionary:
+									if events_json.has('events'):
+										events = events_json.get('events')
+						
 						var meta_file = FileAccess.open(meta_path, FileAccess.READ)
 						var meta_json = JSON.parse_string(meta_file.get_as_text())
 						if meta_json:
-							return convert_cne(json, meta_json)
+							return convert_cne(json, meta_json, events)
 					_:
 						pass
 	
@@ -131,20 +169,13 @@ static func resolve_chart_type(raw_json:Dictionary) -> ChartType:
 	return ChartType.UNDEFINED
 
 
-static func chart_type_to_str(type:ChartType) -> String:
-	match type:
-		ChartType.CODENAME: return "Codename"
-		ChartType.VSLICE: return 'VSlice'
-		ChartType.PSYCH: return 'Psych Legacy'
-		ChartType.PSYCH_V1: return 'Psych V1'
-	
-	return "Undefined"
+
 
 # Sorting notes
 static func sort_notes(a, b) -> bool:
 	return a[0] < b[0]
 
-static func convert_psych(data:Dictionary,events:Dictionary = {}, v1:bool = true) -> Chart:
+static func convert_psych(data:Dictionary,events:Array = [], v1:bool = true) -> Chart:
 	
 	var chart = Chart.new()
 	
@@ -209,29 +240,30 @@ static func convert_psych(data:Dictionary,events:Dictionary = {}, v1:bool = true
 		index += 1
 		section_time += seconds_per_measure
 	
-	# Psych event conversion # TODO re add events json support
 	if data.has('events'):
-		for i in data.get('events'):
-			var time = i[0]
-			# Event name conversion
-			for j in i[1]:
-				if ChartConverter.EVENT_NAMES.has(j[0]):
-					j[0] = ChartConverter.EVENT_NAMES.get(j[0])
-				
-				if j[0] == "Adjust Camera":
-					var split = j[2].split(",")
-					if j[1] == "zoom":
-						j[0] = "camera_zoom"
-						j[1] = int(split[0])
-						j[2] = split[1]
-					else:
-						j[0] = "bop_rate"
-						j[1] = int(split[0])
-						j[2] = ""
-				
-				# Creates the event
-				## j[1] is the event name, j[2] is the event parameters
-				event_data.append([time / 1000.0, j[0], [j[1], j[2]]])
+		events.append_array(data.get('events'))
+	
+	for i in events:
+		var time = i[0]
+		# Event name conversion
+		for j in i[1]:
+			if ChartConverter.EVENT_NAMES.has(j[0]):
+				j[0] = ChartConverter.EVENT_NAMES.get(j[0])
+			
+			if j[0] == "Adjust Camera":
+				var split = j[2].split(",")
+				if j[1] == "zoom":
+					j[0] = "camera_zoom"
+					j[1] = int(split[0])
+					j[2] = split[1]
+				else:
+					j[0] = "bop_rate"
+					j[1] = int(split[0])
+					j[2] = ""
+			
+			# Creates the event
+			## j[1] is the event name, j[2] is the event parameters
+			event_data.append([time / 1000.0, j[0], [j[1], j[2]]])
 	
 	event_data.sort_custom(sort_notes)
 	
@@ -331,7 +363,7 @@ static func convert_vslice(data:Dictionary, meta:Dictionary) -> Chart:
 	
 	return chart
 
-static func convert_cne(data:Dictionary, meta:Dictionary) -> Chart:
+static func convert_cne(data:Dictionary, meta:Dictionary, events:Array = []) -> Chart:
 	
 	var chart = Chart.new()
 	
@@ -357,11 +389,10 @@ static func convert_cne(data:Dictionary, meta:Dictionary) -> Chart:
 	var current_bpm = meta.get('bpm')
 	tempo_data[0.0] = current_bpm
 	
-	var raw_events:Array = []
 	if data.has('events'):
-		raw_events.append_array(data.get('events'))
+		events.append_array(data.get('events'))
 	
-	for event_packet in raw_events:
+	for event_packet in events:
 		
 		var event = []
 		if event_packet.name == 'Camera Movement':
