@@ -42,14 +42,14 @@ func _input(event: InputEvent) -> void:
 		elif ev.is_action('ui_plus'):
 			SettingsManager.set_value(SettingsManager.SEC_AUDIO, 'is_muted', false)
 			
-			var new_vol = clampf(SettingsManager.get_value(SettingsManager.SEC_AUDIO,'master_volume') + 0.1, 0.0, 1.0)
+			var new_vol = clampf(SettingsManager.get_value(SettingsManager.SEC_AUDIO,'master_volume') + 0.05, 0.0, 1.0)
 			SettingsManager.set_value(SettingsManager.SEC_AUDIO, 'master_volume', new_vol)
 			
 			_updated_volume()
 		elif ev.is_action('ui_minus'):
 			SettingsManager.set_value(SettingsManager.SEC_AUDIO, 'is_muted', false)
 			
-			var new_vol = clampf(SettingsManager.get_value(SettingsManager.SEC_AUDIO,'master_volume') - 0.1, 0.0, 1.0)
+			var new_vol = clampf(SettingsManager.get_value(SettingsManager.SEC_AUDIO,'master_volume') - 0.05, 0.0, 1.0)
 			SettingsManager.set_value(SettingsManager.SEC_AUDIO, 'master_volume', new_vol)
 			
 			_updated_volume()
