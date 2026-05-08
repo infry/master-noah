@@ -170,7 +170,7 @@ func show_volume():
 	if AudioServer.is_bus_mute(0):
 		$"UI/Voume Node/ColorRect/Label".text = "Muted"
 	else:
-		$"UI/Voume Node/ColorRect/Label".text = "Master Volume: " + str(int(master_volume * 100)) + "%"
+		$"UI/Voume Node/ColorRect/Label".text = "Master Volume: " + str(roundi(master_volume * 100)) + "%"
 	
 	$"UI/Voume Node/Hide Timer".start()
 
