@@ -83,6 +83,7 @@ func _ready():
 		self.song_data = GameManager.current_song
 	else:
 		self.song_data = GameManager.week_songs[GameManager.current_week_song]
+	
 	assert(host, 'A Host was not assigned.')
 	assert(ui, 'A UI was not assigned.')
 	assert(camera, 'A Camera Controller was not assigned.')
@@ -121,7 +122,6 @@ func _ready():
 	
 	ui.set_credits(song_data.title, song_data.artist)
 	match GameManager.play_mode:
-		
 		GameManager.PLAY_MODE.CHARTING:
 			if SettingsManager.get_value(SettingsManager.SEC_CHART, "start_at_current_position"):
 				play_song(ChartEditor.song_position)
@@ -130,6 +130,7 @@ func _ready():
 		
 		_:
 			play_song(0)
+	
 	Global.set_window_title("Playing: " + song_data.title)
 	
 	pause_scene = ui_skin.pause_scene

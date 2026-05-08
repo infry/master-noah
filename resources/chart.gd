@@ -15,8 +15,7 @@ static func chart_format_to_str(type:ChartFormat) -> String:
 		ChartFormat.VSLICE: return 'VSlice'
 		ChartFormat.PSYCH: return 'Psych Legacy'
 		ChartFormat.PSYCH_V1: return 'Psych V1'
-	
-	return "Undefined"
+		_: return "Undefined"
 
 @export_group("Chart Data")
 
@@ -36,8 +35,8 @@ static func chart_format_to_str(type:ChartFormat) -> String:
 func get_notes_data() -> Array: return chart_data.get("notes")
 func get_events_data() -> Array: return chart_data.get("events")
 func get_tempos_data() -> Dictionary: return chart_data.get("tempos")
-func get_meters_data() -> Dictionary:
-	return chart_data.get("meters")
+func get_meters_data() -> Dictionary: return chart_data.get("meters")
+
 
 func get_tempo_at(time: float) -> float:
 	time = max(0, time)
@@ -62,6 +61,7 @@ func get_meter_at(time: float) -> Array:
 	
 	return output
 
+
 func get_tempo_time_at(time: float) -> float:
 	time = max(0, time)
 	var output: float = -1
@@ -71,15 +71,14 @@ func get_tempo_time_at(time: float) -> float:
 	
 	return output
 
+
 static func load(path:String) -> Chart:
-	
 	if path.begins_with('uid'):
 		path = ResourceUID.uid_to_path(path)
 	
 	if path.get_extension() == 'res' or path.get_extension() == 'tres': ##probably a chart already
 		return load(path)
 	elif path.get_extension() == 'json':
-		
 		var file = FileAccess.open(path, FileAccess.READ)
 		if file:
 			var json = JSON.parse_string(file.get_as_text())
@@ -172,8 +171,8 @@ static func resolve_chart_type(raw_json:Dictionary) -> ChartFormat:
 static func sort_notes(a, b) -> bool:
 	return a[0] < b[0]
 
+
 static func convert_psych(data:Dictionary,events:Array = [], v1:bool = true) -> Chart:
-	
 	var chart = Chart.new()
 	
 	var note_data = []
@@ -205,6 +204,9 @@ static func convert_psych(data:Dictionary,events:Array = [], v1:bool = true) -> 
 		
 		# Camera movement conversion
 		var camera_position = 0 if i.mustHitSection else 1
+		if i.get("gfSection", false):
+			camera_position = 2
+		
 		event_data.append([index * seconds_per_measure, "camera_position", [camera_position]])
 		
 		for j in i.sectionNotes:

@@ -168,7 +168,7 @@ size_flags_horizontal = 3
 [node name="Label" type="Label" parent="FlowContainer/VBoxContainer" unique_id=793706066]
 layout_mode = 2
 size_flags_vertical = 1
-text = "Charts to convert"
+text = "Charts to Convert"
 
 [node name="HSeparator" type="HSeparator" parent="FlowContainer/VBoxContainer" unique_id=2001403783]
 layout_mode = 2
