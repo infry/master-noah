@@ -1,20 +1,20 @@
 @icon("res://assets/sprites/nodes/chart_file.png")
 class_name Chart extends Resource
 
-enum ChartType {
-	CODENAME,
-	VSLICE,
-	PSYCH,
-	PSYCH_V1,
-	UNDEFINED
+enum ChartFormat {
+	VSLICE = 0,
+	PSYCH = 1,
+	PSYCH_V1 = 2,
+	CODENAME = 3,
+	UNDEFINED = -1
 }
 
-static func chart_type_to_str(type:ChartType) -> String:
+static func chart_format_to_str(type:ChartFormat) -> String:
 	match type:
-		ChartType.CODENAME: return "Codename"
-		ChartType.VSLICE: return 'VSlice'
-		ChartType.PSYCH: return 'Psych Legacy'
-		ChartType.PSYCH_V1: return 'Psych V1'
+		ChartFormat.CODENAME: return "Codename"
+		ChartFormat.VSLICE: return 'VSlice'
+		ChartFormat.PSYCH: return 'Psych Legacy'
+		ChartFormat.PSYCH_V1: return 'Psych V1'
 	
 	return "Undefined"
 
@@ -85,7 +85,7 @@ static func load(path:String) -> Chart:
 			var json = JSON.parse_string(file.get_as_text())
 			if json and json is Dictionary:
 				match resolve_chart_type(json):
-					ChartType.PSYCH:
+					ChartFormat.PSYCH:
 						var events = []
 						var events_file = FileAccess.open(path.get_base_dir() + '/events.json', FileAccess.READ)
 						
@@ -98,7 +98,7 @@ static func load(path:String) -> Chart:
 								events = events_json.get('events', [])
 								
 						return convert_psych(json, events, false)
-					ChartType.PSYCH_V1:
+					ChartFormat.PSYCH_V1:
 						var events = []
 						var events_file = FileAccess.open(path.get_base_dir() + '/events.json', FileAccess.READ)
 						
@@ -113,7 +113,7 @@ static func load(path:String) -> Chart:
 						
 						return convert_psych(json, events)
 						
-					ChartType.VSLICE:
+					ChartFormat.VSLICE:
 						
 						var meta_path = path.replace('chart', 'metadata')
 						
@@ -124,7 +124,7 @@ static func load(path:String) -> Chart:
 						if meta_json:
 							return convert_vslice(json, meta_json)
 					
-					ChartType.CODENAME:
+					ChartFormat.CODENAME:
 						
 						var meta_path = path.get_base_dir() + '/meta.json'
 						
@@ -150,26 +150,23 @@ static func load(path:String) -> Chart:
 	
 	return null
 
-static func resolve_chart_type(raw_json:Dictionary) -> ChartType:
+static func resolve_chart_type(raw_json:Dictionary) -> ChartFormat:
 	
 	if raw_json.has('format'):
 		var format:String = raw_json.get('format')
 		if format.contains('psych_v1'):
-			return ChartType.PSYCH_V1
+			return ChartFormat.PSYCH_V1
 	
 	if raw_json.has('codenameChart'):
-		return ChartType.CODENAME
+		return ChartFormat.CODENAME
 	
 	if raw_json.has('version') and raw_json.has('scrollSpeed'):
-		return ChartType.VSLICE
+		return ChartFormat.VSLICE
 	
 	if raw_json.has('song') and raw_json.get('song') is Dictionary and raw_json.get('song').has('gfVersion'):
-		return ChartType.PSYCH
+		return ChartFormat.PSYCH
 	
-	return ChartType.UNDEFINED
-
-
-
+	return ChartFormat.UNDEFINED
 
 # Sorting notes
 static func sort_notes(a, b) -> bool:
@@ -247,8 +244,8 @@ static func convert_psych(data:Dictionary,events:Array = [], v1:bool = true) -> 
 		var time = i[0]
 		# Event name conversion
 		for j in i[1]:
-			if ChartConverter.EVENT_NAMES.has(j[0]):
-				j[0] = ChartConverter.EVENT_NAMES.get(j[0])
+			if EVENT_NAMES.has(j[0]):
+				j[0] = EVENT_NAMES.get(j[0])
 			
 			if j[0] == "Adjust Camera":
 				var split = j[2].split(",")
@@ -276,7 +273,9 @@ static func convert_psych(data:Dictionary,events:Array = [], v1:bool = true) -> 
 	
 	return chart
 
-static func convert_vslice(data:Dictionary, meta:Dictionary) -> Chart:
+static func convert_vslice(data:Dictionary, meta:Dictionary,diff:String = '') -> Chart:
+	
+	if diff.is_empty(): diff = GameManager.difficulty
 	
 	var chart = Chart.new()
 	
@@ -297,7 +296,8 @@ static func convert_vslice(data:Dictionary, meta:Dictionary) -> Chart:
 		
 		return output
 	
-	chart.scroll_speed = data.scrollSpeed[GameManager.difficulty]
+	
+	chart.scroll_speed = data.scrollSpeed[diff]
 	
 	# Adding tempo data
 	for i in meta.get('timeChanges'):
@@ -306,7 +306,7 @@ static func convert_vslice(data:Dictionary, meta:Dictionary) -> Chart:
 		tempo_data[i.t / 1000.0] = i.bpm
 		meter_data[i.t / 1000.0] = [i.n, i.n * i.d]
 	
-	for i in data.get('notes').get(GameManager.difficulty):
+	for i in data.get('notes').get(diff):
 		var time = i.t / 1000.0
 		var lane = int(i.d)
 		
@@ -335,8 +335,8 @@ static func convert_vslice(data:Dictionary, meta:Dictionary) -> Chart:
 		var parameters = []
 		
 		var event_name = event
-		if ChartConverter.EVENT_NAMES.has(event):
-			event_name = ChartConverter.EVENT_NAMES.get(event)
+		if EVENT_NAMES.has(event):
+			event_name = EVENT_NAMES.get(event)
 		
 		if i.v is Dictionary:
 			parameters.append_array(i.v.values())
@@ -404,8 +404,8 @@ static func convert_cne(data:Dictionary, meta:Dictionary, events:Array = []) -> 
 			
 			event = [event_packet.time / 1000.0, 'camera_position', event_packet.params]
 			
-		elif ChartConverter.EVENT_NAMES.has(event_packet.name):
-			event = [event_packet.time / 1000.0, ChartConverter.EVENT_NAMES[event_packet.name], event_packet.params]
+		elif EVENT_NAMES.has(event_packet.name):
+			event = [event_packet.time / 1000.0, EVENT_NAMES[event_packet.name], event_packet.params]
 		elif event_packet.name == "BPM Change":
 			tempo_data[event_packet.time / 1000.0] = event_packet.params[0]
 		else:
@@ -446,3 +446,27 @@ static func convert_cne(data:Dictionary, meta:Dictionary, events:Array = []) -> 
 	
 	return chart
 	
+# Event names for easy conversion to noah engine
+const EVENT_NAMES = {
+	
+	# Psych Engine Names
+	"Add Camera Zoom": "camera_bop",
+	"Change Scroll Speed": "scroll_speed",
+	"Screen Shake": "psych_camera_shake",
+	"Set Cam Zoom": "camera_zoom",
+	
+	# Base Game Names
+	"FocusCamera": "camera_position",
+	"PlayAnimation": "play_animation",
+	"SetCameraBop": "bop_rate",
+	"ZoomCamera": "camera_zoom",
+	
+	# Codename names
+	"Camera Movement": "camera_position",
+	"Play Animation": "play_animation",
+	"Camera Bop": "camera_bop",
+	"Camera Zoom": "camera_zoom",
+	"Camera Modulo Change": "bop_rate",
+	"Scroll Speed Change": "scroll_speed",
+	
+}
