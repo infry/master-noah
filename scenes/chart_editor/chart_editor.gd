@@ -1418,7 +1418,35 @@ func file_button_item_pressed(id):
 			can_chart = false
 			%"Export External Popup".popup()
 			%"Open Window".play()
-		
+		9:
+			can_chart = false
+			%"Open Window".play()
+			
+			var export_window = FileDialog.new()
+			export_window.root_subfolder = 'playable_songs'
+			export_window.current_file = 'events.tres'
+			export_window.filters = PackedStringArray(['*.res','*.tres'])
+			export_window.file_mode = FileDialog.FILE_MODE_SAVE_FILE
+			export_window.display_mode = FileDialog.DISPLAY_LIST
+			$"UI/Upper UI".add_child(export_window)
+			
+			export_window.popup()
+			
+			var on_save = func(path:String):
+				var event = ChartEvents.new()
+				event.data = ChartManager.chart.get_events_data()
+				ResourceSaver.save(event, path)
+				export_window.hide()
+			
+			var on_close = func():
+				export_window.queue_free()
+			
+			export_window.connect(&"file_selected", on_save)
+			export_window.connect(&"close_requested", self.close_popup)
+			export_window.connect(&"close_requested", on_close)
+			export_window.connect(&"gui_focus_changed", self._on_gui_focus_changed)
+			
+
 		_:
 			print("id: ", id)
 
