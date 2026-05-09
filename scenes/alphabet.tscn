@@ -4,8 +4,4 @@
 
 [node name="Alphabet" type="Node2D" unique_id=195551509]
 script = ExtResource("1_e37qy")
-text = "THE QUICK BROWN FOX
-JUMPED OVER THE LAZY
-DOG."
-horizontal_alignment = 1
-vertical_alignment = 1
+text = "ABC"
