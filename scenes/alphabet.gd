@@ -34,7 +34,7 @@ class_name Alphabet
 @export var line_gap:float = 70.0:
 	set(value):
 		line_gap = value
-		update_text(value)
+		update_text(text)
 
 @export var default_gylph_gap: float = 0.0:
 	set(value):
@@ -159,7 +159,7 @@ func get_string_size(_text: String) -> Vector2:
 	return Vector2(width, height)
 
 
-func update_text(new_text):
+func update_text(new_text: String):
 	for glyph in get_children():
 		glyph.queue_free()
 	
