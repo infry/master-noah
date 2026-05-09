@@ -12,6 +12,11 @@ extends Node2D
 		horizontal_alignment = v
 		update_text(text)
 
+@export var vertical_alignment: VerticalAlignment = VerticalAlignment.VERTICAL_ALIGNMENT_TOP:
+	set(v):
+		vertical_alignment = v
+		update_text(text)
+
 @export_group("Glyph Settings")
 @export var sprite_frames:SpriteFrames = preload("res://assets/fonts/alphabet.res"):
 	set(value):
@@ -29,18 +34,23 @@ extends Node2D
 		line_gap = value
 		update_text(value)
 
-@export var default_character_gap:float = 0.0:
+@export var default_gylph_gap: float = 0.0:
 	set(value):
-		default_character_gap = value
+		default_gylph_gap = value
+		update_text(text)
+
+@export var default_bottom_padding: float = 0.0:
+	set(value):
+		default_bottom_padding = value
 		update_text(text)
 
 @export_subgroup("Overrides")
-@export var character_gap:Dictionary[String, float] = { " ": 40.0 }:
+@export var glyph_gaps:Dictionary[String, float] = {" ": 40.0}:
 	set(value):
-		character_gap = value
+		glyph_gaps = value
 		update_text(text)
 
-@export var character_offsets:Dictionary[String, Vector2] = {
+@export var glyph_offsets:Dictionary[String, Vector2] = {
 	"g": Vector2(0, 15),
 	"j": Vector2(0, 15),
 	"p": Vector2(0, 15),
@@ -48,7 +58,7 @@ extends Node2D
 	"y": Vector2(0, 15)
 }:
 	set(value):
-		character_offsets = value
+		glyph_offsets = value
 		update_text(text)
 
 @export var glyph_name_overrides:Dictionary[String, StringName] = {
@@ -99,19 +109,43 @@ func get_glyph_texture(glyph: String) -> Texture2D:
 	
 	return null
 
-## Returns the width of the string's characters
-func get_string_width(line: String) -> float:
-	var sum: float = 0
+## Returns the size of the string's glyphs
+func get_string_size(_text: String) -> Vector2:
+	if _text.is_empty():
+		return Vector2.ZERO
 	
+	var _max: int = 0
+	var max_i: int = -1
+	var lines = _text.split("\n")
+	var height: float = 0
+	
+	var i: int = 0
+	for line in lines:
+		if len(line) > _max:
+			_max = len(line)
+			max_i = i
+		
+		i += 1
+	
+	var line: String = lines[max_i]
+	
+	_max = 0
+	max_i = -1
+	var width: float = 0
+	i = 0
 	for c in line:
 		var glyph_name: StringName = get_glyph_name(c)
 		var glyph_texture: Texture2D = get_glyph_texture(glyph_name)
-		if glyph_texture:
-			sum += glyph_texture.get_width()
 		
-		sum += character_gap.get(c, default_character_gap)
+		if glyph_texture:
+			width += glyph_texture.get_width()# + glyph_offset.x
+		
+		if i < len(line) - 1:
+			width += glyph_gaps.get(c, default_gylph_gap)
+		
+		i += 1
 	
-	return sum
+	return Vector2(width, height)
 
 
 func update_text(new_text):
@@ -121,41 +155,67 @@ func update_text(new_text):
 	if new_text.is_empty():
 		return
 	
-	var characters = new_text.split()
+	var lines = new_text.split("\n")
 	
-	var next_x:float
+	var next_x: float
+	var next_y: float
 	
 	match horizontal_alignment:
 		HorizontalAlignment.HORIZONTAL_ALIGNMENT_CENTER:
-			next_x = -get_string_width(new_text) / 2
+			next_x = -get_string_size(new_text).x / 2
 		
 		HorizontalAlignment.HORIZONTAL_ALIGNMENT_RIGHT:
-			next_x = -get_string_width(new_text)
+			next_x = -get_string_size(new_text).x
 		
 		_:
 			next_x = 0
 	
-	for i in characters.size():
-		var character: String = characters[i]
-		var glyph: AnimatedSprite2D = AnimatedSprite2D.new()
-		glyph.sprite_frames = sprite_frames
-		glyph.centered = false
+	match vertical_alignment:
 		
-		var glyph_name: StringName = get_glyph_name(character)
-		if sprite_frames.has_animation(glyph_name):
-			glyph.play(glyph_name)
-			sprite_frames.set_animation_loop(glyph_name, true)
+		VerticalAlignment.VERTICAL_ALIGNMENT_CENTER:
+			next_y = -get_string_size(new_text).y / 2
+			print(next_y)
 		
-		glyph.offset = character_offsets.get(character, Vector2(0.0, 0.0))
-		self.add_child(glyph)
+		VerticalAlignment.VERTICAL_ALIGNMENT_BOTTOM:
+			next_y = -get_string_size(new_text).y
+			print(next_y)
 		
-		glyph.position.x = next_x
+		_:
+			next_y = get_glyph_texture(get_glyph_name(new_text[0])).get_height()
+	
+	var j: int = 0
+	for line in lines:
+		var characters = line.split()
+		for i in characters.size():
+			var character: String = characters[i]
+			var glyph: AnimatedSprite2D = AnimatedSprite2D.new()
+			glyph.sprite_frames = sprite_frames
+			glyph.centered = false
+			
+			var glyph_name: StringName = get_glyph_name(character)
+			if sprite_frames.has_animation(glyph_name):
+				glyph.play(glyph_name)
+				sprite_frames.set_animation_loop(glyph_name, true)
+			
+			glyph.offset = glyph_offsets.get(character, Vector2(0.0, 0.0))
+			self.add_child(glyph)
+			
+			glyph.position.x = next_x
+			
+			next_x = glyph.position.x
+			if i < len(line) - 1:
+				next_x += glyph_gaps.get(character, default_gylph_gap)
+			
+			var glyph_texture: Texture2D = get_glyph_texture(glyph_name)
+			
+			if glyph_texture:
+				next_x += glyph_texture.get_width()
+				glyph.position.y -= glyph_texture.get_height()
+				glyph.position.y += next_y
 		
-		next_x = glyph.position.x
-		next_x += character_gap.get(character, default_character_gap)
+		next_x -= get_string_size(line).x
+		next_y += get_string_size(line).y
+		if j < lines.size() - 1:
+			next_y += default_bottom_padding
 		
-		var glyph_texture: Texture2D = get_glyph_texture(glyph_name)
-		
-		if glyph_texture:
-			next_x += glyph_texture.get_width()
-			glyph.position.y -= glyph_texture.get_height()
+		j += 1

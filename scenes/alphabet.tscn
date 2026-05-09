@@ -4,5 +4,8 @@
 
 [node name="Alphabet" type="Node2D" unique_id=195551509]
 script = ExtResource("1_e37qy")
-text = "The quick brown fox jumped over the lazy dog."
+text = "The quick brown 
+fox jumped over 
+the lazy dog."
 forced_anim_suffix = "bold"
+default_bottom_padding = 13.0
