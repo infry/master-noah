@@ -24,7 +24,7 @@ extends Node2D
 		update_text(text)
 
 ## ex. " bold"
-@export var forced_anim_suffix:String = "":
+@export var forced_anim_suffix:StringName = &"":
 	set(value):
 		forced_anim_suffix = value
 		update_text(text)
@@ -101,7 +101,8 @@ func get_suffix(character:String) -> StringName:
 
 
 func get_glyph_name(character: String) -> StringName:
-	return glyph_name_overrides.get(character, character) + get_suffix(character)
+	var glyph_name: String = glyph_name_overrides.get(character, character)
+	return glyph_name + get_suffix(glyph_name)
 
 func get_glyph_texture(glyph: String) -> Texture2D:
 	if sprite_frames and sprite_frames.has_animation(glyph):
@@ -172,12 +173,6 @@ func update_text(new_text):
 	var next_y: float
 	
 	match horizontal_alignment:
-		HorizontalAlignment.HORIZONTAL_ALIGNMENT_CENTER:
-			next_x = -get_string_size(new_text).x / 2
-		
-		HorizontalAlignment.HORIZONTAL_ALIGNMENT_RIGHT:
-			next_x = -get_string_size(new_text).x
-		
 		_:
 			next_x = 0
 	
@@ -196,6 +191,13 @@ func update_text(new_text):
 	
 	var j: int = 0
 	for line in lines:
+		match horizontal_alignment:
+			HorizontalAlignment.HORIZONTAL_ALIGNMENT_CENTER:
+				next_x = -get_string_size(line).x / 2
+			
+			HorizontalAlignment.HORIZONTAL_ALIGNMENT_RIGHT:
+				next_x = -get_string_size(line).x
+		
 		var characters = line.split()
 		for i in characters.size():
 			var character: String = characters[i]
