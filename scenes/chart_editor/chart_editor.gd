@@ -1406,7 +1406,7 @@ func file_button_item_pressed(id):
 			can_chart = false
 			%"Export External Popup".popup()
 			%"Open Window".play()
-		9:
+		9: #Save events
 			can_chart = false
 			%"Open Window".play()
 			
@@ -1418,7 +1418,7 @@ func file_button_item_pressed(id):
 			export_window.display_mode = FileDialog.DISPLAY_LIST
 			$"UI/Upper UI".add_child(export_window)
 			
-			export_window.popup()
+			export_window.popup_centered()
 			
 			var on_save = func(path:String):
 				var event = ChartEvents.new()
@@ -1433,7 +1433,42 @@ func file_button_item_pressed(id):
 			export_window.connect(&"close_requested", self.close_popup)
 			export_window.connect(&"close_requested", on_close)
 			export_window.connect(&"gui_focus_changed", self._on_gui_focus_changed)
+		10: #Load events
+			can_chart = false
+			%"Open Window".play()
 			
+			var export_window = FileDialog.new()
+			export_window.root_subfolder = 'playable_songs'
+			export_window.filters = PackedStringArray(['*.res','*.tres'])
+			export_window.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+			export_window.display_mode = FileDialog.DISPLAY_LIST
+			$"UI/Upper UI".add_child(export_window)
+			
+			export_window.popup_centered()
+			
+			var on_open = func(path:String):
+				if path.is_empty() and not ResourceLoader.exists(path): 
+					printerr('File does not exist! [' + path + ']')
+				if not ChartManager.chart:
+					printerr("No chart is currenty loaded! Can't load events")
+					export_window.hide()
+					return
+				
+				var events_data = load(path)
+				if events_data is not ChartEvents:
+					printerr("Provided resource was not a chart event file!")
+				
+				ChartManager.chart.merge_events_into_this(events_data)
+				load_section(song_position)
+				export_window.hide()
+			
+			var on_close = func():
+				export_window.queue_free()
+			
+			export_window.connect(&"file_selected", on_open)
+			export_window.connect(&"close_requested", self.close_popup)
+			export_window.connect(&"close_requested", on_close)
+			export_window.connect(&"gui_focus_changed", self._on_gui_focus_changed)
 
 		_:
 			print("id: ", id)
