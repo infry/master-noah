@@ -31,14 +31,14 @@ class_name Alphabet
 		forced_anim_suffix = value
 		update_text(text)
 
-@export var line_gap:float = 70.0:
+@export var line_gap_offset:float = -.0:
 	set(value):
-		line_gap = value
+		line_gap_offset = value
 		update_text(text)
 
-@export var default_gylph_gap: float = 0.0:
+@export var default_glyph_gap: float = 0.0:
 	set(value):
-		default_gylph_gap = value
+		default_glyph_gap = value
 		update_text(text)
 
 @export var default_bottom_padding: float = 0.0:
@@ -120,7 +120,7 @@ func get_string_size(_text: String) -> Vector2:
 	var _max: int = 0
 	var max_i: int = -1
 	var lines = _text.split("\n")
-	var height: float = 0
+	var height: float = lines.size() * line_gap_offset
 	
 	var i: int = 0
 	for line in lines:
@@ -152,7 +152,7 @@ func get_string_size(_text: String) -> Vector2:
 			width += glyph_texture.get_width() + glyph_offset.x
 		
 		if i < len(line) - 1:
-			width += glyph_gaps.get(c, default_gylph_gap)
+			width += glyph_gaps.get(c, default_glyph_gap)
 		
 		i += 1
 	
@@ -216,7 +216,7 @@ func update_text(new_text: String):
 			
 			next_x = glyph.position.x
 			if i < len(line) - 1:
-				next_x += glyph_gaps.get(character, default_gylph_gap)
+				next_x += glyph_gaps.get(character, default_glyph_gap)
 			
 			var glyph_texture: Texture2D = get_glyph_texture(glyph_name)
 			
