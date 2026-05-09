@@ -1,3 +1,4 @@
+@icon("uid://b1yfbu2p6scl0")
 extends Resource
 class_name Week
 
