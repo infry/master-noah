@@ -1,6 +1,8 @@
-[gd_scene format=3 uid="uid://bxku4s7mjscoc"]
+[gd_scene format=3 uid="uid://d21xu253y4rnv"]
 
 [ext_resource type="Script" uid="uid://c1fn0acbfjb1u" path="res://scenes/alphabet.gd" id="1_e37qy"]
 
 [node name="Alphabet" type="Node2D" unique_id=195551509]
 script = ExtResource("1_e37qy")
+text = "The quick brown fox jumped over the lazy dog."
+forced_anim_suffix = "bold"
