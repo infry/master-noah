@@ -31,7 +31,7 @@ class_name Alphabet
 		forced_anim_suffix = value
 		update_text(text)
 
-@export var line_gap_offset:float = -.0:
+@export var line_gap_offset:float = 0.0:
 	set(value):
 		line_gap_offset = value
 		update_text(text)
@@ -117,30 +117,37 @@ func get_string_size(_text: String) -> Vector2:
 	if _text.is_empty():
 		return Vector2.ZERO
 	
-	var _max: int = 0
-	var max_i: int = -1
+	var max_width: int = 0
+	var max_height: float = 0
+	var max_width_i: int = -1
 	var lines = _text.split("\n")
 	var height: float = lines.size() * line_gap_offset
 	
 	var i: int = 0
 	for line in lines:
-		if len(line) > _max:
-			_max = len(line)
-			max_i = i
+		if len(line) > max_width:
+			max_width = len(line)
+			max_width_i = i
 		
-		var glyph_name: StringName = get_glyph_name(line[0])
-		var glyph_texture: Texture2D = get_glyph_texture(glyph_name)
-		var glyph_offset: Vector2 = glyph_offsets.get(glyph_name, Vector2(0.0, 0.0))
+		max_height = 0
+		for c in line:
+			var glyph_name: StringName = get_glyph_name(c)
+			var glyph_texture: Texture2D = get_glyph_texture(glyph_name)
+			var glyph_offset: Vector2 = glyph_offsets.get(glyph_name, Vector2(0.0, 0.0))
+			
+			if glyph_texture:
+				var glyph_height: float = glyph_texture.get_height() - glyph_offset.y
+				
+				if glyph_height > max_height:
+					max_height = glyph_height
 		
-		if glyph_texture:
-			height += glyph_texture.get_height() + glyph_offset.y
-		
+		height += max_height
 		if i < lines.size() - 1:
 			height += default_bottom_padding
 		
 		i += 1
 	
-	var line: String = lines[max_i]
+	var line: String = lines[max_width_i]
 	var width: float = 0
 	i = 0
 	for c in line:
@@ -149,7 +156,7 @@ func get_string_size(_text: String) -> Vector2:
 		var glyph_offset: Vector2 = glyph_offsets.get(glyph_name, Vector2(0.0, 0.0))
 		
 		if glyph_texture:
-			width += glyph_texture.get_width() + glyph_offset.x
+			width += glyph_texture.get_width() - glyph_offset.x
 		
 		if i < len(line) - 1:
 			width += glyph_gaps.get(c, default_glyph_gap)
@@ -186,7 +193,7 @@ func update_text(new_text: String):
 		_:
 			next_y = 0
 	
-	next_y += get_glyph_texture(get_glyph_name(new_text[0])).get_height()
+	next_y += get_string_size(lines[0]).y
 	
 	var j: int = 0
 	for line in lines:
