@@ -111,7 +111,7 @@ tracks/0/keys = {
 "args": ["MADE IN GODOT"],
 "method": &"show_splash"
 }, {
-"args": ["MADE IN GODOT\\nFUCK HAXEFLIXEL"],
+"args": ["MADE IN GODOT\\nNOT HAXEFLIXEL"],
 "method": &"show_splash"
 }, {
 "args": [],
