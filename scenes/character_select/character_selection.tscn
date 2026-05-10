@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://brxadx3uf2n27" path="res://scenes/character_select/character_selection.gd" id="1_4oy2p"]
 [ext_resource type="Script" uid="uid://b1blhjns06ilt" path="res://scenes/conductor.gd" id="1_xnc8d"]
-[ext_resource type="AudioStream" uid="uid://bova01kqk3s1m" path="res://assets/songs/menu songs/character_select/stayFunky.ogg" id="2_xehc6"]
+[ext_resource type="AudioStream" uid="uid://bova01kqk3s1m" path="res://assets/songs/character_select/stayFunky.ogg" id="2_xehc6"]
 [ext_resource type="AudioStream" uid="uid://bdig7mekw6cmd" path="res://assets/sounds/character_select/CS_confirm.ogg" id="3_4tnne"]
 [ext_resource type="AudioStream" uid="uid://cqrmxvh0sig2q" path="res://assets/sounds/character_select/CS_select.ogg" id="4_206il"]
 [ext_resource type="Texture2D" uid="uid://cheqv5tx4cvjp" path="res://assets/sprites/menus/character_select/placement.png" id="5_xehc6"]
@@ -25,19 +25,19 @@
 
 [sub_resource type="Resource" id="Resource_4k7j0"]
 script = ExtResource("11_433y0")
-folder_path = "res://assets/sprites/menus/character_select/crowd///"
+folder_path = "res://assets/sprites/menus/character_select/crowd////"
 format = "adobe"
 metadata/_custom_type_script = "uid://dkyyuwqo0dy7q"
 
 [sub_resource type="Resource" id="Resource_db2f0"]
 script = ExtResource("11_433y0")
-folder_path = "res://assets/sprites/menus/character_select/charSelectStage///"
+folder_path = "res://assets/sprites/menus/character_select/charSelectStage////"
 format = "adobe"
 metadata/_custom_type_script = "uid://dkyyuwqo0dy7q"
 
 [sub_resource type="Resource" id="Resource_433y0"]
 script = ExtResource("11_433y0")
-folder_path = "res://assets/sprites/menus/character_select/charSelectSpeakers///"
+folder_path = "res://assets/sprites/menus/character_select/charSelectSpeakers////"
 format = "adobe"
 metadata/_custom_type_script = "uid://dkyyuwqo0dy7q"
 
@@ -46,7 +46,7 @@ blend_mode = 3
 
 [sub_resource type="Resource" id="Resource_sxj4d"]
 script = ExtResource("11_433y0")
-folder_path = "res://assets/sprites/menus/character_select/barThing///"
+folder_path = "res://assets/sprites/menus/character_select/barThing////"
 format = "adobe"
 metadata/_custom_type_script = "uid://dkyyuwqo0dy7q"
 

@@ -1,8 +1,8 @@
-[gd_resource type="Resource" script_class="PlayableCharacter" load_steps=5 format=3 uid="uid://dxqhmrv2rrdkc"]
+[gd_resource type="Resource" script_class="PlayableCharacter" format=3 uid="uid://dxqhmrv2rrdkc"]
 
 [ext_resource type="Resource" uid="uid://b30g8jurwop0d" path="res://assets/albums/pico_songs.tres" id="1_hf6k2"]
 [ext_resource type="Texture2D" uid="uid://cemqnoop727he" path="res://assets/sprites/menus/freeplay/characters/pico/freeplayBGweek1-pico.png" id="2_hf6k2"]
-[ext_resource type="AudioStream" uid="uid://d2rjiccf1wlul" path="res://assets/songs/menu songs/pause_menu/breakfast-pico.ogg" id="3_rd8vi"]
+[ext_resource type="AudioStream" uid="uid://d2rjiccf1wlul" path="res://assets/songs/pause_menu/breakfast-pico.ogg" id="3_rd8vi"]
 [ext_resource type="Script" uid="uid://baldo0u3dda86" path="res://resources/playable_character.gd" id="11_r1hcg"]
 
 [resource]
