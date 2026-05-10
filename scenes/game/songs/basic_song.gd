@@ -1,11 +1,12 @@
 extends Node
 
-@onready var camera_positions = []
 @onready var playstate_host: PlayState = $"PlayState Host"
 
-@onready var stage = %Stage
-@onready var player = %Player
-@onready var enemy = %Enemy
+var camera_positions: Array = []
+
+@onready var stage: Node = %Stage
+@onready var player: Node = %Player
+@onready var enemy: Node = %Enemy
 
 @onready var rating_marker = $"World/Rating Marker"
 @onready var combo_marker = $"World/Combo Marker"
@@ -43,19 +44,22 @@ func _ready():
 	playstate_host.connect(&"new_event", self._on_new_event)
 	
 	for node in get_tree().get_nodes_in_group(&"player"):
-		playstate_host.conductor.connect(&"new_step", node.on_step_hit)
+		init_bopper(node)
 	
 	for node in get_tree().get_nodes_in_group(&"enemy"):
-		playstate_host.conductor.connect(&"new_step", node.on_step_hit)
+		init_bopper(node)
 	
 	for node in get_tree().get_nodes_in_group(&"metronome"):
+		init_bopper(node)
+
+func init_bopper(node: Node):
+	if node.has_method('on_step_hit'):
 		playstate_host.conductor.connect(&"new_step", node.on_step_hit)
 
 # Conductor Util
 func _on_conductor_new_beat(current_beat, measure_relative):
 	playstate_host.ui.icon_bop(playstate_host.conductor.seconds_per_beat * 0.5 *
 	(1 / playstate_host.instrumental.pitch_scale))
-
 
 func _on_conductor_new_step(current_step, measure_relative):
 	if current_step % bop_rate == 0:
@@ -64,7 +68,6 @@ func _on_conductor_new_step(current_step, measure_relative):
 		
 		if SettingsManager.get_value(SettingsManager.SEC_PREFERENCES, "ui_bops"):
 			playstate_host.ui.scale += playstate_host.ui_bop_strength
-
 
 func _on_create_note(time, lane, note_length, note_type, tempo):
 	if (lane > 3):
@@ -132,10 +135,8 @@ func _on_new_event(time, event_name, event_parameters):
 			get_tree().set_group(event_parameters[0], "animation_prefix",
 			event_parameters[1])
 
-
 func _on_combo_break():
 	pass
-
 
 func show_combo(rating: String, _combo: int):
 	if rating != "miss":
