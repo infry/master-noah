@@ -22,11 +22,6 @@ animation = "idle"
 metadata/_custom_type_script = "uid://cblocwqwyjjjy"
 
 [node name="AnimateSymbol" type="Node2D" parent="." unique_id=805380361]
-position = Vector2(320, -224)
 script = ExtResource("2_swc8w")
 symbol = "Partner GF idle"
 atlases = Array[ExtResource("3_sp5ph")]([SubResource("Resource_alv4f")])
-metadata/_custom_type_script = "uid://dxb0ojnhycqox"
-
-[connection signal="finished" from="AnimateSymbol" to="." method="done"]
-[connection signal="looped" from="AnimateSymbol" to="." method="loop"]

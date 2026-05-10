@@ -49,8 +49,9 @@ func _ready():
 	
 	$Background/CardGlow.add_child(dj)
 	dj.add_to_group("djs")
-	dj.animated_symbol.connect("looped", self.dj_animation_looped)
-	dj.animation = "intro"
+	dj.animated_symbol.connect("animation_finished", self.dj_animation_finished)
+	dj.animated_symbol.connect("animation_looped", self.dj_animation_looped)
+	dj.play("intro")
 	
 	load_page()
 	
@@ -81,7 +82,8 @@ func _process(_delta):
 			Global.change_scene_to("res://scenes/main_menu/main_menu.tscn")
 		elif Input.is_action_just_pressed(&"character_select"):
 			can_click = false
-			dj.animation = "character_select"
+			dj.play("character_select")
+			dj.animated_symbol.loop = false
 			
 			SoundManager.accept.play()
 			Global.change_scene_to("res://scenes/character_select/character_selection.tscn")
@@ -215,7 +217,8 @@ func select(i: int, chart: bool = false):
 				tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 				tween.tween_property(j, "position", j.position - Vector2(2000, 0), 0.5)
 		
-		dj.animation = "confirm"
+		dj.play("confirm")
+		dj.animated_symbol.loop = false
 		selected_song = i
 		play_song(song_file, difficulty)
 
@@ -244,7 +247,6 @@ func chart_song(song: Song, difficulty: String):
 
 @warning_ignore("unused_parameter")
 func _on_conductor_new_beat(current_beat, measure_relative):
-	
 	if SettingsManager.get_value(SettingsManager.SEC_PREFERENCES, "ui_bops"):
 		Global.bop_tween($Camera2D, "zoom", Vector2(1, 1), Vector2(1.005, 1.005), 0.2, Tween.TRANS_CUBIC)
 
@@ -263,6 +265,11 @@ func update_grade(grade: int):
 	current_grade = grade
 
 
-func dj_animation_looped():
+func dj_animation_finished():
 	if dj.animation == "intro":
-		dj.animation = "idle"
+		dj.play("idle")
+		dj.animated_symbol.loop = true
+
+
+func dj_animation_looped():
+	pass

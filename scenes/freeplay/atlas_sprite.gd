@@ -5,7 +5,6 @@ class_name AtlasSprite extends Node2D
 @export var animation_data: Dictionary[String, String]:
 	set(v):
 		animation_data = v
-		
 		for a_name in animation_data:
 			if a_name == animation:
 				animation = a_name
@@ -24,17 +23,23 @@ class_name AtlasSprite extends Node2D
 signal finished
 signal looped
 
+func _ready() -> void:
+	animated_symbol.connect(&"animation_finished", self.emit_signal.bind(&"finished"))
+	animated_symbol.connect(&"animation_looped", self.emit_signal.bind(&"looped"))
+
 func play(id: String):
 	animation = id
 	animated_symbol.frame = 0
 	animated_symbol.playing = true
-	animated_symbol.position = offset_data.get(animation, Vector2.ZERO)
+	animated_symbol.offset = offset_data.get(id, Vector2.ZERO)
 
 func pause():
 	animated_symbol.playing = false
 
-func done():
-	self.finished.emit()
 
-func loop():
-	self.looped.emit()
+func _on_animate_symbol_animation_finished() -> void:
+	finished.emit()
+
+
+func _on_animate_symbol_animation_looped() -> void:
+	looped.emit()

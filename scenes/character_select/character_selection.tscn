@@ -25,7 +25,7 @@
 
 [sub_resource type="Resource" id="Resource_4k7j0"]
 script = ExtResource("11_433y0")
-folder_path = "res://assets/sprites/menus/character_select/crowd////"
+folder_path = "res://assets/sprites/menus/character_select/crowd/"
 format = "adobe"
 metadata/_custom_type_script = "uid://dkyyuwqo0dy7q"
 
@@ -160,6 +160,8 @@ metadata/_edit_lock_ = true
 z_index = -10
 position = Vector2(-704, -104)
 script = ExtResource("9_nit2l")
+symbol = "crowd"
+frame = 8
 autoplay = true
 playing = true
 loop = true
@@ -173,7 +175,7 @@ scroll_scale = Vector2(0.5, 0.5)
 position = Vector2(-680, 80)
 script = ExtResource("9_nit2l")
 symbol = "stage full"
-frame = 118
+frame = 146
 autoplay = true
 playing = true
 loop = true
@@ -273,7 +275,6 @@ material = SubResource("CanvasItemMaterial_uas1p")
 position = Vector2(-688, -664.2)
 script = ExtResource("9_nit2l")
 symbol = "name bar animated"
-frame = 1
 autoplay = true
 playing = true
 loop = true
