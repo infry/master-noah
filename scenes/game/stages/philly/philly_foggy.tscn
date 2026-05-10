@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://q0a40tn5u1c8"]
+[gd_scene format=3 uid="uid://q0a40tn5u1c8"]
 
 [ext_resource type="Script" uid="uid://bf0yovnh0ds6q" path="res://scenes/game/stages/philly/philly_foggy.gd" id="1_bid2y"]
 [ext_resource type="Shader" uid="uid://cn1tl4764rmon" path="res://assets/shaders/raindrops.gdshader" id="2_cbdcp"]
@@ -30,11 +30,9 @@ use_hdr = true
 background_mode = 3
 glow_levels/1 = 1.0
 glow_levels/2 = 1.0
-glow_levels/5 = 0.0
 glow_intensity = 0.64
 glow_strength = 0.58
 glow_bloom = 0.03
-glow_blend_mode = 1
 glow_hdr_threshold = 1.5
 fog_mode = 1
 fog_light_color = Color(0.918793, 0.92303, 0.929688, 1)
@@ -81,18 +79,19 @@ shader_parameter/warp_sensitivity = 0.257
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_31vgc"]
 blend_mode = 1
 
-[node name="Stage" type="Node2D"]
+[node name="Stage" type="Node2D" unique_id=801070622]
+scale = Vector2(1, 1.001013)
 script = ExtResource("1_bid2y")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1864492460]
 environment = SubResource("Environment_twc2p")
 
-[node name="Rain Drops" type="CanvasLayer" parent="."]
+[node name="Rain Drops" type="CanvasLayer" parent="." unique_id=2060783900]
 layer = 4
 offset = Vector2(640, 360)
 transform = Transform2D(1, 0, 0, 1, 640, 360)
 
-[node name="ColorRect" type="ColorRect" parent="Rain Drops"]
+[node name="ColorRect" type="ColorRect" parent="Rain Drops" unique_id=58925994]
 material = SubResource("ShaderMaterial_5glym")
 offset_left = -1280.0
 offset_top = -728.0
@@ -100,13 +99,13 @@ offset_right = 1288.0
 offset_bottom = 632.0
 color = Color(1, 1, 1, 0)
 
-[node name="Rain" type="CanvasLayer" parent="."]
+[node name="Rain" type="CanvasLayer" parent="." unique_id=1605719502]
 layer = 2
 offset = Vector2(640, 360)
 transform = Transform2D(1, 0, 0, 1, 640, 360)
 follow_viewport_enabled = true
 
-[node name="ColorRect" type="ColorRect" parent="Rain"]
+[node name="ColorRect" type="ColorRect" parent="Rain" unique_id=1951535196]
 material = SubResource("ShaderMaterial_abbn4")
 offset_left = -1280.0
 offset_top = -728.0
@@ -114,19 +113,19 @@ offset_right = 1288.0
 offset_bottom = 632.0
 color = Color(1, 1, 1, 0)
 
-[node name="Foreground2" type="CanvasLayer" parent="."]
+[node name="Foreground2" type="CanvasLayer" parent="." unique_id=869020372]
 offset = Vector2(0, 160)
 transform = Transform2D(1, 0, 0, 1, 0, 160)
 follow_viewport_enabled = true
 
-[node name="Parallax2D" type="Parallax2D" parent="Foreground2"]
+[node name="Parallax2D" type="Parallax2D" parent="Foreground2" unique_id=775017540]
 scroll_scale = Vector2(1.2, 1.2)
 scroll_offset = Vector2(2048, 0)
 repeat_size = Vector2(2048, 0)
 autoscroll = Vector2(172, 0)
 repeat_times = 3
 
-[node name="MistMid" type="Sprite2D" parent="Foreground2/Parallax2D"]
+[node name="MistMid" type="Sprite2D" parent="Foreground2/Parallax2D" unique_id=1356692897]
 modulate = Color(0.360784, 0.360784, 0.360784, 0.6)
 z_index = 1000
 material = SubResource("CanvasItemMaterial_31vgc")
@@ -134,13 +133,13 @@ position = Vector2(-650, -100)
 texture = ExtResource("5_2aa8y")
 centered = false
 
-[node name="Parallax2D2" type="Parallax2D" parent="Foreground2"]
+[node name="Parallax2D2" type="Parallax2D" parent="Foreground2" unique_id=75308373]
 scroll_scale = Vector2(1.1, 1.1)
 repeat_size = Vector2(2048, 0)
 autoscroll = Vector2(150, 0)
 repeat_times = 3
 
-[node name="MistMid" type="Sprite2D" parent="Foreground2/Parallax2D2"]
+[node name="MistMid" type="Sprite2D" parent="Foreground2/Parallax2D2" unique_id=2033244465]
 modulate = Color(0.360784, 0.360784, 0.360784, 0.6)
 z_index = 1000
 material = SubResource("CanvasItemMaterial_31vgc")
@@ -148,13 +147,13 @@ position = Vector2(-650, -100)
 texture = ExtResource("5_2aa8y")
 centered = false
 
-[node name="Parallax2D3" type="Parallax2D" parent="Foreground2"]
+[node name="Parallax2D3" type="Parallax2D" parent="Foreground2" unique_id=293658457]
 scroll_scale = Vector2(1.2, 1.2)
 repeat_size = Vector2(2048, 0)
 autoscroll = Vector2(-80, 0)
 repeat_times = 3
 
-[node name="MistMid" type="Sprite2D" parent="Foreground2/Parallax2D3"]
+[node name="MistMid" type="Sprite2D" parent="Foreground2/Parallax2D3" unique_id=1957457742]
 modulate = Color(0.360784, 0.360784, 0.360784, 0.8)
 z_index = 1001
 material = SubResource("CanvasItemMaterial_31vgc")
@@ -162,13 +161,13 @@ position = Vector2(-650, -100)
 texture = ExtResource("6_tsu2e")
 centered = false
 
-[node name="Parallax2D4" type="Parallax2D" parent="Foreground2"]
+[node name="Parallax2D4" type="Parallax2D" parent="Foreground2" unique_id=2128676880]
 scroll_scale = Vector2(0.95, 0.95)
 repeat_size = Vector2(1638.4, 0)
 autoscroll = Vector2(-50, 0)
 repeat_times = 3
 
-[node name="MistMid" type="Sprite2D" parent="Foreground2/Parallax2D4"]
+[node name="MistMid" type="Sprite2D" parent="Foreground2/Parallax2D4" unique_id=1795685475]
 modulate = Color(0.360784, 0.360784, 0.360784, 0.501961)
 z_index = 99
 material = SubResource("CanvasItemMaterial_31vgc")
@@ -177,13 +176,13 @@ scale = Vector2(0.8, 0.8)
 texture = ExtResource("5_2aa8y")
 centered = false
 
-[node name="Parallax2D5" type="Parallax2D" parent="Foreground2"]
+[node name="Parallax2D5" type="Parallax2D" parent="Foreground2" unique_id=299247248]
 scroll_scale = Vector2(0.8, 0.8)
 repeat_size = Vector2(1433.6, 0)
 autoscroll = Vector2(40, 0)
 repeat_times = 3
 
-[node name="MistMid" type="Sprite2D" parent="Foreground2/Parallax2D5"]
+[node name="MistMid" type="Sprite2D" parent="Foreground2/Parallax2D5" unique_id=690214360]
 modulate = Color(0.360784, 0.360784, 0.360784, 1)
 z_index = 88
 material = SubResource("CanvasItemMaterial_31vgc")
@@ -192,13 +191,13 @@ scale = Vector2(0.7, 0.7)
 texture = ExtResource("6_tsu2e")
 centered = false
 
-[node name="Parallax2D6" type="Parallax2D" parent="Foreground2"]
+[node name="Parallax2D6" type="Parallax2D" parent="Foreground2" unique_id=1366708320]
 scroll_scale = Vector2(0.5, 0.5)
 repeat_size = Vector2(2252.8, 0)
 autoscroll = Vector2(20, 0)
 repeat_times = 4
 
-[node name="MistMid" type="Sprite2D" parent="Foreground2/Parallax2D6"]
+[node name="MistMid" type="Sprite2D" parent="Foreground2/Parallax2D6" unique_id=1667276018]
 modulate = Color(0.360784, 0.360784, 0.360784, 1)
 z_index = 39
 material = SubResource("CanvasItemMaterial_31vgc")
@@ -207,37 +206,37 @@ scale = Vector2(1.1, 1.1)
 texture = ExtResource("5_2aa8y")
 centered = false
 
-[node name="Foreground" type="CanvasLayer" parent="."]
+[node name="Foreground" type="CanvasLayer" parent="." unique_id=160961678]
 layer = 0
 offset = Vector2(640, 360)
 transform = Transform2D(1, 0, 0, 1, 640, 360)
 follow_viewport_enabled = true
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Foreground"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Foreground" unique_id=1076098187]
 position = Vector2(0, 173)
 sprite_frames = ExtResource("4_qjvst")
 animation = &"Paper Blowing instance 1"
 frame = 47
 frame_progress = 1.0
 
-[node name="Background" type="CanvasLayer" parent="."]
+[node name="Background" type="CanvasLayer" parent="." unique_id=1638873932]
 layer = -2
 offset = Vector2(640, 360)
 transform = Transform2D(1, 0, 0, 1, 640, 360)
 follow_viewport_enabled = true
 
-[node name="PhillyForeground" type="Sprite2D" parent="Background"]
+[node name="PhillyForeground" type="Sprite2D" parent="Background" unique_id=75457936]
 position = Vector2(0, 24)
 texture = ExtResource("5_snyiq")
 
-[node name="Traffic Light" type="AnimatedSprite2D" parent="Background"]
+[node name="Traffic Light" type="AnimatedSprite2D" parent="Background" unique_id=1794266974]
 unique_name_in_owner = true
 z_index = -1
 position = Vector2(702, -81)
 sprite_frames = ExtResource("6_bclsq")
 animation = &"redtogreen"
 
-[node name="PointLight2D" type="PointLight2D" parent="Background"]
+[node name="PointLight2D" type="PointLight2D" parent="Background" unique_id=4842368]
 position = Vector2(696, -88)
 color = Color(0.90625, 0.90625, 0.90625, 1)
 energy = 2.0
@@ -245,7 +244,7 @@ range_layer_min = -100
 range_layer_max = -1
 texture = ExtResource("7_5mxyp")
 
-[node name="Cars Layer" type="CanvasLayer" parent="." groups=["parallax"]]
+[node name="Cars Layer" type="CanvasLayer" parent="." unique_id=1098946620 groups=["parallax"]]
 unique_name_in_owner = true
 layer = -5
 offset = Vector2(640, 360)
@@ -253,79 +252,79 @@ transform = Transform2D(1, 0, 0, 1, 640, 360)
 follow_viewport_enabled = true
 follow_viewport_scale = 0.95
 
-[node name="Car" parent="Cars Layer" instance=ExtResource("8_t1p8r")]
+[node name="Car" parent="Cars Layer" unique_id=1994903580 instance=ExtResource("8_t1p8r")]
 position = Vector2(833.684, 120)
 direction = -1
 
-[node name="Background2" type="CanvasLayer" parent="." groups=["parallax"]]
+[node name="Background2" type="CanvasLayer" parent="." unique_id=249335197 groups=["parallax"]]
 layer = -6
 offset = Vector2(640, 360)
 transform = Transform2D(1, 0, 0, 1, 640, 360)
 follow_viewport_enabled = true
 follow_viewport_scale = 0.95
 
-[node name="PhillyConstruction" type="Sprite2D" parent="Background2"]
+[node name="PhillyConstruction" type="Sprite2D" parent="Background2" unique_id=603307955]
 position = Vector2(1002.11, -216.842)
 texture = ExtResource("9_7jreh")
 
-[node name="Background3" type="CanvasLayer" parent="." groups=["parallax"]]
+[node name="Background3" type="CanvasLayer" parent="." unique_id=39703166 groups=["parallax"]]
 layer = -7
 offset = Vector2(640, 360)
 transform = Transform2D(1, 0, 0, 1, 640, 360)
 follow_viewport_enabled = true
 follow_viewport_scale = 0.925
 
-[node name="PhillyForegroundCity" type="Sprite2D" parent="Background3"]
+[node name="PhillyForegroundCity" type="Sprite2D" parent="Background3" unique_id=1504615836]
 position = Vector2(380.541, -161.081)
 texture = ExtResource("10_bss50")
 
-[node name="Background4" type="CanvasLayer" parent="." groups=["parallax"]]
+[node name="Background4" type="CanvasLayer" parent="." unique_id=1071650167 groups=["parallax"]]
 layer = -8
 offset = Vector2(640, 360)
 transform = Transform2D(1, 0, 0, 1, 640, 360)
 follow_viewport_enabled = true
 follow_viewport_scale = 0.9
 
-[node name="PhillyHighway" type="Sprite2D" parent="Background4"]
+[node name="PhillyHighway" type="Sprite2D" parent="Background4" unique_id=234539603]
 position = Vector2(-408.889, -368.889)
 texture = ExtResource("11_or7ph")
 
-[node name="Background5" type="CanvasLayer" parent="." groups=["parallax"]]
+[node name="Background5" type="CanvasLayer" parent="." unique_id=866172093 groups=["parallax"]]
 layer = -9
 offset = Vector2(640, 360)
 transform = Transform2D(1, 0, 0, 1, 640, 360)
 follow_viewport_enabled = true
 follow_viewport_scale = 0.95
 
-[node name="PhillyHighwayLights" type="Sprite2D" parent="Background5"]
+[node name="PhillyHighwayLights" type="Sprite2D" parent="Background5" unique_id=57715838]
 position = Vector2(-581.053, -503.158)
 texture = ExtResource("12_xv6av")
 
-[node name="PointLight2D" type="PointLight2D" parent="Background5"]
+[node name="PointLight2D" type="PointLight2D" parent="Background5" unique_id=1974971639]
 z_index = 1
 position = Vector2(-581.053, -503.158)
 range_layer_min = -100
 range_layer_max = 1
 texture = ExtResource("13_dsbwp")
 
-[node name="Background6" type="CanvasLayer" parent="." groups=["parallax"]]
+[node name="Background6" type="CanvasLayer" parent="." unique_id=465311998 groups=["parallax"]]
 layer = -10
 offset = Vector2(640, 360)
 transform = Transform2D(1, 0, 0, 1, 640, 360)
 follow_viewport_enabled = true
 follow_viewport_scale = 0.9
 
-[node name="PhillySkyline" type="Sprite2D" parent="Background6"]
+[node name="PhillySkyline" type="Sprite2D" parent="Background6" unique_id=1012735348]
 position = Vector2(124.444, -262.222)
 texture = ExtResource("14_m631u")
 
-[node name="Background7" type="CanvasLayer" parent="." groups=["parallax"]]
+[node name="Background7" type="CanvasLayer" parent="." unique_id=1732668420 groups=["parallax"]]
 layer = -11
 offset = Vector2(640, 360)
 transform = Transform2D(1, 0, 0, 1, 640, 360)
 follow_viewport_enabled = true
 follow_viewport_scale = 0.9
 
-[node name="PhillySkybox" type="Sprite2D" parent="Background7"]
+[node name="PhillySkybox" type="Sprite2D" parent="Background7" unique_id=2095890543]
 position = Vector2(-26.6667, -377.778)
 texture = ExtResource("16_wyc0k")
