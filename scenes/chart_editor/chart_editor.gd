@@ -250,6 +250,8 @@ func _ready() -> void:
 	
 	%"Upper UI".get_node("%Export External Popup").connect(&"file_selected", self._on_export_external_popup_file_selected)
 	
+	%"Upper UI".get_node("%Note Skin Window").connect(&"file_selected", self._on_note_skin_window_file_selected)
+	
 	%"Upper UI".get_node("%History Window").connect(&"close_requested", self._on_history_window_close_requested)
 	
 	%"Upper UI".get_node("%Metadata Window").connect(&"add_time_change", self._on_metadata_window_add_time_change)

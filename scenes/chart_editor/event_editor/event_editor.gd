@@ -349,7 +349,7 @@ func load_section(time: float):
 	if ChartManager.chart.get_events_data().is_empty():
 		return
 	
-	var _range: float = $Conductor.seconds_per_beat * $Conductor.beats_per_measure * 2.5 / %Grid.zoom.y
+	var _range: float = $Conductor.seconds_per_beat * $Conductor.beats_per_measure * 3 / %Grid.zoom.y
 	var L: int = bsearch_left_range(ChartManager.chart.get_events_data(), time - _range)
 	var R: int = bsearch_right_range(ChartManager.chart.get_events_data(), time + _range)
 	
