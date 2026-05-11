@@ -1432,7 +1432,7 @@ func file_button_item_pressed(id):
 		
 		8:
 			can_chart = false
-			%"Export External Popup".popup()
+			%"Upper UI".get_node("%Export External Popup").popup()
 			%"Open Window".play()
 		9: #Save events
 			can_chart = false
@@ -1850,7 +1850,7 @@ func update_event(event):
 
 func _on_export_external_popup_file_selected(path: String) -> void:
 	ResourceSaver.save(ChartManager.chart, path)
-	%"Export External Popup".hide()
+	%"Upper UI".get_node("%Export External Popup").hide()
 
 func _on_gui_focus_changed(node):
 	current_focus_owner = node
