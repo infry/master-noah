@@ -68,14 +68,10 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	var input_vector = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	
-	var time = $Audio/Music.get_playback_position()
-	time -= AudioServer.get_time_since_last_mix()
-	time -= AudioServer.get_output_latency()
-	
 	if input_vector != Vector2.ZERO:
-		if input_time == 0 || input_time >= $Conductor.seconds_per_beat / 4:
+		if input_time == 0 or input_time >= $Conductor.seconds_per_step:
 			select(Vector2i(input_vector.sign()) + selected)
-			if input_time >= (time_of_next_step - time):
+			if input_time >= $Conductor.seconds_per_step:
 				input_time = 0
 		
 		input_time += delta
@@ -141,9 +137,9 @@ func _on_conductor_new_beat(current_beat: int, _measure_relative: int) -> void:
 	$Background/Parallax2D3/Speakers.playing = true
 	$Background/Parallax2D3/Speakers.frame = 0
 	
-	get_tree().call_group("player", "play", "idle")
+	get_tree().call_group(&"player", &"play", &"idle")
 	if current_beat % 2 == 0:
-		get_tree().call_group("partner", "play", "idle")
+		get_tree().call_group(&"partner", &"play", &"idle")
 	
 	%Speakers.frame = 0
 	%Speakers.playing = true
@@ -153,7 +149,7 @@ func _on_conductor_new_step(_current_step: int, _measure_relative: int) -> void:
 	time_of_next_step = $Audio/Music.get_playback_position()
 	time_of_next_step -= AudioServer.get_time_since_last_mix()
 	time_of_next_step -= AudioServer.get_output_latency()
-	time_of_next_step += $Conductor.seconds_per_beat / 4
+	time_of_next_step += $Conductor.seconds_per_step
 
 
 func select(pos: Vector2i = selected):
@@ -224,6 +220,7 @@ func confirm(pos: Vector2i = selected):
 
 func mozaic(amount: float):
 	%"Character Name".material.set_shader_parameter("amount", amount)
+
 
 func multi_input_xor(inputs: Array) -> bool:
 	var result = false

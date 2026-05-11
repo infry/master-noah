@@ -11,19 +11,19 @@ instance uniform vec4 color_offsets = vec4(0.0);
 
 instance uniform int blend_mode : hint_enum(
 	"ADD",
-	"ALPHA",
+	"ALPHA", // Not implemented, just per Flash n' stuff
 	"DARKEN",
 	"DIFFERENCE",
-	"ERASE",
+	"ERASE", // Not implemented, just per Flash n' stuff
 	"HARD LIGHT",
 	"INVERT",
-	"LAYER", // Not implemented, just per BTA
+	"LAYER", // Not implemented, just per Flash n' stuff
 	"LIGHTEN",
 	"MULTIPLY",
 	"NORMAL",
 	"OVERLAY",
 	"SCREEN",
-	"SHADER", // Not implemented, just per BTA
+	"SHADER", // Not implemented, just per Flash n' stuff
 	"SUBTRACT"
 ) = 10;
 
@@ -72,10 +72,13 @@ void fragment() {
 		color_multipliers_2,
 		color_multipliers_3
 	);
+
+	float original_alpha = COLOR.a;
 	COLOR = color_offsets + (COLOR * color_multipliers);
 
-	if (blend_mode > -1) {
+	if (blend_mode > -1 && blend_mode != 10) {
 		vec4 screen_c = texture(SCREEN_TEXTURE, SCREEN_UV);
+
 		if (blend_mode == 2) {
 			COLOR.rgb = darken(COLOR.rgb, screen_c.rgb);
 		} else if (blend_mode == 9) {
@@ -89,6 +92,11 @@ void fragment() {
 		} else if (blend_mode == 5) {
 			COLOR.rgb = overlay(COLOR.rgb, screen_c.rgb);
 		} else if (blend_mode == 0) {
+			// TODO: Maybe apply this to the other
+			// blend modes too, it might need different
+			// adjustments per blend mode though
+			COLOR.rgb *= COLOR.a;
+			COLOR.a = 1.0;
 			COLOR.rgb = add(COLOR.rgb, screen_c.rgb);
 		} else if (blend_mode == 14) {
 			COLOR.rgb = subtract(screen_c.rgb, COLOR.rgb);
