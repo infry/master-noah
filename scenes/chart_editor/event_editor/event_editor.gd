@@ -9,6 +9,7 @@ var editing: int = -1
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	super()
+	%"Upper UI".get_node("%View Button").get_popup().set_item_disabled(1, true)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
