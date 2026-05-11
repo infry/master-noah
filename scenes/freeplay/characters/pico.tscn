@@ -118,7 +118,5 @@ z_index = 1
 position = Vector2(448, -312)
 script = ExtResource("3_f3030")
 symbol = "Pico DJ"
-autoplay = true
-loop = true
 atlases = Array[ExtResource("6_b5agd")]([SubResource("Resource_8lrrs")])
 metadata/_edit_lock_ = true
