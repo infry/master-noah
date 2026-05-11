@@ -66,14 +66,14 @@ func _process(delta: float) -> void:
 		$Conductor.offset = ChartManager.chart.get_tempo_time_at(time) + ChartManager.chart.offset
 		$"Grid Layer/Parallax2D".scroll_offset.x = time_to_y_position($Conductor.offset - ChartManager.chart.offset)
 	
-	%"Current Time Label".text = Global.float_to_time(song_position + start_offset)
+	%"Lower UI".get_node("%Current Time Label").text = Global.float_to_time(song_position + start_offset)
 	if song_speed != 1:
-		%"Current Time Label".text += str(" (", song_speed, "x)")
+		%"Lower UI".get_node("%Current Time Label").text += str(" (", song_speed, "x)")
 	
 	if ChartManager.song:
-		%"Time Left Label".text = "-" + Global.float_to_time(%Instrumental.stream.get_length() - song_position)
+		%"Lower UI".get_node("%Time Left Label").text = "-" + Global.float_to_time(%Instrumental.stream.get_length() - song_position)
 	else:
-		%"Time Left Label".text = "- ??:??"
+		%"Lower UI".get_node("%Time Left Label").text = "- ??:??"
 	
 	if Input.is_action_just_pressed(&"ui_accept"):
 		_on_play_button_toggled(!%Instrumental.stream_paused)

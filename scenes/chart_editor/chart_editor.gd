@@ -88,114 +88,115 @@ func _ready() -> void:
 		var action: String = "Loaded Song"
 		undo_redo.create_action(action)
 		undo_redo.add_do_property(self, "song", song)
-		undo_redo.add_do_reference(%"History Window".add_action(action))
+		undo_redo.add_do_reference(%"Upper UI".get_node("%History Window").add_action(action))
 		undo_redo.add_undo_property(self, "song", old_song)
 		undo_redo.commit_action()
 		can_chart = true
 	
 	update_grid()
 	
-	%"Chart Snap".value = chart_snap
+	%"Lower UI".get_node("%Chart Snap").value = chart_snap
 	
 	## Initializing Popup Signals
-	%"File Button".get_popup().connect(&"id_pressed", self.file_button_item_pressed)
-	%"File Button".get_popup().set_item_checked(
-		%"File Button".get_popup().get_item_index(3), SettingsManager.get_value(SettingsManager.SEC_CHART, "auto_save"))
-	%"File Button".get_popup().set_hide_on_checkable_item_selection(false)
+	%"Upper UI".get_node("%File Button").get_popup().connect(&"id_pressed", self.file_button_item_pressed)
+	%"Upper UI".get_node("%File Button").get_popup().set_item_checked(
+		%"Upper UI".get_node("%File Button").get_popup().get_item_index(3),
+		SettingsManager.get_value(SettingsManager.SEC_CHART, "auto_save"))
+	%"Upper UI".get_node("%File Button").get_popup().set_hide_on_checkable_item_selection(false)
 	
 	var shortcut: Shortcut = Shortcut.new()
 	var key_event: InputEventKey
 	shortcut.events = InputMap.action_get_events(&"save")
 	
-	%"File Button".get_popup().set_item_shortcut(
-		%"File Button".get_popup().get_item_index(2), shortcut)
+	%"Upper UI".get_node("%File Button").get_popup().set_item_shortcut(
+		%"Upper UI".get_node("%File Button").get_popup().get_item_index(2), shortcut)
 	
-	%"Edit Button".get_popup().connect(&"id_pressed", self.edit_button_item_pressed)
-	%"Edit Button".get_popup().set_hide_on_checkable_item_selection(false)
+	%"Upper UI".get_node("%Edit Button").get_popup().connect(&"id_pressed", self.edit_button_item_pressed)
+	%"Upper UI".get_node("%Edit Button").get_popup().set_hide_on_checkable_item_selection(false)
 	
 	shortcut = Shortcut.new()
 	shortcut.events = InputMap.action_get_events(&"ui_undo")
-	%"Edit Button".get_popup().set_item_shortcut(
-		%"Edit Button".get_popup().get_item_index(0), shortcut)
+	%"Upper UI".get_node("%Edit Button").get_popup().set_item_shortcut(
+		%"Upper UI".get_node("%Edit Button").get_popup().get_item_index(0), shortcut)
 	
 	shortcut = Shortcut.new()
 	shortcut.events = InputMap.action_get_events(&"ui_redo")
-	%"Edit Button".get_popup().set_item_shortcut(
-		%"Edit Button".get_popup().get_item_index(1), shortcut)
+	%"Upper UI".get_node("%Edit Button").get_popup().set_item_shortcut(
+		%"Upper UI".get_node("%Edit Button").get_popup().get_item_index(1), shortcut)
 	
 	shortcut = Shortcut.new()
 	shortcut.events = InputMap.action_get_events(&"ui_cut")
-	%"Edit Button".get_popup().set_item_shortcut(
-		%"Edit Button".get_popup().get_item_index(3), shortcut)
+	%"Upper UI".get_node("%Edit Button").get_popup().set_item_shortcut(
+		%"Upper UI".get_node("%Edit Button").get_popup().get_item_index(3), shortcut)
 	
 	shortcut = Shortcut.new()
 	shortcut.events = InputMap.action_get_events(&"ui_copy")
-	%"Edit Button".get_popup().set_item_shortcut(
-		%"Edit Button".get_popup().get_item_index(4), shortcut)
+	%"Upper UI".get_node("%Edit Button").get_popup().set_item_shortcut(
+		%"Upper UI".get_node("%Edit Button").get_popup().get_item_index(4), shortcut)
 	
 	shortcut = Shortcut.new()
 	shortcut.events = InputMap.action_get_events(&"ui_paste")
-	%"Edit Button".get_popup().set_item_shortcut(
-		%"Edit Button".get_popup().get_item_index(5), shortcut)
+	%"Upper UI".get_node("%Edit Button").get_popup().set_item_shortcut(
+		%"Upper UI".get_node("%Edit Button").get_popup().get_item_index(5), shortcut)
 	
 	shortcut = Shortcut.new()
 	shortcut.events = InputMap.action_get_events(&"ui_text_delete_word")
-	%"Edit Button".get_popup().set_item_shortcut(
-		%"Edit Button".get_popup().get_item_index(6), shortcut)
+	%"Upper UI".get_node("%Edit Button").get_popup().set_item_shortcut(
+		%"Upper UI".get_node("%Edit Button").get_popup().get_item_index(6), shortcut)
 	
 	shortcut = Shortcut.new()
 	shortcut.events = InputMap.action_get_events(&"flip_notes")
-	%"Edit Button".get_popup().set_item_shortcut(
-		%"Edit Button".get_popup().get_item_index(8), shortcut)
+	%"Upper UI".get_node("%Edit Button").get_popup().set_item_shortcut(
+		%"Upper UI".get_node("%Edit Button").get_popup().get_item_index(8), shortcut)
 	
 	shortcut = Shortcut.new()
 	shortcut.events = InputMap.action_get_events(&"ui_text_select_all")
-	%"Edit Button".get_popup().set_item_shortcut(
-		%"Edit Button".get_popup().get_item_index(10), shortcut)
+	%"Upper UI".get_node("%Edit Button").get_popup().set_item_shortcut(
+		%"Upper UI".get_node("%Edit Button").get_popup().get_item_index(10), shortcut)
 	
 	shortcut = Shortcut.new()
 	shortcut.events = InputMap.action_get_events(&"deselect")
-	%"Edit Button".get_popup().set_item_shortcut(
-		%"Edit Button".get_popup().get_item_index(11), shortcut)
+	%"Upper UI".get_node("%Edit Button").get_popup().set_item_shortcut(
+		%"Upper UI".get_node("%Edit Button").get_popup().get_item_index(11), shortcut)
 	
 	shortcut = Shortcut.new()
 	shortcut.events = InputMap.action_get_events(&"ui_accept")
-	%"Audio Button".get_popup().set_item_shortcut(
-		%"Audio Button".get_popup().get_item_index(0), shortcut)
+	%"Upper UI".get_node("%Audio Button").get_popup().set_item_shortcut(
+		%"Upper UI".get_node("%Audio Button").get_popup().get_item_index(0), shortcut)
 	
-	%"Audio Button".get_popup().connect(&"id_pressed", self.audio_button_item_pressed)
-	%"Audio Button".get_popup().set_item_checked(
-		%"Audio Button".get_popup().get_item_index(7),
+	%"Upper UI".get_node("%Audio Button").get_popup().connect(&"id_pressed", self.audio_button_item_pressed)
+	%"Upper UI".get_node("%Audio Button").get_popup().set_item_checked(
+		%"Upper UI".get_node("%Audio Button").get_popup().get_item_index(7),
 		SettingsManager.get_value(SettingsManager.SEC_CHART, "conductor_beat"))
-	%"Audio Button".get_popup().set_item_checked(
-		%"Audio Button".get_popup().get_item_index(8),
+	%"Upper UI".get_node("%Audio Button").get_popup().set_item_checked(
+		%"Upper UI".get_node("%Audio Button").get_popup().get_item_index(8),
 		SettingsManager.get_value(SettingsManager.SEC_CHART, "conductor_step"))
-	%"Audio Button".get_popup().set_hide_on_checkable_item_selection(false)
+	%"Upper UI".get_node("%Audio Button").get_popup().set_hide_on_checkable_item_selection(false)
 	
 	shortcut = Shortcut.new()
 	key_event = InputEventKey.new()
 	key_event.keycode = KEY_EQUAL
 	key_event.shift_pressed = true
 	shortcut.events = [key_event]
-	%"Audio Button".get_popup().set_item_shortcut(
-		%"Audio Button".get_popup().get_item_index(4), shortcut)
+	%"Upper UI".get_node("%Audio Button").get_popup().set_item_shortcut(
+		%"Upper UI".get_node("%Audio Button").get_popup().get_item_index(4), shortcut)
 	
 	shortcut = Shortcut.new()
 	key_event = InputEventKey.new()
 	key_event.keycode = KEY_MINUS
 	key_event.shift_pressed = true
 	shortcut.events = [key_event]
-	%"Audio Button".get_popup().set_item_shortcut(
-		%"Audio Button".get_popup().get_item_index(5), shortcut)
+	%"Upper UI".get_node("%Audio Button").get_popup().set_item_shortcut(
+		%"Upper UI".get_node("%Audio Button").get_popup().get_item_index(5), shortcut)
 	
-	%"View Button".get_popup().connect(&"id_pressed", self.view_button_item_pressed)
+	%"Upper UI".get_node("%View Button").get_popup().connect(&"id_pressed", self.view_button_item_pressed)
 	
 	shortcut = Shortcut.new()
 	key_event = InputEventKey.new()
 	key_event.keycode = KEY_TAB
 	shortcut.events = [key_event]
-	%"View Button".get_popup().set_item_shortcut(
-		%"View Button".get_popup().get_item_index(0), shortcut)
+	%"Upper UI".get_node("%View Button").get_popup().set_item_shortcut(
+		%"Upper UI".get_node("%View Button").get_popup().get_item_index(0), shortcut)
 	
 	shortcut = Shortcut.new()
 	key_event = InputEventKey.new()
@@ -203,8 +204,8 @@ func _ready() -> void:
 	key_event.ctrl_pressed = true
 	key_event.command_or_control_autoremap = true
 	shortcut.events = [key_event]
-	%"View Button".get_popup().set_item_shortcut(
-		%"View Button".get_popup().get_item_index(3), shortcut)
+	%"Upper UI".get_node("%View Button").get_popup().set_item_shortcut(
+		%"Upper UI".get_node("%View Button").get_popup().get_item_index(3), shortcut)
 	
 	shortcut = Shortcut.new()
 	key_event = InputEventKey.new()
@@ -212,32 +213,57 @@ func _ready() -> void:
 	key_event.ctrl_pressed = true
 	key_event.command_or_control_autoremap = true
 	shortcut.events = [key_event]
-	%"View Button".get_popup().set_item_shortcut(
-		%"View Button".get_popup().get_item_index(4), shortcut)
+	%"Upper UI".get_node("%View Button").get_popup().set_item_shortcut(
+		%"Upper UI".get_node("%View Button").get_popup().get_item_index(4), shortcut)
 	
-	%"Test Button".get_popup().connect(&"id_pressed", self.test_button_item_pressed)
-	%"Test Button".get_popup().set_item_checked(
-		%"Test Button".get_popup().get_item_index(3),
+	%"Upper UI".get_node("%Test Button").get_popup().connect(&"id_pressed", self.test_button_item_pressed)
+	%"Upper UI".get_node("%Test Button").get_popup().set_item_checked(
+		%"Upper UI".get_node("%Test Button").get_popup().get_item_index(3),
 		SettingsManager.get_value(SettingsManager.SEC_CHART, "start_at_current_position"))
-	%"Test Button".get_popup().set_hide_on_checkable_item_selection(false)
+	%"Upper UI".get_node("%Test Button").get_popup().set_hide_on_checkable_item_selection(false)
 	
 	shortcut = Shortcut.new()
 	key_event = InputEventKey.new()
 	key_event.keycode = KEY_ENTER
 	shortcut.events = [key_event]
-	%"Test Button".get_popup().set_item_shortcut(
-		%"Test Button".get_popup().get_item_index(0), shortcut)
+	%"Upper UI".get_node("%Test Button").get_popup().set_item_shortcut(
+		%"Upper UI".get_node("%Test Button").get_popup().get_item_index(0), shortcut)
 	
 	shortcut = Shortcut.new()
 	key_event = InputEventKey.new()
 	key_event.keycode = KEY_ENTER
 	key_event.shift_pressed = true
 	shortcut.events = [key_event]
-	%"Test Button".get_popup().set_item_shortcut(
-		%"Test Button".get_popup().get_item_index(1), shortcut)
+	%"Upper UI".get_node("%Test Button").get_popup().set_item_shortcut(
+		%"Upper UI".get_node("%Test Button").get_popup().get_item_index(1), shortcut)
 	
-	%"Window Button".get_popup().connect(&"id_pressed", self.window_button_item_pressed)
-	%"Window Button".get_popup().set_hide_on_checkable_item_selection(false)
+	%"Upper UI".get_node("%Window Button").get_popup().connect(&"id_pressed", self.window_button_item_pressed)
+	%"Upper UI".get_node("%Window Button").get_popup().set_hide_on_checkable_item_selection(false)
+	
+	%"Lower UI".get_node("%Play Button").connect(&"toggled", self._on_play_button_toggled)
+	%"Lower UI".get_node("%Skip to Beginning").connect(&"pressed", self._on_skip_to_beginning_pressed)
+	%"Lower UI".get_node("%Skip to End").connect(&"pressed", self._on_skip_to_end_pressed)
+	%"Lower UI".get_node("%Skip Backward").connect(&"pressed", self._on_skip_backward_pressed)
+	%"Lower UI".get_node("%Skip Forward").connect(&"pressed", self._on_skip_forward_pressed)
+	%"Lower UI".get_node("%Difficulty Button").connect(&"item_selected", self._on_difficulty_button_item_selected)
+	%"Lower UI".get_node("%Chart Snap").connect(&"value_changed", self._on_chart_snap_value_changed)
+	
+	%"Upper UI".get_node("%Export External Popup").connect(&"file_selected", self._on_export_external_popup_file_selected)
+	
+	%"Upper UI".get_node("%History Window").connect(&"close_requested", self._on_history_window_close_requested)
+	
+	%"Upper UI".get_node("%Metadata Window").connect(&"add_time_change", self._on_metadata_window_add_time_change)
+	%"Upper UI".get_node("%Metadata Window").connect(&"selected_time_change", self._on_metadata_window_selected_time_change)
+	%"Upper UI".get_node("%Metadata Window").connect(&"updated_icon_texture", self._on_metadata_window_updated_icon_texture)
+	%"Upper UI".get_node("%Metadata Window").connect(&"updated_scroll_speed", self._on_metadata_window_updated_scroll_speed)
+	%"Upper UI".get_node("%Metadata Window").connect(&"updated_song_artist", self._on_metadata_window_updated_song_artist)
+	%"Upper UI".get_node("%Metadata Window").connect(&"updated_song_name", self._on_metadata_window_updated_song_name)
+	%"Upper UI".get_node("%Metadata Window").connect(&"updated_song_scene", self._on_metadata_window_updated_song_scene)
+	%"Upper UI".get_node("%Metadata Window").connect(&"updated_starting_tempo", self._on_metadata_window_updated_starting_tempo)
+	%"Upper UI".get_node("%Metadata Window").connect(&"close_requested", self._on_metadata_window_close_requested)
+	
+	%"Upper UI".get_node("%Note Type Window").connect(&"selected_note_type", self.set_note_type)
+	%"Upper UI".get_node("%Note Type Window").connect(&"close_requested", self._on_note_type_window_close_requested)
 	
 	get_tree().get_root().files_dropped.connect(on_files_dropped)
 
@@ -285,7 +311,7 @@ func _process(delta: float) -> void:
 				else:
 					current_snap += 1
 					chart_snap = SNAPS[current_snap % SNAPS.size()]
-					%"Chart Snap".value = chart_snap
+					%"Lower UI".get_node("%Chart Snap").value = chart_snap
 			
 			if Input.is_action_just_pressed(&"mouse_scroll_down"):
 				if !Input.is_action_pressed(&"control"):
@@ -297,7 +323,7 @@ func _process(delta: float) -> void:
 				else:
 					current_snap -= 1
 					chart_snap = SNAPS[current_snap % SNAPS.size()]
-					%"Chart Snap".value = chart_snap
+					%"Lower UI".get_node("%Chart Snap").value = chart_snap
 			
 			$Conductor.time = song_position
 	
@@ -311,15 +337,15 @@ func _process(delta: float) -> void:
 		$Conductor.offset = ChartManager.chart.get_tempo_time_at(time) + ChartManager.chart.offset
 		$"Grid Layer/Parallax2D".scroll_offset.y = time_to_y_position($Conductor.offset - ChartManager.chart.offset)
 	
-	%"Current Time Label".text = Global.float_to_time(song_position + start_offset)
+	%"Lower UI".get_node("%Current Time Label").text = Global.float_to_time(song_position + start_offset)
 	
 	if song_speed != 1:
-		%"Current Time Label".text += str(" (", song_speed, "x)")
+		%"Lower UI".get_node("%Current Time Label").text += str(" (", song_speed, "x)")
 	
 	if ChartManager.song:
-		%"Time Left Label".text = "-" + Global.float_to_time(%Instrumental.stream.get_length() - song_position)
+		%"Lower UI".get_node("%Time Left Label").text = "-" + Global.float_to_time(%Instrumental.stream.get_length() - song_position)
 	else:
-		%"Time Left Label".text = "- ??:??"
+		%"Lower UI".get_node("%Time Left Label").text = "- ??:??"
 	
 	if Input.is_action_just_pressed(&"ui_accept"):
 		_on_play_button_toggled(!%Instrumental.stream_paused)
@@ -501,7 +527,7 @@ func _process(delta: float) -> void:
 					"length", 0.0)
 					undo_redo.add_undo_method(self.change_length.bind(i, 0))
 				
-				undo_redo.add_do_reference(%"History Window".add_action(action))
+				undo_redo.add_do_reference(%"Upper UI".get_node("%History Window").add_action(action))
 				undo_redo.commit_action()
 			
 			placing_note = false
@@ -676,12 +702,12 @@ func load_song(song: Song, difficulty: Variant = null):
 	$Conductor.steps_per_measure = meter[1]
 	$Conductor.offset = ChartManager.chart.offset
 	
-	%"Difficulty Button".get_popup().clear()
+	%"Lower UI".get_node("%Difficulty Button").get_popup().clear()
 	for d in ChartManager.song.difficulties.keys():
-		%"Difficulty Button".get_popup().add_item(d)
+		%"Lower UI".get_node("%Difficulty Button").get_popup().add_item(d)
 	
-	%"Difficulty Button".select(ChartManager.song.difficulties.keys().find(difficulty))
-	%"Metadata Window".update_stats()
+	%"Lower UI".get_node("%Difficulty Button").select(ChartManager.song.difficulties.keys().find(difficulty))
+	%"Upper UI".get_node("%Metadata Window").update_stats()
 	
 	load_chart(ChartManager.chart)
 	#load_waveforms()
@@ -716,10 +742,10 @@ func load_chart(file: Chart, ghost: bool = false):
 	var action: String = "Loaded Chart"
 	undo_redo.create_action(action)
 	undo_redo.add_do_property(self, SettingsManager.SEC_CHART, file)
-	undo_redo.add_do_reference(%"History Window".add_action(action))
+	undo_redo.add_do_reference(%"Upper UI".get_node("%History Window").add_action(action))
 	undo_redo.commit_action()
 	
-	%"Metadata Window".update_stats()
+	%"Upper UI".get_node("%Metadata Window").update_stats()
 	can_chart = true
 	load_section(song_position)
 	update_grid()
@@ -864,7 +890,7 @@ func new_file(path: String, song: Song):
 	var action: String = "Created New Song"
 	undo_redo.create_action(action)
 	undo_redo.add_do_property(self, "song", song)
-	undo_redo.add_do_reference(%"History Window".add_action(action))
+	undo_redo.add_do_reference(%"Upper UI".get_node("%History Window").add_action(action))
 	undo_redo.add_undo_property(self, "song", old_song)
 	undo_redo.commit_action()
 	can_chart = true
@@ -1268,10 +1294,10 @@ func _on_play_button_toggled(toggled_on: bool) -> void:
 	%Instrumental.stream_paused = !toggled_on
 	
 	if toggled_on:
-		%"Play Button".icon = load("res://assets/sprites/menus/chart editor/pause_button.png")
+		%"Lower UI".get_node("%Play Button").icon = load("res://assets/sprites/menus/chart editor/pause_button.png")
 		play_audios(song_position)
 	
-	else: %"Play Button".icon = load("res://assets/sprites/menus/chart editor/play_button.png")
+	else: %"Lower UI".get_node("%Play Button").icon = load("res://assets/sprites/menus/chart editor/play_button.png")
 
 func move_bound_left(strum_id: int):
 	var strum_data = ChartManager.strum_data[strum_id]
@@ -1334,15 +1360,15 @@ func _on_conductor_new_beat(current_beat: int, measure_relative: int) -> void:
 	if ChartManager.chart:
 		load_section(song_position)
 	
-	%Beat.text = str("Beat: ", current_beat + 1)
+	%"Lower UI".get_node("%Beat").text = str("Beat: ", current_beat + 1)
 
 func _on_conductor_new_step(current_step: int, measure_relative: int) -> void:
 	if SettingsManager.get_value(SettingsManager.SEC_CHART, "conductor_step"):
 		%"Conductor Step".play(0.55)
-	%Step.text = str("Step: ", current_step + 1)
+	%"Lower UI".get_node("%Step").text = str("Step: ", current_step + 1)
 
 func _on_conductor_new_tempo(_tempo: float) -> void:
-	%Tempo.text = str("Tempo: ", _tempo)
+	%"Lower UI".get_node("%Tempo").text = str("Tempo: ", _tempo)
 	update_grid()
 	load_dividers()
 
@@ -1393,8 +1419,8 @@ func file_button_item_pressed(id):
 			SettingsManager.set_value(SettingsManager.SEC_CHART, "auto_save",
 			!SettingsManager.get_value(SettingsManager.SEC_CHART, "auto_save"))
 			SettingsManager.flush()
-			%"File Button".get_popup().set_item_checked(
-				%"File Button".get_popup().get_item_index(id), SettingsManager.get_value(SettingsManager.SEC_CHART, "auto_save"))
+			%"Upper UI".get_node("%File Button").get_popup().set_item_checked(
+				%"Upper UI".get_node("%File Button").get_popup().get_item_index(id), SettingsManager.get_value(SettingsManager.SEC_CHART, "auto_save"))
 			%"Mouse Click".play()
 		
 		6:
@@ -1539,8 +1565,8 @@ func audio_button_item_pressed(id):
 			!SettingsManager.get_value(SettingsManager.SEC_CHART, "conductor_beat"))
 			SettingsManager.flush()
 			%"Mouse Click".play()
-			%"Audio Button".get_popup().set_item_checked(
-				%"Audio Button".get_popup().get_item_index(id),
+			%"Upper UI".get_node("%Audio Button").get_popup().set_item_checked(
+				%"Upper UI".get_node("%Audio Button").get_popup().get_item_index(id),
 				SettingsManager.get_value(SettingsManager.SEC_CHART, "conductor_beat"))
 		
 		8:
@@ -1548,8 +1574,8 @@ func audio_button_item_pressed(id):
 			!SettingsManager.get_value(SettingsManager.SEC_CHART, "conductor_step"))
 			SettingsManager.flush()
 			%"Mouse Click".play()
-			%"Audio Button".get_popup().set_item_checked(
-				%"Audio Button".get_popup().get_item_index(id),
+			%"Upper UI".get_node("%Audio Button").get_popup().set_item_checked(
+				%"Upper UI".get_node("%Audio Button").get_popup().get_item_index(id),
 				SettingsManager.get_value(SettingsManager.SEC_CHART, "conductor_step"))
 		
 		_:
@@ -1564,7 +1590,7 @@ func view_button_item_pressed(id):
 		
 		1:
 			can_chart = false
-			%"Note Skin Window".popup()
+			%"Upper UI".get_node("%Note Skin Window").popup()
 			%"Open Window".play()
 		
 		3:
@@ -1586,32 +1612,32 @@ func view_button_item_pressed(id):
 func window_button_item_pressed(id):
 	match id:
 		0:
-			if %"History Window".visible:
-				%"History Window".hide()
+			if %"Upper UI".get_node("%History Window").visible:
+				%"Upper UI".get_node("%History Window").hide()
 				%"Close Window".play()
 			else:
-				%"History Window".popup()
+				%"Upper UI".get_node("%History Window").popup()
 				%"Open Window".play()
 			
-			%"Window Button".get_popup().set_item_checked(id, %"History Window".visible)
+			%"Upper UI".get_node("%Window Button").get_popup().set_item_checked(id, %"Upper UI".get_node("%History Window").visible)
 		1:
-			if %"Metadata Window".visible:
-				%"Metadata Window".hide()
+			if %"Upper UI".get_node("%Metadata Window").visible:
+				%"Upper UI".get_node("%Metadata Window").hide()
 				%"Close Window".play()
 			else:
-				%"Metadata Window".popup()
+				%"Upper UI".get_node("%Metadata Window").popup()
 				%"Open Window".play()
 			
-			%"Window Button".get_popup().set_item_checked(id, %"Metadata Window".visible)
+			%"Upper UI".get_node("%Window Button").get_popup().set_item_checked(id, %"Upper UI".get_node("%Metadata Window").visible)
 		2:
-			if %"Note Type Window".visible:
-				%"Note Type Window".hide()
+			if %"Upper UI".get_node("%Note Type Window").visible:
+				%"Upper UI".get_node("%Note Type Window").hide()
 				%"Close Window".play()
 			else:
-				%"Note Type Window".popup()
+				%"Upper UI".get_node("%Note Type Window").popup()
 				%"Open Window".play()
 			
-			%"Window Button".get_popup().set_item_checked(id, %"Note Type Window".visible)
+			%"Upper UI".get_node("%Window Button").get_popup().set_item_checked(id, %"Upper UI".get_node("%Note Type Window").visible)
 
 ## Edit button item pressed
 func test_button_item_pressed(id):
@@ -1639,8 +1665,8 @@ func test_button_item_pressed(id):
 			SettingsManager.set_value(SettingsManager.SEC_CHART, "start_at_current_position",
 			!SettingsManager.get_value(SettingsManager.SEC_CHART, "start_at_current_position"))
 			SettingsManager.flush()
-			%"Test Button".get_popup().set_item_checked(
-			%"Test Button".get_popup().get_item_index(id), SettingsManager.get_value(SettingsManager.SEC_CHART,
+			%"Upper UI".get_node("%Test Button").get_popup().set_item_checked(
+			%"Upper UI".get_node("%Test Button").get_popup().get_item_index(id), SettingsManager.get_value(SettingsManager.SEC_CHART,
 			"start_at_current_position"))
 			%"Mouse Click".play()
 		
@@ -1660,8 +1686,8 @@ func undo():
 		undo_redo.undo()
 		auto_save()
 	
-	%"Edit Button".get_popup().set_item_disabled(0, !undo_redo.has_undo())
-	%"Edit Button".get_popup().set_item_disabled(1, !undo_redo.has_redo())
+	%"Upper UI".get_node("%Edit Button").get_popup().set_item_disabled(0, !undo_redo.has_undo())
+	%"Upper UI".get_node("%Edit Button").get_popup().set_item_disabled(1, !undo_redo.has_redo())
 
 
 func redo():
@@ -1670,8 +1696,8 @@ func redo():
 		undo_redo.redo()
 		auto_save()
 	
-	%"Edit Button".get_popup().set_item_disabled(0, !undo_redo.has_undo())
-	%"Edit Button".get_popup().set_item_disabled(1, !undo_redo.has_redo())
+	%"Upper UI".get_node("%Edit Button").get_popup().set_item_disabled(0, !undo_redo.has_undo())
+	%"Upper UI".get_node("%Edit Button").get_popup().set_item_disabled(1, !undo_redo.has_redo())
 
 
 func auto_save():
@@ -1754,18 +1780,18 @@ func _on_chart_snap_value_changed(value: float) -> void:
 	chart_snap = value
 
 func _on_difficulty_button_item_selected(index: int) -> void:
-	var _difficulty = %"Difficulty Button".get_popup().get_item_text(index)
+	var _difficulty = %"Lower UI".get_node("%Difficulty Button").get_popup().get_item_text(index)
 	if ChartManager.song.difficulties.keys().has(_difficulty):
 		ChartManager.chart = load(ChartManager.song.difficulties.get(_difficulty).get(SettingsManager.SEC_CHART))
 		ChartManager.difficulty = _difficulty
 		load_chart(ChartManager.chart)
 
 func _on_history_window_close_requested() -> void:
-	%"Window Button".get_popup().set_item_checked(0, false)
+	%"Upper UI".get_node("%Window Button").get_popup().set_item_checked(0, false)
 	%"Close Window".play()
 
 func _on_metadata_window_close_requested() -> void:
-	%"Window Button".get_popup().set_item_checked(1, false)
+	%"Upper UI".get_node("%Window Button").get_popup().set_item_checked(1, false)
 	%"Close Window".play()
 
 func _on_metadata_window_updated_icon_texture(path: String) -> void:
@@ -1803,8 +1829,9 @@ func _on_metadata_window_add_time_change() -> void:
 		$Conductor.beats_per_measure, $Conductor.steps_per_measure
 	]
 	
+	ChartManager.chart.chart_data["tempos"].sort()
 	ChartManager.chart.chart_data["meters"].sort()
-	%"Metadata Window".update_stats()
+	%"Upper UI".get_node("%Metadata Window").update_stats()
 	auto_save()
 
 func update_note(note):
@@ -1972,12 +1999,12 @@ func select_area(L: int, R: int, lane_a, lane_b = null):
 func add_action(action: String, do_method: Callable, undo_method: Callable):
 	undo_redo.create_action(action)
 	undo_redo.add_do_method(do_method)
-	undo_redo.add_do_reference(%"History Window".add_action(action))
+	undo_redo.add_do_reference(%"Upper UI".get_node("%History Window").add_action(action))
 	undo_redo.add_undo_method(undo_method)
 	undo_redo.commit_action()
 	
-	%"Edit Button".get_popup().set_item_disabled(0, !undo_redo.has_undo())
-	%"Edit Button".get_popup().set_item_disabled(1, !undo_redo.has_redo())
+	%"Upper UI".get_node("%Edit Button").get_popup().set_item_disabled(0, !undo_redo.has_undo())
+	%"Upper UI".get_node("%Edit Button").get_popup().set_item_disabled(1, !undo_redo.has_redo())
 
 
 func select_all():
@@ -2013,7 +2040,7 @@ func set_note_type(note_type):
 
 
 func _on_note_type_window_close_requested() -> void:
-	%"Window Button".get_popup().set_item_checked(2, false)
+	%"Upper UI".get_node("%Window Button").get_popup().set_item_checked(2, false)
 	%"Close Window".play()
 
 
