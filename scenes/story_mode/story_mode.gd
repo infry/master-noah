@@ -1,7 +1,7 @@
 extends Node2D
 class_name StoryMode
 
-const WEEK_ICON_NODE = preload("res://scenes/story_mode/week_icon.tscn")
+const WEEK_ICON_NODE = preload("uid://chyboxuo8e5ms")
 @export var can_click: bool = true
 
 @export var weeks :Array[Week]

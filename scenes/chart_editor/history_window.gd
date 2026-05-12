@@ -1,6 +1,6 @@
 extends Window
 
-const HISTORY_BUTTON_PRELOAD = preload("res://scenes/chart_editor/history_button.tscn")
+const HISTORY_BUTTON_PRELOAD = preload("uid://cu3admb08u8lx")
 
 signal selected(index: int)
 

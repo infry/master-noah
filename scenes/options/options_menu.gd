@@ -1,10 +1,10 @@
 extends Node2D
 
-const BOOL_PRELOAD = preload("res://scenes/options/option_node_bool.tscn")
-const NUMBER_PRELOAD = preload("res://scenes/options/option_node_number.tscn")
-const KEYBIND_PRELOAD = preload("res://scenes/options/option_node_keybind.tscn")
-const LABEL_PRELOAD = preload("res://scenes/options/option_node_label.tscn")
-const BUTTON_PRELOAD = preload("res://scenes/options/option_node_button.tscn")
+const BOOL_PRELOAD = preload("uid://uj644hsg8thl")
+const NUMBER_PRELOAD = preload("uid://77c763qfjduu")
+const KEYBIND_PRELOAD = preload("uid://cx81a4x2e26yh")
+const LABEL_PRELOAD = preload("uid://7leho7yp6nrt")
+const BUTTON_PRELOAD = preload("uid://oi2cyiu5cgsq")
 
 const HOLD_THRESHOLD = 0.5
 const HOLD_RATE = 50

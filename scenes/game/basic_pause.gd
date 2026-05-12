@@ -1,6 +1,6 @@
 extends Node2D
 
-const MENU_OPTION_PRELOAD = preload("res://scenes/menu_option.tscn")
+const MENU_OPTION_PRELOAD = preload("uid://55odtbd2v2ql")
 
 @onready var music = $Audio/Music
 

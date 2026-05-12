@@ -1,6 +1,6 @@
 extends Node2D
 
-const DIGIT_PRELOAD = preload("res://scenes/results/score_digit.tscn")
+const DIGIT_PRELOAD = preload("uid://jen63sgjafxu")
 
 signal finished
 

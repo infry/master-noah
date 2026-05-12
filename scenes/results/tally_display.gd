@@ -1,6 +1,6 @@
 extends Node2D
 
-const DIGIT_PRELOAD = preload("res://scenes/results/digit.tscn")
+const DIGIT_PRELOAD = preload("uid://bys528didpcsu")
 
 @export var number: int = 0:
 	set(v):

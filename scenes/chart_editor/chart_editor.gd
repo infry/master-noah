@@ -1,13 +1,13 @@
 extends Node2D
 class_name ChartEditor
 
-const NOTE_PRELOAD = preload("res://scenes/game/note/chart_note.tscn")
-const EVENT_PRELOAD = preload("res://scenes/chart_editor/event_editor/event.tscn")
-const STRUM_BUTTON_PRELOAD = preload("res://scenes/chart_editor/strum_button.tscn")
+const NOTE_PRELOAD = preload("uid://yyfqg2jvwcmt")
+const EVENT_PRELOAD = preload("uid://n6k15grja0uh")
+const STRUM_BUTTON_PRELOAD = preload("uid://ddohksqocyhnx")
 
-const NEW_FILE_POPUP_PRELOAD = preload("res://scenes/chart_editor/new_file_popup.tscn")
-const OPEN_FILE_POPUP_PRELOAD = preload("res://scenes/chart_editor/open_file_popup.tscn")
-const CONVERT_CHART_POPUP_PRELOAD = preload("res://scenes/chart_editor/convert_chart_popup.tscn")
+const NEW_FILE_POPUP_PRELOAD = preload("uid://d05iuopxfqlhj")
+const OPEN_FILE_POPUP_PRELOAD = preload("uid://388mdmn1mwun")
+const CONVERT_CHART_POPUP_PRELOAD = preload("uid://c6cl2ayvb4ms3")
 
 const SNAPS = [4.0, 8.0, 12.0, 16.0, 20.0, 24.0, 32.0, 48.0, 64.0, 96.0, 192.0]
 

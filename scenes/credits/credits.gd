@@ -1,6 +1,6 @@
 extends Node2D
 
-const MENU_OPTION_NODE = preload("res://scenes/menu_option.tscn")
+const MENU_OPTION_NODE = preload("uid://55odtbd2v2ql")
 @export var can_click: bool = true
 
 # To add a new credit, add an array with this format:

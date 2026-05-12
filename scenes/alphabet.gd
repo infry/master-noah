@@ -20,7 +20,7 @@ class_name Alphabet
 		update_text(text)
 
 @export_group("Glyph Settings")
-@export var sprite_frames:SpriteFrames = preload("res://assets/fonts/alphabet.res"):
+@export var sprite_frames:SpriteFrames = preload("uid://d0226owhgqr41"):
 	set(value):
 		sprite_frames = value
 		update_text(text)

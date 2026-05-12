@@ -1,6 +1,6 @@
 extends Window
 
-const AUDIO_TRACK_PRELOAD = preload("res://scenes/chart_editor/audio_track.tscn")
+const AUDIO_TRACK_PRELOAD = preload("uid://ngxlibrfoqjc")
 
 signal updated
 

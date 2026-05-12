@@ -1,6 +1,6 @@
 extends ChartEditor
 
-const TRACK_BUTTON = preload("res://scenes/chart_editor/event_editor/event_button.tscn")
+const TRACK_BUTTON = preload("uid://dguo6hi3l0pxv")
 
 var current_event_time: float
 var current_event: String

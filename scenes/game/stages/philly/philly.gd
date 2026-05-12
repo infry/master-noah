@@ -1,6 +1,6 @@
-extends "res://scenes/stage.gd"
+extends Stage
 
-var CAR_PRELOAD = load("res://scenes/game/stages/philly/car.tscn")
+var CAR_PRELOAD = load("uid://cpci1337c6gt3")
 var red_light: bool = true
 var car_list: Array[Node2D] = []
 
