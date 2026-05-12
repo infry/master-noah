@@ -1,15 +1,15 @@
 [gd_scene format=3 uid="uid://bg3coqaywlx5b"]
 
 [ext_resource type="Script" uid="uid://b0vmqp1rjpt6n" path="res://scenes/game/songs/basic_song.gd" id="1_fdh4h"]
-[ext_resource type="PackedScene" uid="uid://l713j3okh2iq" path="res://scenes/game/playstate.tscn" id="2_6qtee"]
+[ext_resource type="PackedScene" uid="uid://l713j3okh2iq" path="res://noah/playstate.tscn" id="2_6qtee"]
 [ext_resource type="Resource" uid="uid://cj2hoqrld81vv" path="res://assets/sprites/playstate/default/default_note_skin.tres" id="4_p6l71"]
 [ext_resource type="Resource" uid="uid://cykk1h52kdqv2" path="res://assets/sprites/playstate/default/default_ui_skin.tres" id="5_gelov"]
 [ext_resource type="PackedScene" uid="uid://q0a40tn5u1c8" path="res://scenes/game/stages/philly/philly_foggy.tscn" id="7_jmd2r"]
-[ext_resource type="Script" uid="uid://b4lmffueni5k" path="res://scenes/game/camera_controller.gd" id="12_h0per"]
+[ext_resource type="Script" uid="uid://b4lmffueni5k" path="res://noah/camera_controller.gd" id="12_h0per"]
 [ext_resource type="PackedScene" uid="uid://dg6rnkjn5f5gm" path="res://scenes/game/characters/boyfriend.tscn" id="12_m4war"]
 [ext_resource type="PackedScene" uid="uid://k3e5qpeoyea4" path="res://scenes/game/characters/darnell.tscn" id="13_h84qt"]
 [ext_resource type="PackedScene" uid="uid://bpv5demojrg67" path="res://scenes/game/characters/girlfriend.tscn" id="14_1x41t"]
-[ext_resource type="PackedScene" uid="uid://cigsmwajnw2jq" path="res://scenes/game/basic_ui.tscn" id="15_dj0ml"]
+[ext_resource type="PackedScene" uid="uid://cigsmwajnw2jq" path="res://noah/nodes/basic_ui.tscn" id="15_dj0ml"]
 [ext_resource type="Shader" uid="uid://bgwusoh6kicj3" path="res://assets/shaders/adjust_hsv.gdshader" id="17_goysl"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kuluq"]
