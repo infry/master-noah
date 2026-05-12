@@ -1,4 +1,4 @@
-extends "res://scenes/game/songs/basic_song.gd"
+extends BasicSong
 
 func note_hit(time, lane, note_type, hit_time, strum_manager):
 	get_tree().set_group(get_group(strum_manager), "animation_prefix",

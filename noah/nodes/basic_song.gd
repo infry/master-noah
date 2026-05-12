@@ -1,4 +1,5 @@
 extends Node
+class_name BasicSong
 
 @onready var playstate_host: PlayState = $"PlayState Host"
 

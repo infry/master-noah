@@ -1,4 +1,4 @@
-extends "res://scenes/game/songs/basic_song.gd"
+extends BasicSong
 
 func _on_new_event(time, event_name, event_parameters):
 	match event_name:

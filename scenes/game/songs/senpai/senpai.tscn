@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dgaywwoiwkbeu"]
 
-[ext_resource type="Script" uid="uid://b0vmqp1rjpt6n" path="res://scenes/game/songs/basic_song.gd" id="1_kkhjq"]
+[ext_resource type="Script" uid="uid://b0vmqp1rjpt6n" path="res://noah/nodes/basic_song.gd" id="1_kkhjq"]
 [ext_resource type="PackedScene" uid="uid://l713j3okh2iq" path="res://noah/playstate.tscn" id="2_hvfki"]
 [ext_resource type="Resource" uid="uid://dmw77m5oxkyig" path="res://assets/sprites/playstate/pixel/pixel_note_skin.tres" id="4_gvt2o"]
 [ext_resource type="Resource" uid="uid://dsqgb7q6eq1mf" path="res://assets/sprites/playstate/pixel/pixel_ui_skin.tres" id="5_0s4pd"]
