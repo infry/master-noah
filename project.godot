@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Noah Engine"
-run/main_scene="res://scenes/menus/start_menu/start_menu.tscn"
+run/main_scene="res://funkin/menus/start_menu/start_menu.tscn"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.png"
 
@@ -23,12 +23,12 @@ buses/default_bus_layout="uid://wp1fb3lbqup6"
 
 Global="*res://noah/global.tscn"
 Transitions="*res://scenes/global/transitions.tscn"
-GameManager="*res://scenes/global/game_manager.gd"
-SettingsManager="*res://scenes/global/settings_manager.gd"
-ChartManager="*res://scenes/global/chart_manager.gd"
+GameManager="*res://noah/managers/game_manager.gd"
+SettingsManager="*res://noah/managers/settings_manager.gd"
+ChartManager="*res://noah/managers/chart_manager.gd"
 Preload="*res://preload.gd"
-SoundManager="*res://scenes/global/sound_manager.tscn"
-SaveManager="*res://scenes/global/save_manager.gd"
+SoundManager="*res://noah/managers/sound_manager.tscn"
+SaveManager="*res://noah/managers/save_manager.gd"
 
 [debug]
 

@@ -8,7 +8,7 @@
 [ext_resource type="AudioStream" uid="uid://bmggbtser1g3u" path="res://assets/sounds/game sounds/miss sounds/miss 1.ogg" id="8_m85lx"]
 [ext_resource type="AudioStream" uid="uid://cfnrxgladhi2w" path="res://assets/sounds/game sounds/miss sounds/miss 2.ogg" id="9_l37ub"]
 [ext_resource type="AudioStream" uid="uid://cqne25yeqb7op" path="res://assets/sounds/game sounds/miss sounds/miss 3.ogg" id="10_56sr7"]
-[ext_resource type="Script" uid="uid://b1blhjns06ilt" path="res://scenes/conductor.gd" id="11_s6vog"]
+[ext_resource type="Script" uid="uid://b1blhjns06ilt" path="res://noah/conductor.gd" id="11_s6vog"]
 [ext_resource type="PackedScene" uid="uid://bs78qo116i5i8" path="res://scenes/game/characters/pico.tscn" id="12_5fyjp"]
 [ext_resource type="Shader" uid="uid://boq6lqipwmoli" path="res://assets/shaders/rimlight.gdshader" id="13_th3hl"]
 [ext_resource type="PackedScene" uid="uid://cvw5oumi78kvr" path="res://scenes/game/characters/tankman.tscn" id="14_ctps2"]
