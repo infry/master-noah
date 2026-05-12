@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cj4cuq6neq1lf"]
 
-[ext_resource type="Theme" uid="uid://b02clh77m72y7" path="res://assets/themes/options.tres" id="1_0ca1f"]
+[ext_resource type="Theme" uid="uid://b02clh77m72y7" path="res://noah/themes/options.tres" id="1_0ca1f"]
 [ext_resource type="Script" uid="uid://c25af0kpj2b5m" path="res://scenes/dialgoue_editor/dialogue_line.gd" id="2_dfr6i"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qpygn"]

@@ -16,7 +16,7 @@
 [ext_resource type="AudioStream" uid="uid://bdbqayhnogbk5" path="res://assets/sounds/chart_editor/exitWindow.ogg" id="10_vlodn"]
 [ext_resource type="AudioStream" uid="uid://bmj7ckgd3tlt1" path="res://assets/sounds/chart_editor/undo.ogg" id="11_h3cad"]
 [ext_resource type="PackedScene" uid="uid://dmjgk2qf3nl2i" path="res://scenes/chart_editor/grid.tscn" id="14_srmuw"]
-[ext_resource type="Theme" uid="uid://b1gv0wfdmojbx" path="res://assets/themes/chart_editor.res" id="15_ue8jl"]
+[ext_resource type="Theme" uid="uid://b1gv0wfdmojbx" path="res://noah/themes/chart_editor.res" id="15_ue8jl"]
 [ext_resource type="Texture2D" uid="uid://dpb5afc48uqvb" path="res://assets/sprites/menus/chart editor/restart_button.png" id="16_sb382"]
 [ext_resource type="Texture2D" uid="uid://c7ka0o15iv6a3" path="res://assets/sprites/menus/chart editor/rewind_button.png" id="17_xva00"]
 [ext_resource type="Texture2D" uid="uid://byl3boevtc02p" path="res://assets/sprites/menus/chart editor/play_button.png" id="18_5aq6y"]

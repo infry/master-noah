@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c2la537hogg50"
-path="res://.godot/imported/chart_file.png-55b2eee23b699c15b2618ef57c3d7350.ctex"
+path="res://.godot/imported/chart_file.png-e0aa4cbd766501dacd7bcce2099a6ff2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/nodes/chart_file.png"
-dest_files=["res://.godot/imported/chart_file.png-55b2eee23b699c15b2618ef57c3d7350.ctex"]
+source_file="res://noah/nodes/nodes/chart_file.png"
+dest_files=["res://.godot/imported/chart_file.png-e0aa4cbd766501dacd7bcce2099a6ff2.ctex"]
 
 [params]
 

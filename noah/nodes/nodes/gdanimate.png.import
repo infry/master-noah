@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ij1ectsa31bd"
-path="res://.godot/imported/conductor.png-63233fba9a201dc59a66b694b67a0e33.ctex"
+uid="uid://gbb2tpx7317c"
+path="res://.godot/imported/gdanimate.png-55d05c385c8114281fa86d1516fef536.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/nodes/conductor.png"
-dest_files=["res://.godot/imported/conductor.png-63233fba9a201dc59a66b694b67a0e33.ctex"]
+source_file="res://noah/nodes/nodes/gdanimate.png"
+dest_files=["res://.godot/imported/gdanimate.png-55d05c385c8114281fa86d1516fef536.ctex"]
 
 [params]
 
