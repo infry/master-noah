@@ -50,6 +50,7 @@ enabled=PackedStringArray("res://addons/gdanimate-rewrite-main/plugin.cfg")
 
 folder_colors={
 "res://assets/": "orange",
+"res://funkin/": "green",
 "res://noah/assets/": "orange",
 "res://noah/tools/": "gray",
 "res://playable_songs/": "purple",
