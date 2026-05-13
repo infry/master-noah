@@ -50,7 +50,7 @@ static var _defaults: Dictionary = {
 	},
 	
 	SEC_AUDIO: {
-		"master_volume": 1, ## the global sound volume. Affects everything
+		"master_volume": 0.5, ## the global sound volume. Affects everything
 		"sfx_volume": 1, ## The sfx volume. Only Affects sfx
 		"music_volume": 1, ## The music volume. Only applied to music tracks
 		"is_muted": false
