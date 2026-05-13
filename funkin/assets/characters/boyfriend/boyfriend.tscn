@@ -66,7 +66,7 @@ offsets = Dictionary[StringName, Vector2]({
 &"BF HEY!!": Vector2(-16, -163),
 &"BF NOTE DOWN": Vector2(-26, -131),
 &"BF NOTE DOWN MISS": Vector2(-27, -141),
-&"BF NOTE LEFT": Vector2(-51, -155),
+&"BF NOTE LEFT": Vector2(-38, -156),
 &"BF NOTE LEFT MISS": Vector2(-40, -168),
 &"BF NOTE RIGHT": Vector2(27, -158),
 &"BF NOTE RIGHT MISS": Vector2(24, -168),
@@ -84,10 +84,8 @@ animation_player = NodePath("AnimatedSprite2D")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1502638124]
 use_parent_material = true
-position = Vector2(-16, -160)
+position = Vector2(-38, -156)
 sprite_frames = ExtResource("3_cqa6h")
-animation = &"BF idle dance"
-frame = 13
-frame_progress = 1.0
+animation = &"BF NOTE LEFT"
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]

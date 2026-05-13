@@ -21,18 +21,35 @@ enum AnimContext {
 @export_group("Animation Data")
 ## Dictionary of given animation id's and their [SpriteFrames] animation.
 ## [br][br][b]Example:[/b] [code]{"idle": "BF idle dance"}[/code]
-@export var animation_names: Dictionary[StringName, StringName] = {}
-@export var offsets: Dictionary[StringName, Vector2] = {}
-@export var hold_frames: Dictionary[StringName, int] = {}
+@export var animation_names: Dictionary[StringName, StringName] = {}:
+	set(v):
+		animation_names = v
+		update_ghost()
+
+@export var offsets: Dictionary[StringName, Vector2] = {}:
+	set(v):
+		offsets = v
+		update_ghost()
+
+@export var hold_frames: Dictionary[StringName, int] = {}:
+	set(v):
+		hold_frames = v
+		update_ghost()
 
 @export_group("Gameplay")
 ## The idle animations. Whenever the character "dance's" they will cycle through this list.
-@export var dance_animations: Array[StringName] = [&"idle"]
+@export var dance_animations: Array[StringName] = [&"idle"]:
+	set(v):
+		dance_animations = v
+		update_ghost()
 ## How often [b](in steps)[/b] the dance will be played.
 @export_range(1, 1, 1, "suffix:steps", "or_greater") var dance_rate: int = 8
 ## When calling an animation, the id will be appended to this value.
 ## [br][br][b]Example:[/b] [code]"left"[/code] → [code]"mom_left"[/code]
-@export var animation_prefix: StringName = &""
+@export var animation_prefix: StringName = &"":
+	set(v):
+		animation_prefix = v
+		update_ghost()
 ## How many steps an animation can play before being able to revert to idle.
 @export_custom(PROPERTY_HINT_NONE, 'suffix:steps') var sing_duration: float = 6
 
@@ -43,7 +60,22 @@ enum AnimContext {
 
 ##The actual sprite node that will be used to play the anims. If not assigned, it will fallback to
 ##[AnimatedSprite2D] or [AnimateSymbol]
-@export var animation_player: Node = null
+@export var animation_player: Node = null:
+	set(v):
+		if !v:
+			v = $AnimatedSprite2D
+			if !v:
+				v = $AnimateSymbol
+		
+		update_configuration_warnings()
+		
+		animation_player = v
+		update_ghost()
+
+@export_group("Tools")
+
+@export_tool_button("Reset Position", "UndoRedo") var reset_button: Callable = self.reset_position
+@export_tool_button("Save Offset", "Save") var save_button: Callable = self.save_offset
 
 var current_dance: int = 0
 ## The current animation ID.
@@ -55,13 +87,9 @@ var can_dance: bool = true
 var holding: bool = false
 ## Time elapsed since the char has started singing
 var sing_time: float = 0
+var ghost_sprite = null
 
 func _ready():
-	if not animation_player:
-		animation_player = $AnimatedSprite2D
-		if not animation_player:
-			animation_player = $AnimateSymbol
-	
 	if not animation_player:
 		printerr("Character animation player was not set and could not be found.")
 		return
@@ -72,6 +100,7 @@ func _ready():
 	else:
 		animation_player.play()
 		animation_player.connect(&"animation_finished", self._on_animation_finished)
+		animation_player.connect(&"animation_changed", self.update_ghost)
 
 
 func _on_animation_finished():
@@ -137,11 +166,6 @@ func play_animation(anim_id: StringName = &"", context: AnimContext = AnimContex
 
 
 func _process(delta: float) -> void:
-	if Engine.is_editor_hint():
-		if animation_player:
-			if animation_player is AnimatedSprite2D:
-				pass
-	
 	if !Engine.is_editor_hint():
 		if holding:
 			hold_animation()
@@ -150,7 +174,6 @@ func _process(delta: float) -> void:
 		if sing_time <= 0 and !can_dance:
 			can_dance = true
 
-
 ## Gets the [SpriteFrames] animation name of the given [param anim_id] in [member animation_names].
 func get_animation_name(anim_id: StringName = &""):
 	return animation_names.get(anim_id, &"")
@@ -158,14 +181,6 @@ func get_animation_name(anim_id: StringName = &""):
 
 func set_prefix(prefix: StringName):
 	animation_prefix = prefix
-
-
-func get_current_frame_texture() -> Texture:
-	if animation_player is AnimateSymbol:
-		return null
-	
-	return animation_player.sprite_frames.get_frame_texture(animation_player.animation,
-	animation_player.frame)
 
 ## Lets an animation loop at the given [code]hold_frame[/code] until given another animation.
 func hold_animation():
@@ -220,3 +235,68 @@ func set_sing_timer(time: float = -1):
 func on_step_hit(current_step: int, measure_relative: int):  
 	if dance_rate > 0 and measure_relative % dance_rate == 0:
 		dance()
+
+
+func _get_configuration_warnings() -> PackedStringArray:
+	var warnings: PackedStringArray = []
+	
+	if !animation_player:
+		warnings.append("Please assign an animation player to this node")
+	
+	return warnings
+
+## [b]Tool Script[/b] - Used for offsetring.
+## [br][br]Updates the position and texture of the ghost sprite. 
+func update_ghost():
+	if !Engine.is_editor_hint():
+		return
+	
+	if animation_player:
+		if ghost_sprite:
+			ghost_sprite.queue_free()
+		
+		if animation_player is AnimatedSprite2D:
+			ghost_sprite = Sprite2D.new()
+			
+			if animation_player.sprite_frames:
+				if dance_animations.size() > 0:
+					var animation_name: StringName = get_animation_name(dance_animations[0])
+					ghost_sprite.texture = animation_player.sprite_frames.get_frame_texture(
+						animation_name, animation_player.sprite_frames.get_frame_count(animation_name) - 1)
+					
+					ghost_sprite.offset = offsets.get(get_animation_name(dance_animations[0]), Vector2.ZERO)
+			
+			ghost_sprite.modulate = Color(1.825, 1.825, 1.825, 0.5)
+			ghost_sprite.z_index = animation_player.z_index - 1
+			
+			self.add_child(ghost_sprite)
+
+## [b]Tool Script[/b] - Used for offsetring.
+## [br][br]Resets the current sprite back to the corresponding offset.
+func reset_position():
+	if !Engine.is_editor_hint():
+		return
+	
+	if animation_player:
+		if animation_player is AnimatedSprite2D:
+			var undo_redo = EditorInterface.get_editor_undo_redo()
+			undo_redo.create_action("Reset Position")
+			undo_redo.add_do_property(animation_player, &"position", offsets.get(animation_player.animation, Vector2.ZERO))
+			undo_redo.add_undo_property(animation_player, &"position", animation_player.position)
+			undo_redo.commit_action()
+
+## [b]Tool Script[/b] - Used for offsetring.
+## [br][br]Saves the offset into the [member offsets] dictionary.
+func save_offset():
+	if !Engine.is_editor_hint():
+		return
+	
+	if animation_player:
+		if animation_player is AnimatedSprite2D:
+			var undo_redo = EditorInterface.get_editor_undo_redo()
+			undo_redo.create_action("Save Offset")
+			var temp: Dictionary[StringName, Vector2] = offsets
+			temp[animation_player.animation] = animation_player.position
+			undo_redo.add_do_property(self, &"offsets", temp)
+			undo_redo.add_undo_property(self, &"offsets", self.offsets)
+			undo_redo.commit_action()
