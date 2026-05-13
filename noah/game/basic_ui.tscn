@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://byu172po8rot7" path="res://noah/game/basic_ui.gd" id="1_pm5h1"]
 [ext_resource type="PackedScene" uid="uid://ce3dgr61438sa" path="res://noah/game/strumlines/4key_strums.tscn" id="2_58g8k"]
-[ext_resource type="FontFile" uid="uid://8cxhkah8id6n" path="res://funkin/assets/fonts/tertiary_font.ttf" id="4_jqq0h"]
-[ext_resource type="Texture2D" uid="uid://cycblrpqahhln" path="res://noah/assets/ui/developer/healthBar.png" id="5_2fmdm"]
-[ext_resource type="Texture2D" uid="uid://dh4quhljfok4e" path="res://funkin/assets/images/ui/icons/icon-face.png" id="6_6rn83"]
+[ext_resource type="FontFile" uid="uid://8cxhkah8id6n" path="res://noah/assets/fonts/tertiary_font.ttf" id="4_jqq0h"]
+[ext_resource type="Texture2D" uid="uid://cycblrpqahhln" path="res://noah/assets/game/developer/healthBar.png" id="5_2fmdm"]
+[ext_resource type="Texture2D" uid="uid://dh4quhljfok4e" path="res://funkin/assets/game/icons/icon-face.png" id="6_6rn83"]
 
 [sub_resource type="Animation" id="Animation_x83yl"]
 length = 0.001

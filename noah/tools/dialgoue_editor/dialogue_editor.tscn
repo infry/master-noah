@@ -1,9 +1,7 @@
 [gd_scene format=3 uid="uid://ccu114dgokxwt"]
 
-[ext_resource type="Texture2D" uid="uid://dix7cy7ydksfi" path="res://funkin/assets/images/menus/background/menuDesat.png" id="1_2uxlt"]
 [ext_resource type="Script" uid="uid://7jq7a5sbpcgr" path="res://noah/tools/dialgoue_editor/dialogue_editor.gd" id="1_qnh8h"]
-[ext_resource type="Theme" uid="uid://b02clh77m72y7" path="res://noah/themes/options.tres" id="3_5f2t6"]
-[ext_resource type="FontFile" uid="uid://c1yqml3y7c8j2" path="res://funkin/assets/fonts/secondary_font.ttf" id="4_6y6ni"]
+[ext_resource type="FontFile" uid="uid://c1yqml3y7c8j2" path="res://noah/assets/fonts/secondary_font.ttf" id="4_6y6ni"]
 [ext_resource type="Theme" uid="uid://b1gv0wfdmojbx" path="res://noah/themes/chart_editor.res" id="4_w8ow7"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_bq5l8"]
@@ -37,7 +35,7 @@ offset_right = 640.0
 offset_bottom = 24.0
 size_flags_horizontal = 0
 size_flags_vertical = 4
-theme = ExtResource("3_5f2t6")
+theme = ExtResource("4_w8ow7")
 color = Color(0.14733289, 0.1680183, 0.20285092, 1)
 metadata/_edit_lock_ = true
 
@@ -63,7 +61,7 @@ anchor_right = 0.3
 anchor_bottom = -0.056
 offset_top = -0.159973
 offset_bottom = 0.32
-theme = ExtResource("3_5f2t6")
+theme = ExtResource("4_w8ow7")
 metadata/_edit_lock_ = true
 
 [node name="Dialogue" type="Label" parent="UI/Dialogue Reader" unique_id=824763517]
@@ -78,7 +76,7 @@ offset_right = -8.0
 offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "* You feel like you're gonna get your skull S M A S H E D"
+text = "Dialogue example"
 label_settings = SubResource("LabelSettings_bq5l8")
 autowrap_mode = 1
 
@@ -95,7 +93,7 @@ offset_bottom = -160.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("4_6y6ni")
-text = "DropOff"
+text = "Dialogue Name/Function"
 label_settings = SubResource("LabelSettings_xw73d")
 vertical_alignment = 2
 autowrap_mode = 1
@@ -172,7 +170,7 @@ offset_left = 512.0
 offset_top = 104.0
 offset_right = 640.0
 offset_bottom = 136.0
-theme = ExtResource("3_5f2t6")
+theme = ExtResource("4_w8ow7")
 text = "Save Dialogue"
 metadata/_edit_lock_ = true
 
@@ -181,6 +179,7 @@ offset_left = -640.0
 offset_top = 296.0
 offset_right = 640.0
 offset_bottom = 360.0
+theme = ExtResource("4_w8ow7")
 color = Color(0.0352941, 0.0352941, 0.0352941, 0.733333)
 metadata/_edit_lock_ = true
 
@@ -229,11 +228,6 @@ offset_bottom = 152.0
 layer = -10
 offset = Vector2(640, 360)
 transform = Transform2D(1, 0, 0, 1, 640, 360)
-
-[node name="Background" type="Sprite2D" parent="Background" unique_id=1912185921]
-modulate = Color(0.11372549, 0.13333334, 0.16078432, 1)
-texture = ExtResource("1_2uxlt")
-metadata/_edit_lock_ = true
 
 [connection signal="value_changed" from="UI/Dialogue Reader/Speed Slider" to="." method="_on_speed_slider_value_changed"]
 [connection signal="pressed" from="UI/Add Line" to="." method="_on_add_line_pressed"]

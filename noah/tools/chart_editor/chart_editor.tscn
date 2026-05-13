@@ -5,7 +5,6 @@
 [ext_resource type="PackedScene" uid="uid://dmjgk2qf3nl2i" path="res://noah/tools/chart_editor/grid.tscn" id="2_i6pv1"]
 [ext_resource type="AudioStream" uid="uid://bhbl74dwlqyhk" path="res://noah/assets/sounds/conductor sfx.mp3" id="3_myxvx"]
 [ext_resource type="AudioStream" uid="uid://bodc4sfit172e" path="res://noah/assets/sounds/chart_editor/sound-hit.wav" id="4_1k01c"]
-[ext_resource type="Texture2D" uid="uid://crpue80aij4bq" path="res://funkin/assets/images/menus/chart editor/menuDesat.png" id="4_g6hlb"]
 [ext_resource type="AudioStream" uid="uid://s88wsjen8kj7" path="res://noah/assets/sounds/chart_editor/keyboard1.ogg" id="5_ewdb4"]
 [ext_resource type="AudioStream" uid="uid://cdoo62fj7frd" path="res://noah/assets/sounds/chart_editor/keyboard2.ogg" id="6_0ge7q"]
 [ext_resource type="AudioStream" uid="uid://dr4m1bpeomae5" path="res://noah/assets/sounds/chart_editor/keyboard3.ogg" id="7_5qx4x"]
@@ -19,6 +18,7 @@
 [ext_resource type="Theme" uid="uid://b1gv0wfdmojbx" path="res://noah/themes/chart_editor.res" id="17_75w6f"]
 [ext_resource type="PackedScene" uid="uid://bx3kdd0dt1kkw" path="res://noah/tools/chart_editor/lower_ui.tscn" id="17_sxrev"]
 [ext_resource type="PackedScene" uid="uid://b6b2d2kloq60j" path="res://noah/tools/chart_editor/upper_ui.tscn" id="18_dd0y6"]
+[ext_resource type="Texture2D" uid="uid://o8cl6odqirwp" path="res://noah/assets/images/menus/genericBG.png" id="19_2ab3f"]
 
 [sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_50rmr"]
 
@@ -205,9 +205,9 @@ layer = -128
 offset = Vector2(640, 360)
 transform = Transform2D(1, 0, 0, 1, 640, 360)
 
-[node name="MenuDesat" type="Sprite2D" parent="Background" unique_id=1878471884]
-modulate = Color(0.11372549, 0.13333334, 0.16078432, 1)
-texture = ExtResource("4_g6hlb")
+[node name="genericBG" type="Sprite2D" parent="Background" unique_id=1878471884]
+modulate = Color(0.56078434, 0.6431373, 0.7490196, 1)
+texture = ExtResource("19_2ab3f")
 metadata/_edit_lock_ = true
 
 [connection signal="new_beat" from="Conductor" to="." method="_on_conductor_new_beat"]
