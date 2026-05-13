@@ -1,6 +1,6 @@
 [gd_resource type="Theme" format=3 uid="uid://b02clh77m72y7"]
 
-[ext_resource type="FontFile" uid="uid://coivso5sghc2p" path="res://assets/fonts/fnf_font.ttf" id="1_bk422"]
+[ext_resource type="FontFile" uid="uid://coivso5sghc2p" path="res://funkin/assets/fonts/fnf_font.ttf" id="1_bk422"]
 [ext_resource type="Texture2D" uid="uid://cxln6kj4u8gtj" path="res://funkin/assets/images/menus/options/checked.png" id="1_nkri3"]
 [ext_resource type="Texture2D" uid="uid://beqw8ru25pvhn" path="res://funkin/assets/images/menus/options/empty.png" id="2_x7jjx"]
 

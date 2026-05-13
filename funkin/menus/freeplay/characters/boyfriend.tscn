@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cblocwqwyjjjy" path="res://funkin/menus/freeplay/atlas_sprite.gd" id="1_uxy4b"]
 [ext_resource type="Script" uid="uid://c5ju3u657fyae" path="res://addons/gdanimate-rewrite-main/animate_symbol.gd" id="2_re7fs"]
-[ext_resource type="FontFile" uid="uid://c7hwqqieqbc47" path="res://assets/fonts/results_background.ttf" id="3_dcg1w"]
+[ext_resource type="FontFile" uid="uid://c7hwqqieqbc47" path="res://funkin/assets/fonts/results_background.ttf" id="3_dcg1w"]
 [ext_resource type="Script" uid="uid://dy4vnmv4435ty" path="res://addons/gdanimate-rewrite-main/animate_atlas.gd" id="4_t2sh6"]
 [ext_resource type="Script" uid="uid://dkyyuwqo0dy7q" path="res://addons/gdanimate-rewrite-main/adobe/adobe_atlas.gd" id="5_benro"]
 
