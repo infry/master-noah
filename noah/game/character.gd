@@ -41,16 +41,6 @@ enum AnimContext {
 @export var dance_animations: Array[StringName] = [&"idle"]:
 	set(v):
 		dance_animations = v
-		if animation_player:
-			if animation_player is AnimatedSprite2D:
-				if dance_animations.size() > 0:
-					animation_player.autoplay = get_animation_name(dance_animations[0])
-				else:
-					animation_player.autoplay = null
-			elif animation_player is AnimateSymbol:
-				if dance_animations.size() > 0:
-					animation_player.symbol = get_animation_name(dance_animations[0])
-		
 		update_ghost()
 ## How often [b](in steps)[/b] the dance will be played.
 @export_range(1, 1, 1, "suffix:steps", "or_greater") var dance_rate: int = 8
@@ -104,6 +94,10 @@ func _ready():
 	if not animation_player:
 		printerr("Character animation player was not set and could not be found.")
 		return
+	
+	if animation_player:
+		if dance_animations.size() > 0:
+			play_animation(dance_animations[0])
 	
 	if animation_player is AnimateSymbol:
 		animation_player.connect(&"finished", self._on_animation_finished)
@@ -279,14 +273,7 @@ func update_ghost():
 			
 			ghost_sprite.modulate = Color(1.825, 1.825, 1.825, 0.5)
 			ghost_sprite.z_index = animation_player.z_index
-			match ghost_ordering:
-				0:
-					ghost_sprite.z_index -= 1
-				
-				1:
-					ghost_sprite.z_index += 1
-			
-			self.add_child(ghost_sprite)
+			ghost_sprite.texture_filter = animation_player.texture_filter
 		elif animation_player is AnimateSymbol:
 			ghost_sprite = AnimateSymbol.new()
 			ghost_sprite.atlases = animation_player.atlases
@@ -299,14 +286,16 @@ func update_ghost():
 			
 			ghost_sprite.modulate = Color(1.825, 1.825, 1.825, 0.5)
 			ghost_sprite.z_index = animation_player.z_index
-			match ghost_ordering:
-				0:
-					ghost_sprite.z_index -= 1
-				
-				1:
-					ghost_sprite.z_index += 1
+			ghost_sprite.texture_filter = animation_player.texture_filter
+		
+		match ghost_ordering:
+			0:
+				ghost_sprite.z_index -= 1
 			
-			self.add_child(ghost_sprite)
+			1:
+				ghost_sprite.z_index += 1
+		
+		self.add_child(ghost_sprite)
 
 ## [b]Tool Script[/b] - Used for offsetring.
 ## [br][br]Resets the current sprite back to the corresponding offset.
