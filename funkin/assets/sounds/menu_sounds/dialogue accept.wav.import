@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://d3f6maot63gmp"
-path="res://.godot/imported/dialogue accept.wav-6f12eac1434e4d642f99b155bd60db55.sample"
+path="res://.godot/imported/dialogue accept.wav-6481594c3ee87739f460d8171fe85481.sample"
 
 [deps]
 
-source_file="res://funkin/assets/sounds/menu sounds/dialogue accept.wav"
-dest_files=["res://.godot/imported/dialogue accept.wav-6f12eac1434e4d642f99b155bd60db55.sample"]
+source_file="res://funkin/assets/sounds/menu_sounds/dialogue accept.wav"
+dest_files=["res://.godot/imported/dialogue accept.wav-6481594c3ee87739f460d8171fe85481.sample"]
 
 [params]
 
