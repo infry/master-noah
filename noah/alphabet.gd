@@ -20,7 +20,7 @@ class_name Alphabet
 		update_text(text)
 
 @export_group("Glyph Settings")
-@export var sprite_frames:SpriteFrames = preload("uid://d0226owhgqr41"):
+@export var sprite_frames:SpriteFrames:
 	set(value):
 		sprite_frames = value
 		update_text(text)
@@ -90,6 +90,9 @@ class_name Alphabet
 
 
 func get_suffix(character:String) -> StringName:
+	if !sprite_frames:
+		return &""
+	
 	if forced_anim_suffix != &"" and sprite_frames.has_animation(character + forced_anim_suffix):
 		return forced_anim_suffix
 	if sprite_frames.has_animation(character):
@@ -212,9 +215,10 @@ func update_text(new_text: String):
 			glyph.centered = false
 			
 			var glyph_name: StringName = get_glyph_name(character)
-			if sprite_frames.has_animation(glyph_name):
-				glyph.play(glyph_name)
-				sprite_frames.set_animation_loop(glyph_name, true)
+			if sprite_frames:
+				if sprite_frames.has_animation(glyph_name):
+					glyph.play(glyph_name)
+					sprite_frames.set_animation_loop(glyph_name, true)
 			
 			glyph.offset = glyph_offsets.get(character, Vector2(0.0, 0.0))
 			self.add_child(glyph)

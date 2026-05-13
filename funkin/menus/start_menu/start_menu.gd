@@ -14,7 +14,7 @@ var flashing_colors = PackedColorArray([
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	
+	$"UI/Splash Messages".sprite_frames = load("uid://d0226owhgqr41")
 	$AnimationPlayer.play("start")
 	Global.set_window_title("Start Screen")
 	
