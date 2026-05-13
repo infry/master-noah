@@ -6,8 +6,8 @@ This is version 2 of the engine with a complete overhaul of the code.
 
 # Credits
 - [Noah](https://www.youtube.com/channel/UCH5BbTqMfiO-Cxhtx3drsqA) - Main Developer
+- [Data5](https://x.com/_data5) - Assistant Developer
 - [Koi](https://twitter.com/toasted_milk_) - Miss sprite
-- KostyaGame - Dad losing icon
 - [sqirradotdev](https://github.com/sqirradotdev) - Smooth arrow Lerping function.
 - [cherrythecool](https://github.com/cherrythecool/gdanimate) - GDAnimate
 
