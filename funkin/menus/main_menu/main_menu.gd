@@ -8,20 +8,20 @@ class_name MainMenu
 ## Adding a key, "stop_music", will mute the SoundManager's music player.
 @onready var options: Dictionary = {
 	"story_mode": {
-		"node": $"UI/Button Manager/Story Mode",
+		"node": $"Button Manager/Story Mode",
 		"scene": "uid://lh8hi5dk1sja"
 	},
 	"freeplay": {
-		"node": $"UI/Button Manager/Freeplay",
+		"node": $"Button Manager/Freeplay",
 		"scene": "uid://gbra80y44814",
 		"stop_music": true,
 	},
 	"credits": {
-		"node": $"UI/Button Manager/Credits",
+		"node": $"Button Manager/Credits",
 		"scene": "uid://clbeef0fp6xbw"
 	},
 	"options": {
-		"node": $"UI/Button Manager/Options",
+		"node": $"Button Manager/Options",
 		"scene": "uid://stil5xd6xto6"
 	}
 	
