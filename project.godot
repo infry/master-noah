@@ -22,7 +22,7 @@ buses/default_bus_layout="uid://wp1fb3lbqup6"
 [autoload]
 
 Global="*res://noah/global.tscn"
-Transitions="*res://scenes/global/transitions.tscn"
+Transitions="*res://noah/transitions.tscn"
 GameManager="*res://noah/managers/game_manager.gd"
 SettingsManager="*res://noah/managers/settings_manager.gd"
 ChartManager="*res://noah/managers/chart_manager.gd"
@@ -49,7 +49,6 @@ enabled=PackedStringArray("res://addons/gdanimate-rewrite-main/plugin.cfg")
 [file_customization]
 
 folder_colors={
-"res://assets/": "orange",
 "res://funkin/": "green",
 "res://noah/assets/": "orange",
 "res://noah/tools/": "gray",
