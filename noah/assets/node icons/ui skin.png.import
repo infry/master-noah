@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://obbw51pf8bd0"
-path="res://.godot/imported/ui skin.png-cf37a20a7766985b8571d22e89cfad96.ctex"
+path="res://.godot/imported/ui skin.png-391916fcf82851f472843734c4a84415.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://noah/assets/nodes/ui skin.png"
-dest_files=["res://.godot/imported/ui skin.png-cf37a20a7766985b8571d22e89cfad96.ctex"]
+source_file="res://noah/assets/node icons/ui skin.png"
+dest_files=["res://.godot/imported/ui skin.png-391916fcf82851f472843734c4a84415.ctex"]
 
 [params]
 

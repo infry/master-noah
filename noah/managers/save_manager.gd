@@ -10,16 +10,21 @@ func _ready() -> void:
 
 func flush():
 	ResourceSaver.save(instance, LOAD_PATH)
-	print("(SaveManager) Saved song scores and tokens")
+	print("(SaveManager): Saved song scores and tokens")
 
 func _load():
 	if !FileAccess.file_exists(LOAD_PATH):
-		printerr("(SaveManager) Save File does not exist. Creating a new Save File.")
+		printerr("(SaveManager): Save File does not exist. Creating a new Save File.")
 		flush()
 		return
 	
 	instance = load(LOAD_PATH)
-	print("(Save Manager) Loaded song scores and values")
+	if not instance:
+		instance = Save.new()
+		flush()
+		printerr("(SaveManager): Save File could not be loaded. Creating a new Save File.")
+	else:
+		print("(Save Manager): Loaded song scores and values")
 
 ## Sets the results data of a song for a certain difficulty
 ## Returns true if the new score is a highscore.

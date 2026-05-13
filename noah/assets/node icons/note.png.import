@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b1yfbu2p6scl0"
-path="res://.godot/imported/generic.png-6380a75f417c694a972a80a3689cfe8a.ctex"
+uid="uid://c1o5a7jg5bf85"
+path="res://.godot/imported/note.png-802f735e5f510349315217aed9865c0f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://noah/assets/nodes/generic.png"
-dest_files=["res://.godot/imported/generic.png-6380a75f417c694a972a80a3689cfe8a.ctex"]
+source_file="res://noah/assets/node icons/note.png"
+dest_files=["res://.godot/imported/note.png-802f735e5f510349315217aed9865c0f.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ij1ectsa31bd"
-path="res://.godot/imported/conductor.png-801ffe1ae6f1440a21331fdd3179373d.ctex"
+uid="uid://bl12tb0xiej71"
+path="res://.godot/imported/strum arrows.png-0eb03dfad31c50a18f706af279cd964d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://noah/assets/nodes/conductor.png"
-dest_files=["res://.godot/imported/conductor.png-801ffe1ae6f1440a21331fdd3179373d.ctex"]
+source_file="res://noah/assets/node icons/strum arrows.png"
+dest_files=["res://.godot/imported/strum arrows.png-0eb03dfad31c50a18f706af279cd964d.ctex"]
 
 [params]
 
