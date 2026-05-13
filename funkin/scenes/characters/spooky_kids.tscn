@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dddh323rffgon"]
 
 [ext_resource type="Script" uid="uid://bj7tgh8jkngdx" path="res://funkin/scenes/characters/character.gd" id="1_3qf0p"]
-[ext_resource type="SpriteFrames" uid="uid://c4b4opoweo3x7" path="res://assets/sprites/characters/spooky kids/spooky_kids.res" id="2_gedfe"]
+[ext_resource type="SpriteFrames" uid="uid://c4b4opoweo3x7" path="res://funkin/assets/images/characters/spooky kids/spooky_kids.res" id="2_gedfe"]
 [ext_resource type="Texture2D" uid="uid://c72nt4q16hkkh" path="res://assets/sprites/playstate/icons/icon-spooky.png" id="2_noaia"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mo0po"]

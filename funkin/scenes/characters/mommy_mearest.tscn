@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bj7tgh8jkngdx" path="res://funkin/scenes/characters/character.gd" id="1_yjg8a"]
 [ext_resource type="Texture2D" uid="uid://cqneanku0adg3" path="res://assets/sprites/playstate/icons/icon-mom.png" id="2_2e6or"]
-[ext_resource type="SpriteFrames" uid="uid://ctv3jya3kw8t0" path="res://assets/sprites/characters/mommy mearest/mommy_mearest.res" id="2_40xde"]
+[ext_resource type="SpriteFrames" uid="uid://ctv3jya3kw8t0" path="res://funkin/assets/images/characters/mommy mearest/mommy_mearest.res" id="2_40xde"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xcx5a"]
 atlas = ExtResource("2_2e6or")

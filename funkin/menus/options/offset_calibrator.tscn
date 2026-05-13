@@ -8,7 +8,7 @@
 [ext_resource type="AudioStream" uid="uid://dyy2yik0yf60r" path="res://assets/sounds/menu sounds/menu cancel.ogg" id="6_q07ox"]
 [ext_resource type="PackedScene" uid="uid://by2sf7r6otryi" path="res://funkin/scenes/characters/speaker.tscn" id="6_rhpjf"]
 [ext_resource type="FontFile" uid="uid://8cxhkah8id6n" path="res://assets/fonts/tertiary_font.ttf" id="8_48d4v"]
-[ext_resource type="Texture2D" uid="uid://djuslh4ulkynw" path="res://assets/sprites/menus/background/menuBGMagenta.png" id="9_0fft6"]
+[ext_resource type="Texture2D" uid="uid://djuslh4ulkynw" path="res://funkin/assets/images/menus/background/menuBGMagenta.png" id="9_0fft6"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_3110b"]
 font = ExtResource("8_48d4v")

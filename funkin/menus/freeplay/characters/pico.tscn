@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://bnx6yfjfa6wcj"]
 
 [ext_resource type="Script" uid="uid://cblocwqwyjjjy" path="res://funkin/menus/freeplay/atlas_sprite.gd" id="1_0g3vl"]
-[ext_resource type="Texture2D" uid="uid://hixm41vvywvp" path="res://assets/sprites/menus/freeplay/characters/pico/middleLoop.png" id="2_0g3vl"]
-[ext_resource type="Texture2D" uid="uid://c3sgt5pj1cv85" path="res://assets/sprites/menus/freeplay/characters/pico/lowerLoop.png" id="2_h85ek"]
+[ext_resource type="Texture2D" uid="uid://hixm41vvywvp" path="res://funkin/assets/images/menus/freeplay/characters/pico/middleLoop.png" id="2_0g3vl"]
+[ext_resource type="Texture2D" uid="uid://c3sgt5pj1cv85" path="res://funkin/assets/images/menus/freeplay/characters/pico/lowerLoop.png" id="2_h85ek"]
 [ext_resource type="Script" uid="uid://c5ju3u657fyae" path="res://addons/gdanimate-rewrite-main/animate_symbol.gd" id="3_f3030"]
-[ext_resource type="SpriteFrames" uid="uid://de052qdphy3h1" path="res://assets/sprites/menus/freeplay/characters/pico/topLoop.res" id="4_f3030"]
+[ext_resource type="SpriteFrames" uid="uid://de052qdphy3h1" path="res://funkin/assets/images/menus/freeplay/characters/pico/topLoop.res" id="4_f3030"]
 [ext_resource type="Script" uid="uid://dy4vnmv4435ty" path="res://addons/gdanimate-rewrite-main/animate_atlas.gd" id="6_b5agd"]
 [ext_resource type="Script" uid="uid://dkyyuwqo0dy7q" path="res://addons/gdanimate-rewrite-main/adobe/adobe_atlas.gd" id="7_6c8ho"]
 

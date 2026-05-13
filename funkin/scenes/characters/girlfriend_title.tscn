@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dirqojr6g5tpn"]
 
 [ext_resource type="Script" uid="uid://bj7tgh8jkngdx" path="res://funkin/scenes/characters/character.gd" id="1_ep0lb"]
-[ext_resource type="SpriteFrames" uid="uid://cm61yneemohnc" path="res://assets/sprites/characters/girlfriend title/girlfriend_title.res" id="3_ktqsh"]
+[ext_resource type="SpriteFrames" uid="uid://cm61yneemohnc" path="res://funkin/assets/images/characters/girlfriend title/girlfriend_title.res" id="3_ktqsh"]
 
 [node name="Girlfriend" type="Node2D" unique_id=653485954]
 script = ExtResource("1_ep0lb")
