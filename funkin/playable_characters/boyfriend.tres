@@ -10,20 +10,20 @@ album = ExtResource("1_ue4wv")
 dj = "uid://c1s7cbxg2o4m0"
 background = ExtResource("2_iol30")
 result_songs = Dictionary[String, String]({
-"excellent": "res://assets/songs/results/boyfriend/resultsEXCELLENT.ogg",
-"gold": "res://assets/songs/results/boyfriend/resultsPERFECT.ogg",
-"good": "res://assets/songs/results/boyfriend/resultsNORMAL.ogg",
-"great": "res://assets/songs/results/boyfriend/resultsNORMAL.ogg",
-"loss": "res://assets/songs/results/boyfriend/resultsSHIT.ogg",
-"perfect": "res://assets/songs/results/boyfriend/resultsPERFECT.ogg"
+"excellent": "uid://brvwivjswbekg",
+"gold": "uid://ce35a74i5sv80",
+"good": "uid://dxg0jrm60tjm",
+"great": "uid://dxg0jrm60tjm",
+"loss": "uid://dla8l3ws7tid8",
+"perfect": "uid://ce35a74i5sv80"
 })
 normal_intro = "uid://cfndri37mey1i"
 loss_intro = "uid://dp3j2qhpuv6xd"
 result_nodes = Dictionary[String, String]({
-"excellent": "res://scenes/results/boyfriend/excellent.tscn",
-"gold": "res://scenes/results/boyfriend/perfect.tscn",
-"good": "res://scenes/results/boyfriend/good.tscn",
-"great": "res://scenes/results/boyfriend/great.tscn",
-"loss": "res://scenes/results/boyfriend/loss.tscn",
-"perfect": "res://scenes/results/boyfriend/perfect.tscn"
+"excellent": "uid://iltd02v0nkc6",
+"gold": "uid://dyrcehub5js66",
+"good": "uid://cjfnhq523xvv0",
+"great": "uid://c6udmr785ti2d",
+"loss": "uid://c5suhy07ww51g",
+"perfect": "uid://dyrcehub5js66"
 })
