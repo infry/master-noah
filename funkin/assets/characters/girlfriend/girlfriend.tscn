@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bj7tgh8jkngdx" path="res://noah/game/character.gd" id="1_krhuq"]
 [ext_resource type="Texture2D" uid="uid://cxu20hb7y7adt" path="res://funkin/assets/characters/girlfriend/icon-girlfriend.png" id="2_hksi1"]
-[ext_resource type="SpriteFrames" uid="uid://ca4xphjrx5apl" path="res://funkin/assets/characters/girlfriend/girlfriend.res" id="3_0woem"]
+[ext_resource type="SpriteFrames" uid="uid://ca4xphjrx5apl" path="res://funkin/assets/characters/girlfriend/girlfriend.res" id="3_mjknh"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7d0qj"]
 atlas = ExtResource("2_hksi1")
@@ -43,7 +43,7 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Girlfriend" type="Node2D" unique_id=1857178016 groups=["metronome"]]
+[node name="Girlfriend" type="Node2D" unique_id=1857178016 node_paths=PackedStringArray("animation_player") groups=["metronome"]]
 script = ExtResource("1_krhuq")
 animation_names = Dictionary[StringName, StringName]({
 &"cheer": &"GF Cheer",
@@ -66,7 +66,9 @@ offsets = Dictionary[StringName, Vector2]({
 &"GF Right Note": Vector2(0, -315),
 &"GF Up Note": Vector2(0, -331),
 &"GF left note": Vector2(0, -316),
-&"gf sad": Vector2(0, -315)
+&"gf sad": Vector2(0, -315),
+&"idle_left": Vector2(0, -320),
+&"idle_right": Vector2(0, -320)
 })
 hold_frames = Dictionary[StringName, int]({
 &"gf sad": 2
@@ -75,11 +77,11 @@ dance_animations = Array[StringName]([&"idle_left", &"idle_right"])
 dance_rate = 4
 icons = SubResource("SpriteFrames_v8umh")
 color = Color(0.619608, 0.0784314, 0.282353, 1)
+animation_player = NodePath("AnimatedSprite2D")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1799574229]
-use_parent_material = true
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=80497307]
 position = Vector2(0, -320)
-sprite_frames = ExtResource("3_0woem")
-animation = &"idle_right"
-
-[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+sprite_frames = ExtResource("3_mjknh")
+animation = &"idle_left"
+frame = 14
+frame_progress = 1.0

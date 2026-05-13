@@ -44,9 +44,12 @@ enum AnimContext {
 		if animation_player:
 			if animation_player is AnimatedSprite2D:
 				if dance_animations.size() > 0:
-					animation_player.autoplay = dance_animations[0]
+					animation_player.autoplay = get_animation_name(dance_animations[0])
 				else:
 					animation_player.autoplay = null
+			elif animation_player is AnimateSymbol:
+				if dance_animations.size() > 0:
+					animation_player.symbol = get_animation_name(dance_animations[0])
 		
 		update_ghost()
 ## How often [b](in steps)[/b] the dance will be played.
@@ -272,8 +275,27 @@ func update_ghost():
 					var animation_name: StringName = get_animation_name(dance_animations[0])
 					ghost_sprite.texture = animation_player.sprite_frames.get_frame_texture(
 						animation_name, animation_player.sprite_frames.get_frame_count(animation_name) - 1)
-					
-					ghost_sprite.offset = offsets.get(get_animation_name(dance_animations[0]), Vector2.ZERO)
+					ghost_sprite.offset = offsets.get(animation_name, Vector2.ZERO)
+			
+			ghost_sprite.modulate = Color(1.825, 1.825, 1.825, 0.5)
+			ghost_sprite.z_index = animation_player.z_index
+			match ghost_ordering:
+				0:
+					ghost_sprite.z_index -= 1
+				
+				1:
+					ghost_sprite.z_index += 1
+			
+			self.add_child(ghost_sprite)
+		elif animation_player is AnimateSymbol:
+			ghost_sprite = AnimateSymbol.new()
+			ghost_sprite.atlases = animation_player.atlases
+			
+			if dance_animations.size() > 0:
+				var animation_name: StringName = get_animation_name(dance_animations[0])
+				ghost_sprite.symbol = animation_name
+				ghost_sprite.frame = ghost_sprite.get_animation_length() - 1
+				ghost_sprite.offset = offsets.get(animation_name, Vector2.ZERO)
 			
 			ghost_sprite.modulate = Color(1.825, 1.825, 1.825, 0.5)
 			ghost_sprite.z_index = animation_player.z_index
@@ -299,6 +321,12 @@ func reset_position():
 			undo_redo.add_do_property(animation_player, &"position", offsets.get(animation_player.animation, Vector2.ZERO))
 			undo_redo.add_undo_property(animation_player, &"position", animation_player.position)
 			undo_redo.commit_action()
+		elif animation_player is AnimateSymbol:
+			var undo_redo = EditorInterface.get_editor_undo_redo()
+			undo_redo.create_action("Reset Position")
+			undo_redo.add_do_property(animation_player, &"position", offsets.get(animation_player.symbol, Vector2.ZERO))
+			undo_redo.add_undo_property(animation_player, &"position", animation_player.position)
+			undo_redo.commit_action()
 
 ## [b]Tool Script[/b] - Used for offsetring.
 ## [br][br]Saves the offset into the [member offsets] dictionary.
@@ -312,6 +340,14 @@ func save_offset():
 			undo_redo.create_action("Save Offset")
 			var temp: Dictionary[StringName, Vector2] = offsets
 			temp[animation_player.animation] = animation_player.position
+			undo_redo.add_do_property(self, &"offsets", temp)
+			undo_redo.add_undo_property(self, &"offsets", self.offsets)
+			undo_redo.commit_action()
+		elif animation_player is AnimateSymbol:
+			var undo_redo = EditorInterface.get_editor_undo_redo()
+			undo_redo.create_action("Save Offset")
+			var temp: Dictionary[StringName, Vector2] = offsets
+			temp[animation_player.symbol] = animation_player.position
 			undo_redo.add_do_property(self, &"offsets", temp)
 			undo_redo.add_undo_property(self, &"offsets", self.offsets)
 			undo_redo.commit_action()
