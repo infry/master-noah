@@ -26,16 +26,14 @@ func _process(delta):
 		$"Health Bar/Performance".text = "Score: " + Global.format_number(GameManager.score)
 		$"Health Bar/Performance".text += " • " + "Misses: " + str(GameManager.tallies.get("misses", 0))
 	
-	update_health_bar(lerp($"Health Bar".value, target_health, 0.115))
-
+	
+	update_health_bar(Global.frame_independent_lerp($"Health Bar".value, target_health, 25, delta))
 
 func _physics_process(delta):
 	scale = Global.frame_independent_lerp(scale,target_scale, lerp_weight, delta)
 
 
 # Util
-
-
 func set_player_icons(icons: SpriteFrames): player_icon.frames = icons
 func set_enemy_icons(icons: SpriteFrames): enemy_icon.frames = icons
 
@@ -44,8 +42,6 @@ func set_enemy_color(color: Color): $"Health Bar".tint_under = color
 
 
 # Visual Util
-
-
 func icon_bop(time: float):
 	Global.bop_tween(player_icon, "scale", Vector2(0.8, 0.8), Vector2(0.9, 0.9), time, Tween.TRANS_QUAD)
 	Global.bop_tween(enemy_icon, "scale", Vector2(0.8, 0.8), Vector2(0.9, 0.9), time, Tween.TRANS_QUAD)
