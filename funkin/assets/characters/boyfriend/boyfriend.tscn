@@ -43,7 +43,7 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Boyfriend" type="Node2D" unique_id=2117704961]
+[node name="Boyfriend" type="Node2D" unique_id=2117704961 node_paths=PackedStringArray("animation_player")]
 script = ExtResource("1_mx020")
 animation_names = Dictionary[StringName, StringName]({
 &"attack": &"boyfriend attack",
@@ -66,7 +66,7 @@ offsets = Dictionary[StringName, Vector2]({
 &"BF HEY!!": Vector2(-16, -163),
 &"BF NOTE DOWN": Vector2(-26, -131),
 &"BF NOTE DOWN MISS": Vector2(-27, -141),
-&"BF NOTE LEFT": Vector2(-51, -155),
+&"BF NOTE LEFT": Vector2(-38, -156),
 &"BF NOTE LEFT MISS": Vector2(-40, -168),
 &"BF NOTE RIGHT": Vector2(27, -158),
 &"BF NOTE RIGHT MISS": Vector2(24, -168),
@@ -80,6 +80,7 @@ offsets = Dictionary[StringName, Vector2]({
 })
 icons = SubResource("SpriteFrames_u3ypl")
 color = Color(0.286275, 0.733333, 0.85098, 1)
+animation_player = NodePath("AnimatedSprite2D")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1502638124]
 use_parent_material = true
@@ -88,5 +89,3 @@ sprite_frames = ExtResource("3_cqa6h")
 animation = &"BF idle dance"
 frame = 13
 frame_progress = 1.0
-
-[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
