@@ -324,10 +324,10 @@ func save_offset():
 		return
 	
 	if animation_player:
-		if animation_player is AnimatedSprite2D:
+		if animation_player is AnimatedSprite2D or animation_player is AnimatedSprite3D:
 			var undo_redo = EditorInterface.get_editor_undo_redo()
 			undo_redo.create_action("Save Offset")
-			var temp: Dictionary[StringName, Vector2] = offsets
+			var temp: Dictionary[StringName, Vector2] = offsets.duplicate(true)
 			temp[animation_player.animation] = animation_player.position
 			undo_redo.add_do_property(self, &"offsets", temp)
 			undo_redo.add_undo_property(self, &"offsets", self.offsets)
@@ -335,7 +335,7 @@ func save_offset():
 		elif animation_player is AnimateSymbol:
 			var undo_redo = EditorInterface.get_editor_undo_redo()
 			undo_redo.create_action("Save Offset")
-			var temp: Dictionary[StringName, Vector2] = offsets
+			var temp: Dictionary[StringName, Vector2] = offsets.duplicate(true)
 			temp[animation_player.symbol] = animation_player.position
 			undo_redo.add_do_property(self, &"offsets", temp)
 			undo_redo.add_undo_property(self, &"offsets", self.offsets)
