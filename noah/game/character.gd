@@ -68,12 +68,11 @@ enum AnimContext {
 		update_ghost()
 
 @export_group("Tools")
-
-@export_tool_button("Save Offset", "Save") var save_button: Callable = self.save_offset
-@export_tool_button("Reset Position", "UndoRedo") var reset_button: Callable = self.reset_position
-@export_enum("Back", "Front") var ghost_ordering: int = 0:
+@export_tool_button("Save Offset", "Save") var _save_button: Callable = self._save_offset
+@export_tool_button("Reset Position", "UndoRedo") var _reset_button: Callable = self._reset_position
+@export_enum("Back", "Front") var _ghost_ordering: int = 0:
 	set(v):
-		ghost_ordering = v
+		_ghost_ordering = v
 		update_ghost()
 
 var current_dance: int = 0
@@ -86,7 +85,8 @@ var can_dance: bool = true
 var holding: bool = false
 ## Time elapsed since the char has started singing
 var sing_time: float = 0
-var ghost_sprite = null
+
+var _ghost_sprite = null
 
 func _ready():
 	animation_player = verify_animation_player(animation_player)
@@ -173,13 +173,17 @@ func play_animation(anim_id: StringName = &"", context: AnimContext = AnimContex
 
 
 func _process(delta: float) -> void:
-	if !Engine.is_editor_hint():
+	if Engine.is_editor_hint():
+		_editor_process(delta)
+	else:
 		if holding:
 			hold_animation()
 		
 		sing_time -= delta
 		if sing_time <= 0 and !can_dance:
 			can_dance = true
+
+
 
 ## Gets the [SpriteFrames] animation name of the given [param anim_id] in [member animation_names].
 func get_animation_name(anim_id: StringName = &""):
@@ -243,6 +247,19 @@ func on_step_hit(current_step: int, measure_relative: int):
 	if dance_rate > 0 and measure_relative % dance_rate == 0:
 		dance()
 
+#region Tool funcs
+func _editor_process(delta: float) -> void:
+	var is_player_added = animation_player != null
+	if is_player_added:
+		is_player_added = animation_player.get_parent() != null
+	
+	if not is_player_added and _ghost_sprite:
+		_cleanup_ghost()
+
+func _cleanup_ghost():
+	if _ghost_sprite:
+		remove_child(_ghost_sprite)
+		_ghost_sprite.queue_free()
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []
@@ -258,50 +275,48 @@ func update_ghost():
 	if !Engine.is_editor_hint():
 		return
 	
-	if ghost_sprite:
-		self.remove_child(ghost_sprite)
-		ghost_sprite.queue_free()
-	
+	_cleanup_ghost()
+
 	if animation_player:
 		if animation_player is AnimatedSprite2D:
-			ghost_sprite = Sprite2D.new()
+			_ghost_sprite = Sprite2D.new()
 			
 			if animation_player.sprite_frames:
 				if dance_animations.size() > 0:
 					var animation_name: StringName = get_animation_name(dance_animations[0])
-					ghost_sprite.texture = animation_player.sprite_frames.get_frame_texture(
+					_ghost_sprite.texture = animation_player.sprite_frames.get_frame_texture(
 						animation_name, animation_player.sprite_frames.get_frame_count(animation_name) - 1)
-					ghost_sprite.offset = offsets.get(animation_name, Vector2.ZERO)
+					_ghost_sprite.offset = offsets.get(animation_name, Vector2.ZERO)
 			
-			ghost_sprite.modulate = Color(1.825, 1.825, 1.825, 0.5)
-			ghost_sprite.z_index = animation_player.z_index
-			ghost_sprite.texture_filter = animation_player.texture_filter
+			_ghost_sprite.modulate = Color(1.825, 1.825, 1.825, 0.5)
+			_ghost_sprite.z_index = animation_player.z_index
+			_ghost_sprite.texture_filter = animation_player.texture_filter
 		elif animation_player is AnimateSymbol:
-			ghost_sprite = AnimateSymbol.new()
-			ghost_sprite.atlases = animation_player.atlases
+			_ghost_sprite = AnimateSymbol.new()
+			_ghost_sprite.atlases = animation_player.atlases
 			
 			if dance_animations.size() > 0:
 				var animation_name: StringName = get_animation_name(dance_animations[0])
-				ghost_sprite.symbol = animation_name
-				ghost_sprite.frame = ghost_sprite.get_animation_length() - 1
-				ghost_sprite.offset = offsets.get(animation_name, Vector2.ZERO)
+				_ghost_sprite.symbol = animation_name
+				_ghost_sprite.frame = _ghost_sprite.get_animation_length() - 1
+				_ghost_sprite.offset = offsets.get(animation_name, Vector2.ZERO)
 			
-			ghost_sprite.modulate = Color(1.825, 1.825, 1.825, 0.5)
-			ghost_sprite.z_index = animation_player.z_index
-			ghost_sprite.texture_filter = animation_player.texture_filter
+			_ghost_sprite.modulate = Color(1.825, 1.825, 1.825, 0.5)
+			_ghost_sprite.z_index = animation_player.z_index
+			_ghost_sprite.texture_filter = animation_player.texture_filter
 		
-		match ghost_ordering:
+		match _ghost_ordering:
 			0:
-				ghost_sprite.z_index -= 1
+				_ghost_sprite.z_index -= 1
 			
 			1:
-				ghost_sprite.z_index += 1
+				_ghost_sprite.z_index += 1
 		
-		self.add_child(ghost_sprite)
+		self.add_child(_ghost_sprite)
 
 ## [b]Tool Script[/b] - Used for offsetring.
 ## [br][br]Resets the current sprite back to the corresponding offset.
-func reset_position():
+func _reset_position():
 	if !Engine.is_editor_hint():
 		return
 	
@@ -321,7 +336,7 @@ func reset_position():
 
 ## [b]Tool Script[/b] - Used for offsetring.
 ## [br][br]Saves the offset into the [member offsets] dictionary.
-func save_offset():
+func _save_offset():
 	if !Engine.is_editor_hint():
 		return
 	
@@ -350,3 +365,4 @@ func verify_animation_player(node: Node):
 			node = $AnimateSymbol
 	
 	return node
+#endregion
