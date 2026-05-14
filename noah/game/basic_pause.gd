@@ -1,7 +1,5 @@
 extends Node2D
 
-const MENU_OPTION_PRELOAD = preload("uid://55odtbd2v2ql")
-
 @onready var music = $Audio/Music
 
 @export var song_title: String = ""
@@ -110,7 +108,7 @@ func load_page(page: String):
 	options = pages.get(page)
 	
 	for i in options.keys():
-		var menu_option_instance = MENU_OPTION_PRELOAD.instantiate()
+		var menu_option_instance = load("uid://55odtbd2v2ql").instantiate()
 		
 		menu_option_instance.position.x = -640 + 45
 		menu_option_instance.position.y = 0

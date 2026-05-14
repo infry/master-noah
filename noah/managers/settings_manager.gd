@@ -50,7 +50,7 @@ static var _defaults: Dictionary = {
 	},
 	
 	SEC_AUDIO: {
-		"master_volume": 1, ## the global sound volume. Affects everything
+		"master_volume": 0.5, ## the global sound volume. Affects everything
 		"sfx_volume": 1, ## The sfx volume. Only Affects sfx
 		"music_volume": 1, ## The music volume. Only applied to music tracks
 		"is_muted": false
@@ -79,8 +79,8 @@ static var _defaults: Dictionary = {
 		
 		# Ui Keybinds
 		
-		"ui_plus": [KEY_EQUAL],
-		"ui_minus": [KEY_MINUS],
+		"volume_up": [KEY_EQUAL],
+		"volume_down": [KEY_MINUS],
 		
 		"fullscreen": [KEY_F11],
 		
@@ -149,7 +149,7 @@ func get_default() -> ConfigFile:
 	return temp_config
 
 func get_keybind(keybind_name: String) -> Array : 
-	return instance.get_value(SEC_KEY_BINDS, keybind_name)
+	return instance.get_value(SEC_KEY_BINDS, keybind_name, [])
 
 func set_keybind(keybind_name: String, keycode: int, index: int):
 	var new_keycodes = instance.get_value(SEC_KEY_BINDS, keybind_name)

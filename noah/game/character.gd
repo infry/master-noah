@@ -106,6 +106,8 @@ func _ready():
 		animation_player.play()
 		animation_player.connect(&"animation_finished", self._on_animation_finished)
 		animation_player.connect(&"animation_changed", self.update_ghost)
+	
+	dance()
 
 
 func _on_animation_finished():
