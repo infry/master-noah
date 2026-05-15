@@ -322,17 +322,18 @@ func _reset_position():
 		
 	if animation_player:
 		if animation_player is AnimatedSprite2D:
-			var undo_redo = Global.__get_editor_undo_redo()
+			var undo_redo = __get_editor_undo_redo()
 			undo_redo.create_action("Reset Position")
 			undo_redo.add_do_property(animation_player, &"position", offsets.get(animation_player.animation, Vector2.ZERO))
 			undo_redo.add_undo_property(animation_player, &"position", animation_player.position)
 			undo_redo.commit_action()
 		elif animation_player is AnimateSymbol:
-			var undo_redo = Global.__get_editor_undo_redo()
+			var undo_redo = __get_editor_undo_redo()
 			undo_redo.create_action("Reset Position")
 			undo_redo.add_do_property(animation_player, &"position", offsets.get(animation_player.symbol, Vector2.ZERO))
 			undo_redo.add_undo_property(animation_player, &"position", animation_player.position)
 			undo_redo.commit_action()
+
 
 ## [b]Tool Script[/b] - Used for offsetring.
 ## [br][br]Saves the offset into the [member offsets] dictionary.
@@ -342,7 +343,7 @@ func _save_offset():
 	
 	if animation_player:
 		if animation_player is AnimatedSprite2D or animation_player is AnimatedSprite3D:
-			var undo_redo = Global.__get_editor_undo_redo()
+			var undo_redo = __get_editor_undo_redo()
 			undo_redo.create_action("Save Offset")
 			var temp: Dictionary[StringName, Vector2] = offsets.duplicate(true)
 			temp[animation_player.animation] = animation_player.position
@@ -350,7 +351,7 @@ func _save_offset():
 			undo_redo.add_undo_property(self, &"offsets", self.offsets)
 			undo_redo.commit_action()
 		elif animation_player is AnimateSymbol:
-			var undo_redo = Global.__get_editor_undo_redo()
+			var undo_redo = __get_editor_undo_redo()
 			undo_redo.create_action("Save Offset")
 			var temp: Dictionary[StringName, Vector2] = offsets.duplicate(true)
 			temp[animation_player.symbol] = animation_player.position
@@ -358,7 +359,15 @@ func _save_offset():
 			undo_redo.add_undo_property(self, &"offsets", self.offsets)
 			undo_redo.commit_action()
 
-	
+## helper function to get the editors undo and redo.
+## only works in editor dont use this elsewhere
+func __get_editor_undo_redo() -> Object:
+	var ei: Object = Engine.get_singleton(&"EditorInterface")
+	if not ei:
+		return null
+	var undo_redo: Object = ei.get_editor_undo_redo()
+	return undo_redo
+
 func verify_animation_player(node: Node):
 	if !node:
 		node = $AnimatedSprite2D

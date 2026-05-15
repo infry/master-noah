@@ -60,14 +60,7 @@ func _process(delta):
 			get_tree().reload_current_scene()
 			get_tree().paused = false
 
-## helper function to get the editors undo and redo.
-## only works in editor dont use this elsewhere
-func __get_editor_undo_redo() -> Object:
-	var ei: Object = Engine.get_singleton(&"EditorInterface")
-	if not ei:
-		return null
-	var undo_redo: Object = ei.get_editor_undo_redo()
-	return undo_redo
+
 
 #region Auto Pause
 var manual_pause: bool = false
