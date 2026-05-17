@@ -205,7 +205,6 @@ func _process(delta):
 		
 		if song_start_offset >= max(chart.offset, song_start_time):
 			play_audios(song_start_time)
-			ui.show_credits()
 	else:
 		GameManager.song_position = instrumental.get_playback_position() + \
 				AudioServer.get_time_since_last_mix() - \

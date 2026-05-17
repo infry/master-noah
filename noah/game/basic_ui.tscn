@@ -6,38 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://cycblrpqahhln" path="res://noah/assets/game/developer/healthBar.png" id="5_2fmdm"]
 [ext_resource type="Texture2D" uid="uid://dh4quhljfok4e" path="res://funkin/assets/game/icon-face.png" id="6_6rn83"]
 
-[sub_resource type="Animation" id="Animation_x83yl"]
-length = 0.001
-step = 0.1
-
-[sub_resource type="Animation" id="Animation_35xwb"]
-resource_name = "credits_hide"
-
-[sub_resource type="Animation" id="Animation_nbuux"]
-resource_name = "credits_show"
-length = 1.5
-tracks/0/type = "method"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(1.5),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [],
-"method": &"hide_credits"
-}]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_eqvj4"]
-_data = {
-&"RESET": SubResource("Animation_x83yl"),
-&"credits_hide": SubResource("Animation_35xwb"),
-&"credits_show": SubResource("Animation_nbuux")
-}
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_qk3vi"]
 atlas = ExtResource("6_6rn83")
 region = Rect2(0, 0, 150, 150)
@@ -99,9 +67,6 @@ shadow_size = 0
 offset = Vector2(640, 360)
 transform = Transform2D(1, 0, 0, 1, 640, 360)
 script = ExtResource("1_pm5h1")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1029277594]
-libraries/ = SubResource("AnimationLibrary_eqvj4")
 
 [node name="Player Strum" parent="." unique_id=1539647269 instance=ExtResource("2_58g8k")]
 position = Vector2(288, -256)

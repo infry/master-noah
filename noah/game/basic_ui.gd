@@ -80,7 +80,3 @@ func downscroll_ui():
 
 func set_credits(song_name: String, artist_names: String):
 	pass
-
-
-func show_credits(): $AnimationPlayer.play("credits_show")
-func hide_credits(): $AnimationPlayer.play("credits_hide")
