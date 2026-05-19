@@ -267,7 +267,6 @@ func _process(delta):
 func play_song(time: float):
 	await host.initiated
 	
-	print('lets do this')
 	song_starting = true
 	
 	GameManager.started_song(song_data)
