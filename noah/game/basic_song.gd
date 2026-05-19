@@ -15,6 +15,10 @@ var camera_positions: Array = []
 @onready var rating_node = load("uid://0l7bo1bqcbcj")
 @onready var combo_numbers_manager_node = load("uid://bvreww5500i5g")
 
+## Signal to be emitted when the countdown is ready to begin.
+## Emit this at a later point if u have a intro cutscene
+signal initiated
+
 # How often the camera bops. Based off the step rate in the conductor.
 var bop_rate: int = 16
 
@@ -46,6 +50,7 @@ func _ready():
 	playstate_host.connect(&"create_note", self._on_create_note)
 	playstate_host.connect(&"new_event", self._on_new_event)
 	
+	
 	for node in get_tree().get_nodes_in_group(&"player"):
 		init_bopper(node)
 	
@@ -54,9 +59,13 @@ func _ready():
 	
 	for node in get_tree().get_nodes_in_group(&"metronome"):
 		init_bopper(node)
+	
+	await Engine.get_main_loop().process_frame
+	
+	initiated.emit()
 
 func init_bopper(node: Node):
-	if node.has_method('on_step_hit'):
+	if node and node.has_method(&'on_step_hit'):
 		playstate_host.conductor.connect(&"new_step", node.on_step_hit)
 
 # Conductor Util

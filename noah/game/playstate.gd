@@ -47,6 +47,7 @@ signal setup_finished()
 ## The scene that will be switched to when the song ends.
 @export_file('*.tscn') var next_scene = "uid://cmwlnqqj5h0xy"
 
+var song_starting:bool = false
 var song_started: bool = false
 var song_start_offset: float = -4.0
 var song_start_time: float = 0.0
@@ -197,7 +198,7 @@ func _process(delta):
 		ChartManager.difficulty = GameManager.difficulty
 		Global.change_scene_to("uid://c3lux2ajoe1g6")
 	
-	if !song_started:
+	if !song_started and song_starting:
 		song_start_offset += delta
 		GameManager.song_position = song_start_offset
 		# I am subtracting a beat so the current beat clamps at -1
@@ -205,6 +206,7 @@ func _process(delta):
 		
 		if song_start_offset >= max(chart.offset, song_start_time):
 			play_audios(song_start_time)
+			song_starting = false
 	else:
 		GameManager.song_position = instrumental.get_playback_position() + \
 				AudioServer.get_time_since_last_mix() - \
@@ -263,6 +265,11 @@ func _process(delta):
 
 
 func play_song(time: float):
+	await host.initiated
+	
+	print('lets do this')
+	song_starting = true
+	
 	GameManager.started_song(song_data)
 	conductor.stream_player = instrumental
 	conductor.tempo = chart.get_tempo_at(-chart.offset + time)
