@@ -428,6 +428,7 @@ func basic_event(time: float, event_name: String, event_parameters: Array):
 			camera.shake(int(event_parameters[0]), float(event_parameters[1]))
 	
 	emit_signal("new_event", time, event_name, event_parameters)
+	Signals.play_new_event.emit(time, event_name, event_parameters)
 
 func song_finished():
 	if GameManager.freeplay:

@@ -79,7 +79,7 @@ func _process(delta):
 			if time_difference <= 0:
 				if !ignored_note_types.has(note.note_type):
 					if note != previous_note:
-						emit_signal("note_hit", note.time, self.get_name(), note.note_type, 0)
+						emit_signal(&"note_hit", note.time, self.get_name(), note.note_type, 0)
 						previous_note = note
 					
 					if note.length > 0:
@@ -96,7 +96,7 @@ func _process(delta):
 						
 						note.get_node("Note").visible = false
 						
-						emit_signal("note_holding", temp - note.length, self.get_name(), note.length, note.note_type)
+						emit_signal(&"note_holding", temp - note.length, self.get_name(), note.length, note.note_type)
 						state = STATE.GLOW
 					
 					else:
@@ -116,7 +116,7 @@ func _process(delta):
 				note_list.erase(note)
 				note.queue_free()
 				
-				emit_signal("note_miss", note.time - time_difference, self.get_name(), note.length, note.note_type, time_difference + (note.length * GameManager.seconds_per_beat))
+				emit_signal(&"note_miss", note.time - time_difference, self.get_name(), note.length, note.note_type, time_difference + (note.length * GameManager.seconds_per_beat))
 	
 	# Inputs
 	
@@ -132,11 +132,11 @@ func _process(delta):
 						note.queue_free()
 						pressing = false
 						var time_difference = (note.time - offset) - (GameManager.song_position)
-						emit_signal("note_hit", note.time, self.get_name(), note.note_type, time_difference + (note.length * GameManager.seconds_per_beat))
+						emit_signal(&"note_hit", note.time, self.get_name(), note.note_type, time_difference + (note.length * GameManager.seconds_per_beat))
 					else:
 						hold_cover_sprite.play_animation("cover " + strum_name)
 						var time_difference = (note.time - offset) - (GameManager.song_position)
-						emit_signal("note_hit", note.time, self.get_name(), note.note_type, time_difference)
+						emit_signal(&"note_hit", note.time, self.get_name(), note.note_type, time_difference)
 						if !pressing:
 							hold_cover_sprite.play_animation("cover " + strum_name + " start")
 							hold_cover_sprite.visible = true
@@ -144,10 +144,10 @@ func _process(delta):
 						pressing = true
 				else:
 					if !SettingsManager.get_value(SettingsManager.SEC_GAMEPLAY, "ghost_tapping"):
-						emit_signal("note_miss", 0, self.get_name(), 0, -1, 0)
+						emit_signal(&"note_miss", 0, self.get_name(), 0, -1, 0)
 			else:
 				if !SettingsManager.get_value(SettingsManager.SEC_GAMEPLAY, "ghost_tapping"):
-					emit_signal("note_miss", 0, self.get_name(), 0, -1, 0)
+					emit_signal(&"note_miss", 0, self.get_name(), 0, -1, 0)
 	
 	if Input.is_action_pressed(input):
 		if can_press:
@@ -164,7 +164,7 @@ func _process(delta):
 							note.length = ((note.time - offset) + (note.start_length * GameManager.seconds_per_beat)) - GameManager.song_position
 							note.length /= GameManager.seconds_per_beat
 							note.get_node("Note").visible = false
-							emit_signal("note_holding", temp - note.length, self.get_name(), note.length, note.note_type)
+							emit_signal(&"note_holding", temp - note.length, self.get_name(), note.length, note.note_type)
 							
 							if !pressing:
 								hold_cover_sprite.play_animation("cover " + strum_name + " start")
@@ -174,7 +174,7 @@ func _process(delta):
 							
 							if note.length <= 0:
 								pressing = false
-								emit_signal("note_holding", temp - note.length, self.get_name(), note.length, note.note_type)
+								emit_signal(&"note_holding", temp - note.length, self.get_name(), note.length, note.note_type)
 							
 								if can_splash:
 									hold_cover_sprite.play_animation("cover " + strum_name + " end")
@@ -198,7 +198,7 @@ func _process(delta):
 					# Checks if you were holding a note before releasing
 					if note.can_press and note.length > 0:
 						note.start_length = note.length
-						emit_signal("note_holding", 0.0, self.get_name(), 0.0, note.note_type)
+						emit_signal(&"note_holding", 0.0, self.get_name(), 0.0, note.note_type)
 			else:
 				state = STATE.IDLE
 	
@@ -263,7 +263,7 @@ func create_note(time: float, length: float, note_type: Variant, _tempo: float):
 	add_child(note_instance)
 	note_list.append(note_instance)
 	
-	emit_signal("created_note", time, self.get_name(), length, note_type)
+	emit_signal(&"created_note", time, self.get_name(), length, note_type)
 
 # Visuals
 func _on_offset_sprite_animation_finished():

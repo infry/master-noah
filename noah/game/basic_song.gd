@@ -1,9 +1,9 @@
 extends Node
 class_name BasicSong
 
-@onready var playstate_host: PlayState = $"PlayState"
-
 var camera_positions: Array = []
+
+@onready var playstate_host: PlayState = $"PlayState"
 
 @onready var stage: Node = %Stage
 @onready var player: Node = %Player
@@ -66,9 +66,11 @@ func _on_create_note(time, lane, note_length, note_type, tempo):
 		playstate_host.strums[1].create_note(time, lane % 4, note_length, note_type, tempo)
 	else:
 		playstate_host.strums[0].create_note(time, lane % 4, note_length, note_type, tempo)
+	
+	Signals.play_note_created.emit(time, lane, note_length, note_type, tempo)
 
 
-func note_hit(time, lane, note_type, hit_time, strum_manager):
+func note_hit(time: float, lane: int, note_type: Variant, hit_time: float, strum_manager: Variant):
 	var group: StringName = get_group(strum_manager)
 	get_tree().call_group(group, &"play_animation", get_direction(lane % 4),
 	Character.AnimContext.SING, true)
@@ -83,16 +85,19 @@ func note_hit(time, lane, note_type, hit_time, strum_manager):
 			get_tree().call_group(&"metronome", &"play_animation", &"cheer_200")
 		elif (playstate_host.combo % 50 == 0):
 			get_tree().call_group(&"metronome", &"play_animation", &"cheer")
+	
+	Signals.play_note_hit.emit(time, lane, note_type, hit_time, strum_manager)
 
 
-func note_holding(time, lane, length, note_type, strum_manager):
+func note_holding(time: float, lane: int, length: float, note_type: Variant, strum_manager: Variant):
 	var group: StringName = get_group(strum_manager)
 	get_tree().call_group(group, &"set_sing_timer")
 	
 	playstate_host.note_holding(time, lane, length, note_type, strum_manager)
+	
+	Signals.play_note_holding.emit(time, lane, length, note_type, strum_manager)
 
-
-func note_miss(time, lane, length, note_type, hit_time, strum_manager):
+func note_miss(time: float, lane: int, length: float, note_type: Variant, hit_time: float, strum_manager: Variant):
 	if !strum_manager.enemy_slot:
 		if note_type == -1:
 			SoundManager.anti_spam.play()
@@ -107,23 +112,21 @@ func note_miss(time, lane, length, note_type, hit_time, strum_manager):
 		&"miss_" + get_direction(lane % 4), Character.AnimContext.SING, true)
 	
 	playstate_host.note_miss(time, lane, length, note_type, hit_time, strum_manager)
+	
+	Signals.play_note_miss.emit(time, lane, length, note_type, hit_time, strum_manager)
 
-
-func get_group(strum_manager) -> StringName:
+func get_group(strum_manager: Variant) -> StringName:
 	return &"enemy" if strum_manager.enemy_slot else &"player"
 
+func get_direction(direction: int) -> StringName:
+	return [&"left", &"down", &"up", &"right"][direction]
 
-func get_direction(direction: int):
-	var animations: Array[String] = ["left", "down", "up", "right"]
-	return animations[direction]
-
-
-func _on_new_event(time, event_name, event_parameters):
+func _on_new_event(time: float, event_name: String, event_parameters: Array):
 	match event_name:
-		"play_animation":
+		&"play_animation":
 			get_tree().call_group(event_parameters[0], &"play_animation",
 			event_parameters[1], event_parameters[2])
-		"set_prefix":
+		&"set_prefix":
 			get_tree().set_group(event_parameters[0], "animation_prefix",
 			event_parameters[1])
 
