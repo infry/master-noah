@@ -15,10 +15,6 @@ var camera_positions: Array = []
 @onready var rating_node = load("uid://0l7bo1bqcbcj")
 @onready var combo_numbers_manager_node = load("uid://bvreww5500i5g")
 
-## Signal to be emitted when the countdown is ready to begin.
-## Emit this at a later point if u have a intro cutscene
-signal initiated
-
 # How often the camera bops. Based off the step rate in the conductor.
 var bop_rate: int = 16
 
@@ -40,37 +36,21 @@ func _ready():
 	
 	await playstate_host.setup_finished
 	
-	if stage:
-		playstate_host.conductor.connect(&"new_beat", stage._on_conductor_new_beat)
-	
-	playstate_host.conductor.connect(&"new_beat", self._on_conductor_new_beat)
-	playstate_host.conductor.connect(&"new_step", self._on_conductor_new_step)
+	Signals.play_conductor_step_hit.connect(_on_conductor_new_step)
+	Signals.play_conductor_beat_hit.connect(_on_conductor_new_beat)
 	
 	playstate_host.connect(&"combo_break", self._on_combo_break)
 	playstate_host.connect(&"create_note", self._on_create_note)
 	playstate_host.connect(&"new_event", self._on_new_event)
 	
-	
-	for node in get_tree().get_nodes_in_group(&"player"):
-		init_bopper(node)
-	
-	for node in get_tree().get_nodes_in_group(&"enemy"):
-		init_bopper(node)
-	
-	for node in get_tree().get_nodes_in_group(&"metronome"):
-		init_bopper(node)
-	
 	await Engine.get_main_loop().process_frame
 	
-	initiated.emit()
+	Signals.play_host_initiated.emit()
 
-func init_bopper(node: Node):
-	if node and node.has_method(&'on_step_hit'):
-		playstate_host.conductor.connect(&"new_step", node.on_step_hit)
 
 # Conductor Util
 func _on_conductor_new_beat(current_beat, measure_relative):
-	playstate_host.ui.icon_bop(playstate_host.conductor.seconds_per_beat * 0.5 *
+	playstate_host.ui.icon_bop(GameManager.conductor.seconds_per_beat * 0.5 *
 	(1 / playstate_host.instrumental.pitch_scale))
 
 func _on_conductor_new_step(current_step, measure_relative):
