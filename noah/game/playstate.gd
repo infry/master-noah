@@ -10,8 +10,6 @@ const MAX_SCORE: int = 500
 const HOLD_SCORE: float = 250
 const HOLD_HEALTH: float = 6
 
-signal create_note(time: float, lane: int, note_length: float, note_type: Variant, tempo: float)
-signal new_event(time: float, event_name: String, event_parameters: Array)
 signal setup_finished()
 
 @onready var countdown_node = load("uid://daky0nn8plbe4")
@@ -239,9 +237,9 @@ func _process(delta):
 				var time: float = note[0]
 				var lane: int = note[1]
 				var length: float = note[2]
-				var type = note[3]
+				var type: Variant = note[3]
 				
-				create_note.emit(time, lane, length, type, chart.get_tempo_at(time))
+				Signals.play_note_created.emit(time, lane, length, type, chart.get_tempo_at(time))
 				current_note += 1
 	
 	if instrumental.playing:
@@ -424,7 +422,6 @@ func basic_event(time: float, event_name: String, event_parameters: Array):
 		"camera_shake":
 			camera.shake(int(event_parameters[0]), float(event_parameters[1]))
 	
-	emit_signal("new_event", time, event_name, event_parameters)
 	Signals.play_new_event.emit(time, event_name, event_parameters)
 
 func song_finished():

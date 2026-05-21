@@ -111,6 +111,3 @@ script = ExtResource("11_xxo2x")
 parent_2D = NodePath("../Camera")
 target_zoom = Vector2(0.85, 0.85)
 metadata/_custom_type_script = "uid://b4lmffueni5k"
-
-[connection signal="create_note" from="PlayState Host" to="." method="_on_create_note"]
-[connection signal="new_event" from="PlayState Host" to="." method="_on_new_event"]

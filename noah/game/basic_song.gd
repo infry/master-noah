@@ -40,10 +40,8 @@ func _ready():
 	Signals.play_conductor_beat_hit.connect(_on_conductor_new_beat)
 	
 	Signals.play_combo_break.connect(_on_combo_break)
-	
-	playstate_host.connect(&"create_note", self._on_create_note)
-	playstate_host.connect(&"new_event", self._on_new_event)
-
+	Signals.play_note_created.connect(_on_create_note)
+	Signals.play_new_event.connect(_on_new_event)
 	
 	await Engine.get_main_loop().process_frame
 	
@@ -51,11 +49,11 @@ func _ready():
 
 
 # Conductor Util
-func _on_conductor_new_beat(current_beat, measure_relative):
+func _on_conductor_new_beat(current_beat: int, measure_relative: int):
 	playstate_host.ui.icon_bop(GameManager.conductor.seconds_per_beat * 0.5 *
 	(1 / playstate_host.instrumental.pitch_scale))
 
-func _on_conductor_new_step(current_step, measure_relative):
+func _on_conductor_new_step(current_step: int, measure_relative: int):
 	if current_step % bop_rate == 0:
 		var strength = playstate_host.camera_bop_strength if playstate_host.camera.get_direct() is Camera2D else playstate_host.camera_bop_strength.x
 		playstate_host.camera.zoom += strength * playstate_host.camera.zoom
@@ -68,9 +66,6 @@ func _on_create_note(time, lane, note_length, note_type, tempo):
 		playstate_host.strums[1].create_note(time, lane % 4, note_length, note_type, tempo)
 	else:
 		playstate_host.strums[0].create_note(time, lane % 4, note_length, note_type, tempo)
-	
-	Signals.play_note_created.emit(time, lane, note_length, note_type, tempo)
-
 
 func note_hit(time: float, lane: int, note_type: Variant, hit_time: float, strum_manager: Variant):
 	var group: StringName = get_group(strum_manager)
