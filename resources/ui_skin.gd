@@ -7,13 +7,13 @@ class_name UISkin
 
 @export var rating_texture: SpriteFrames
 @export var numbers_texture: SpriteFrames
-@export var pixel_texture = false
+@export var pixel_texture: bool = false
 
 @export_subgroup("Texture Scaling")
 
-@export var rating_scale = 1.0
-@export var numbers_scale = 1.0
-@export var numbers_spacing = 64
+@export var rating_scale: float = 1.0
+@export var numbers_scale: float = 1.0
+@export var numbers_spacing: float = 64
 
 @export_subgroup("Offsets")
 
@@ -22,5 +22,5 @@ class_name UISkin
 
 @export_subgroup("Scenes")
 
-@export var countdown_animation = "developer_countdown"
-@export var pause_scene = "uid://djhqiluiy02ao"
+@export var countdown_animation: String = "developer_countdown"
+@export var pause_scene: String = "uid://djhqiluiy02ao"

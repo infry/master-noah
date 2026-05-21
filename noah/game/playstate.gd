@@ -113,6 +113,9 @@ func _ready():
 	conductor.connect(&"new_beat", self.new_beat)
 	conductor.connect(&"new_step", self.new_step)
 	
+	strums = ui.strums
+	pause_scene = ui_skin.pause_scene
+	
 	pause_preload = load(pause_scene)
 	GameManager.song_scene = LoadingScreen.scene
 	
@@ -140,10 +143,6 @@ func _ready():
 			play_song(0)
 	
 	Global.set_window_title("Playing: " + song_data.title)
-	
-	pause_scene = ui_skin.pause_scene
-	
-	strums = ui.strums
 	
 	if SettingsManager.get_value(SettingsManager.SEC_GAMEPLAY, "botplay"):
 		if OS.is_debug_build():

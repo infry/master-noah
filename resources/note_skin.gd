@@ -9,14 +9,14 @@ class_name NoteSkin
 @export var notes_texture: SpriteFrames
 @export var splashes_texture: SpriteFrames
 @export var hold_covers_texture: SpriteFrames
-@export var pixel_texture = false
+@export var pixel_texture: bool = false
 
 @export_subgroup("Texture Scaling")
 
-@export var notes_scale = 1.0
-@export var splash_scale = 1.0
-@export var sustain_width = 0
-@export var hold_covers_scale = 1.0
+@export var notes_scale: float = 1.0
+@export var splash_scale: float = 1.0
+@export var sustain_width: float = 0
+@export var hold_covers_scale: float = 1.0
 
 @export_subgroup("Offsets")
 @export var animation_names: Dictionary[StringName, StringName] = {}

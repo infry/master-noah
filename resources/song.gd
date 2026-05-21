@@ -20,7 +20,7 @@ class_name Song
 
 ## Optional filepath to a an Events Resource.
 ## These events will be loaded regardless of difficulty
-@export_file('*.tres','*.res') var events:String
+@export_file('*.tres','*.res') var events: String
 
 @export_subgroup("Display Stuff")
 
