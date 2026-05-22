@@ -331,10 +331,9 @@ func string_to_ease(tween: String) -> Array:
 
 func string_to_time(formatted_time: String) -> float:
 	if formatted_time.ends_with("b"):
-		return int(formatted_time.trim_suffix("b")) * GameManager.conductor.seconds_per_beat
+		return float(formatted_time.trim_suffix("b")) * GameManager.conductor.seconds_per_beat
 	elif formatted_time.ends_with("s"):
-		print(int(formatted_time.trim_suffix("s")) * GameManager.conductor.seconds_per_step)
-		return int(formatted_time.trim_suffix("s")) * GameManager.conductor.seconds_per_step
+		return float(formatted_time.trim_suffix("s")) * GameManager.conductor.seconds_per_step
 	elif formatted_time.is_empty():
 		return 0
 	
