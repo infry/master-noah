@@ -11,7 +11,7 @@ const EVENT_DATA: Dictionary = {
 	},
 	"camera_bop": {
 		"parameters": ["Camera Bop Amount", "UI Bop Amount"],
-		"texture": "uid://bs2p6h6sokqf0"
+		"texture": "uid://qe3r1k3apxbl"
 	},
 	"camera_zoom": {
 		"parameters": ["Zoom", "Duration", "Easing Type"],

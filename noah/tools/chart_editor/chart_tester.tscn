@@ -17,7 +17,7 @@ outline_color = Color(0, 0, 0, 1)
 script = ExtResource("1_ep6vc")
 metadata/_edit_vertical_guides_ = []
 
-[node name="PlayState Host" parent="." unique_id=1464953201 node_paths=PackedStringArray("host", "ui", "camera") instance=ExtResource("2_ajkug")]
+[node name="PlayState" parent="." unique_id=1464953201 node_paths=PackedStringArray("host", "ui", "camera") instance=ExtResource("2_ajkug")]
 host = NodePath("..")
 ui = NodePath("../UI")
 camera = NodePath("../CameraController")
@@ -71,7 +71,3 @@ autowrap_mode = 3
 script = ExtResource("9_gdhuo")
 parent_2D = NodePath("../Camera")
 metadata/_custom_type_script = "uid://b4lmffueni5k"
-
-[connection signal="combo_break" from="PlayState Host" to="." method="_on_combo_break"]
-[connection signal="create_note" from="PlayState Host" to="." method="_on_create_note"]
-[connection signal="setup_finished" from="PlayState Host" to="." method="_on_play_state_host_setup_finished"]

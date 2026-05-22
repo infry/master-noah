@@ -10,8 +10,6 @@ const MAX_SCORE: int = 500
 const HOLD_SCORE: float = 250
 const HOLD_HEALTH: float = 6
 
-signal setup_finished()
-
 @onready var countdown_node = load("uid://daky0nn8plbe4")
 @onready var song_data: Song
 @onready var vocals: AudioStreamPlayer
@@ -156,7 +154,6 @@ func _ready():
 	get_tree().call_group(&"strums", "set_skin", note_skin)
 	if SettingsManager.get_value(SettingsManager.SEC_GAMEPLAY, "downscroll"):
 		get_tree().call_group(&"strums", "set_scroll", -1)
-	
 	
 	Signals.play_setup_finished.emit()
 

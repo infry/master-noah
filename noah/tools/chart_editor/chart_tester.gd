@@ -7,6 +7,8 @@ func _ready():
 	playstate_host.ui.set_enemy_color(Color.RED)
 	playstate_host.ui.player_icon.visible = false
 	playstate_host.ui.enemy_icon.visible = false
+	
+	Signals.connect("play_setup_finished", self._on_setup_finished)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -18,5 +20,5 @@ func _process(delta):
 	$"UI/Chart Stats".text += "\n" + str(GameManager.tallies).replace("{", "").replace("}", "").replace(",", "\n")
 
 
-func _on_play_state_host_setup_finished() -> void:
+func _on_setup_finished() -> void:
 	get_tree().call_group(&"strums", "set_skin", ChartEditor.note_skin)
