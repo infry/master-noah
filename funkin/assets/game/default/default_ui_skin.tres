@@ -10,4 +10,5 @@ rating_texture = ExtResource("2_ewjdd")
 numbers_texture = ExtResource("1_r6qog")
 rating_scale = 0.6
 numbers_scale = 0.4
+numbers_spacing = 92.0
 countdown_animation = "default_countdown"

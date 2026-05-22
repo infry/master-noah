@@ -25,6 +25,7 @@ middle_mouse_paste_enabled = false
 selecting_enabled = false
 deselect_on_focus_loss_enabled = false
 drag_and_drop_selection_enabled = false
+icon_expand_mode = 1
 
 [node name="Remove Track" type="Button" parent="." unique_id=630049615]
 layout_mode = 2

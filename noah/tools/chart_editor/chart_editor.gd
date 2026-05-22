@@ -950,7 +950,7 @@ sorted: bool = false, sort_index: int = -1) -> int:
 			selected_note_nodes = [note_instance]
 			min_lane = 0
 			max_lane = ChartManager.strum_count - 1
-			output = note_nodes.size() - 1
+			output = L
 		
 		# Preventing fake notes
 		current_visible_notes_L = max(min(L, current_visible_notes_L), 0)
@@ -1009,21 +1009,18 @@ sorted: bool = false, sort_index: int = -1) -> int:
 			
 			output = L
 		else:
-			if current_visible_notes_L == -1:
-				current_visible_notes_L = 0
-			
 			event_nodes.append(event_instance)
 			ChartManager.chart.chart_data["events"].append([time, event, parameters])
-			selected_notes = [ChartManager.chart.get_events_data().size() - 1]
+			L = ChartManager.chart.get_events_data().size() - 1
+			selected_notes = [L]
 			selected_note_nodes = [event_instance]
 			min_lane = 0
 			max_lane = ChartManager.strum_count - 1
-			output = event_nodes.size() - 1
+			output = L
 		
 		# Preventing fake events
 		current_visible_events_L = max(min(L, current_visible_events_L), 0)
 		current_visible_events_R += 1
-		
 	else:
 		if sorted:
 			var L: int = sort_index

@@ -80,7 +80,7 @@ func _process(delta):
 			if time_difference <= 0:
 				if !ignored_note_types.has(note.note_type):
 					if note != previous_note:
-						emit_signal(&"note_hit", note.time, self.get_name(), note.note_type, 0)
+						emit_signal(&"note_hit", note.time, self, note.note_type, 0)
 						previous_note = note
 					
 					if note.length > 0:
@@ -97,7 +97,7 @@ func _process(delta):
 						
 						note.note.visible = false
 						
-						emit_signal(&"note_holding", temp - note.length, self.get_name(), note.length, note.note_type)
+						emit_signal(&"note_holding", temp - note.length, self, note.length, note.note_type)
 						state = STATE.GLOW
 					
 					else:
@@ -117,7 +117,8 @@ func _process(delta):
 				note_list.erase(note)
 				note.queue_free()
 				
-				emit_signal(&"note_miss", note.time - time_difference, self.get_name(), note.length, note.note_type, time_difference + (note.length * GameManager.seconds_per_beat))
+				emit_signal(&"note_miss", note.time - time_difference, self,
+				note.length, note.note_type, time_difference + (note.length * GameManager.seconds_per_beat))
 	
 	# Inputs
 	
@@ -166,7 +167,7 @@ func _process(delta):
 							note.length = ((note.time - offset) + (note.start_length * GameManager.seconds_per_beat)) - GameManager.song_position
 							note.length /= GameManager.seconds_per_beat
 							note.note.visible = false
-							emit_signal(&"note_holding", temp - note.length, self.get_name(), note.length, note.note_type)
+							emit_signal(&"note_holding", temp - note.length, self, note.length, note.note_type)
 							
 							if !pressing:
 								hold_cover_sprite.play_animation("cover " + strum_name + " start")
@@ -176,7 +177,7 @@ func _process(delta):
 							
 							if note.length <= 0:
 								pressing = false
-								emit_signal(&"note_holding", temp - note.length, self.get_name(), note.length, note.note_type)
+								emit_signal(&"note_holding", temp - note.length, self, note.length, note.note_type)
 							
 								if can_splash:
 									hold_cover_sprite.play_animation("cover " + strum_name + " end")
@@ -265,7 +266,7 @@ func create_note(time: float, length: float, note_type: Variant, _tempo: float):
 	add_child(note_instance)
 	note_list.append(note_instance)
 	
-	emit_signal(&"created_note", time, self.get_name(), length, note_type)
+	emit_signal(&"created_note", time, self, length, note_type)
 
 # Visuals
 func _on_offset_sprite_animation_finished():
