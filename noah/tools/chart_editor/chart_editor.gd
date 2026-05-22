@@ -1675,12 +1675,15 @@ func test_button_item_pressed(id):
 		_:
 			print("id: ", id)
 
+
 func disable_charting():
 	can_chart = false
+
 
 func close_popup():
 	can_chart = true
 	%"Close Window".play()
+
 
 func undo():
 	if undo_redo.has_undo():

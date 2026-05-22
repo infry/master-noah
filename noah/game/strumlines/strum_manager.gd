@@ -8,7 +8,7 @@ signal note_miss(time: float, lane: int, length: float, note_type: Variant, hit_
 
 @export var note_skin = NoteSkin.new()
 ## List of NodePaths of the strumlines.
-@export var strums = PackedStringArray()
+@export var strums: Array[Strum] = []
 ## Vocal track ID.
 @export var id: int = 0
 
@@ -33,9 +33,9 @@ func _ready():
 	set_enemy_slot(enemy_slot)
 	
 	for strum in strums:
-		get_node(strum).connect(&"note_hit", self._on_note_hit)
-		get_node(strum).connect(&"note_holding", self._on_note_holding)
-		get_node(strum).connect(&"note_miss", self._on_note_miss)
+		strum.connect(&"note_hit", self._on_note_hit)
+		strum.connect(&"note_holding", self._on_note_holding)
+		strum.connect(&"note_miss", self._on_note_miss)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -44,93 +44,88 @@ func _process(delta):
 
 
 func set_skin(new_skin: NoteSkin):
-	for i in strums:
-		get_node(i).set_skin(new_skin)
+	for strum in strums:
+		strum.set_skin(new_skin)
 
 
 # PlayState Util
 
 
 func set_scroll_speed(new_scroll_speed: float):
-	for i in strums:
-		get_node(i).scroll_speed = new_scroll_speed
+	for strum in strums:
+		strum.scroll_speed = new_scroll_speed
 
 
 func set_scroll(new_scroll: float):
-	for i in strums:
-		get_node(i).scroll = new_scroll
+	for strum in strums:
+		strum.scroll = new_scroll
 
 
 func set_press(toggle: bool):
-	for i in strums:
-		get_node(i).can_press = toggle
+	for strum in strums:
+		strum.can_press = toggle
 
 
 func set_auto_play(toggle: bool):
-	for i in strums:
-		get_node(i).auto_play = toggle
+	for strum in strums:
+		strum.auto_play = toggle
 
 
 func set_can_splash(toggle: bool):
-	for i in strums:
-		get_node(i).can_splash = toggle
+	for strum in strums:
+		strum.can_splash = toggle
 
 
 func set_enemy_slot(toggle: bool):
-	for i in strums:
-		get_node(i).enemy_slot = toggle
+	for strum in strums:
+		strum.enemy_slot = toggle
 
 
 func set_ignored_note_types(_note_types: Array):
-	for i in strums:
-		get_node(i).ignored_note_types = _note_types
+	for strum in strums:
+		strum.ignored_note_types = _note_types
 
 
 func get_strumline(lane: int) -> Strum:
-	return get_node(strums[lane])
+	return strums[lane]
 
 func get_scroll_speed(lane: int) -> float:
 	return get_strumline(lane).scroll_speed
 
 
 func note_types(_note_types: Array):
-	for i in strums:
-		get_node(i).note_types = _note_types
+	for strum in strums:
+		strum.note_types = _note_types
 
 
 func create_note(time: float, lane: int, length: float, note_type: Variant, tempo: float):
 	var strum = strums[lane]
-	get_node(strum).create_note(time, length, note_type, tempo)
+	strum.create_note(time, length, note_type, tempo)
 
 
 func create_splash(lane: int, animation_name: String):
 	var strum = strums[lane]
-	get_node(strum).create_splash(animation_name) 
+	strum.create_splash(animation_name) 
 
 
 # Visual Util
 
 
 func glow_strum(lane: int):
-	var node = get_node(strums[lane])
-	node.glow_strum()
+	strums[lane].glow_strum()
 
 
 func press_strum(lane: int):
-	var node = get_node(strums[lane])
-	node.press_strum()
+	strums[lane].press_strum()
 
 
-# Signals
+func _on_note_hit(time, strum, note_type, hit_time):
+	emit_signal("note_hit", time, strums.find(strum), note_type, hit_time, self)
 
 
-func _on_note_hit(time, strum_name, note_type, hit_time):
-	emit_signal("note_hit", time, strums.find(strum_name), note_type, hit_time, self)
+func _on_note_holding(time, strum, length, note_type):
+	emit_signal("note_holding", time, strums.find(strum), length, note_type, self)
 
 
-func _on_note_holding(time, strum_name, length, note_type):
-	emit_signal("note_holding", time, strums.find(strum_name), length, note_type, self)
-
-
-func _on_note_miss(time, strum_name, length, note_type, hit_time):
-	emit_signal("note_miss", time, strums.find(strum_name), length, note_type, hit_time, self)
+func _on_note_miss(time, strum, length, note_type, hit_time):
+	emit_signal("note_miss", time, strums.find(strum), length, note_type, hit_time, self)

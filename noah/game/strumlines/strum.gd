@@ -10,10 +10,10 @@ const NOTE_TYPES: Dictionary = {
 	"mom": "",
 }
 
-signal created_note(time: float, strum_name: StringName, length: float, note_type: Variant)
-signal note_hit(time: float, strum_name: StringName, note_type: Variant, hit_time: float)
-signal note_holding(time: float, strum_name: StringName, length: float, note_type: Variant)
-signal note_miss(time: float, strum_name: StringName, length: float, note_type: Variant, hit_time: float)
+signal created_note(time: float, strum: Strum, length: float, note_type: Variant)
+signal note_hit(time: float, strum: Strum, note_type: Variant, hit_time: float)
+signal note_holding(time: float, strum: Strum, length: float, note_type: Variant)
+signal note_miss(time: float, strum: Strum, length: float, note_type: Variant, hit_time: float)
 
 @export var note_skin: NoteSkin
 ## Name of the input in the [code]InputMap[/code]
@@ -133,11 +133,11 @@ func _process(delta):
 						note.queue_free()
 						pressing = false
 						var time_difference = (note.time - offset) - (GameManager.song_position)
-						emit_signal(&"note_hit", note.time, self.get_name(), note.note_type, time_difference + (note.length * GameManager.seconds_per_beat))
+						emit_signal(&"note_hit", note.time, self, note.note_type, time_difference + (note.length * GameManager.seconds_per_beat))
 					else:
 						hold_cover_sprite.play_animation("cover " + strum_name)
 						var time_difference = (note.time - offset) - (GameManager.song_position)
-						emit_signal(&"note_hit", note.time, self.get_name(), note.note_type, time_difference)
+						emit_signal(&"note_hit", note.time, self, note.note_type, time_difference)
 						if !pressing:
 							hold_cover_sprite.play_animation("cover " + strum_name + " start")
 							hold_cover_sprite.visible = true
@@ -145,10 +145,10 @@ func _process(delta):
 						pressing = true
 				else:
 					if !SettingsManager.get_value(SettingsManager.SEC_GAMEPLAY, "ghost_tapping"):
-						emit_signal(&"note_miss", 0, self.get_name(), 0, -1, 0)
+						emit_signal(&"note_miss", 0, self, 0, -1, 0)
 			else:
 				if !SettingsManager.get_value(SettingsManager.SEC_GAMEPLAY, "ghost_tapping"):
-					emit_signal(&"note_miss", 0, self.get_name(), 0, -1, 0)
+					emit_signal(&"note_miss", 0, self, 0, -1, 0)
 	
 	if Input.is_action_pressed(input):
 		if can_press:
@@ -200,7 +200,7 @@ func _process(delta):
 					# Checks if you were holding a note before releasing
 					if note.can_press and note.length > 0:
 						note.start_length = note.length
-						emit_signal(&"note_holding", 0.0, self.get_name(), 0.0, note.note_type)
+						emit_signal(&"note_holding", 0.0, self, 0.0, note.note_type)
 			else:
 				state = STATE.IDLE
 	

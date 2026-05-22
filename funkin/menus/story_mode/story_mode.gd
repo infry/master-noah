@@ -19,7 +19,6 @@ func _ready():
 	var object_amount: int = 0
 	
 	for i in weeks:
-		
 		var week_icon_instance = WEEK_ICON_NODE.instantiate()
 		
 		week_icon_instance.position = Vector2(1280 / 2, 1000)
