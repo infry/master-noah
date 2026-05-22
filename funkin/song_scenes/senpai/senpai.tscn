@@ -6,6 +6,7 @@
 [ext_resource type="Resource" uid="uid://dsqgb7q6eq1mf" path="res://funkin/assets/game/pixel/pixel_ui_skin.tres" id="5_0s4pd"]
 [ext_resource type="PackedScene" uid="uid://cd3leoxyqnk4m" path="res://funkin/assets/stages/weeb_school/weeb_school.tscn" id="7_mjcyn"]
 [ext_resource type="PackedScene" uid="uid://dcuxa2yfg27xc" path="res://funkin/assets/characters/boyfriend pixel/boyfriend pixel.tscn" id="9_cvimb"]
+[ext_resource type="SpriteFrames" uid="uid://dt82dx1mf15r" path="res://funkin/assets/game/face.tres" id="9_vtipb"]
 [ext_resource type="PackedScene" uid="uid://c641vxfiu033w" path="res://funkin/assets/characters/senpai/senpai.tscn" id="10_2o85c"]
 [ext_resource type="Script" uid="uid://b4lmffueni5k" path="res://noah/game/camera_controller.gd" id="11_gd42n"]
 [ext_resource type="PackedScene" uid="uid://blyod30lc1qk0" path="res://funkin/assets/characters/girlfriend pixel/girlfriend pixel.tscn" id="11_norpj"]
@@ -30,11 +31,13 @@ position_smoothing_speed = 3.0
 [node name="Stage" parent="." unique_id=900796771 instance=ExtResource("7_mjcyn")]
 unique_name_in_owner = true
 
-[node name="Player" parent="." unique_id=1935859516 groups=["player"] instance=ExtResource("9_cvimb")]
+[node name="Player" parent="." unique_id=1935859516 node_paths=PackedStringArray("animation_player") groups=["player"] instance=ExtResource("9_cvimb")]
 unique_name_in_owner = true
 z_index = 300
 position = Vector2(480, 880.00006)
 scale = Vector2(6, 6)
+animation_player = NodePath("AnimatedSprite2D")
+sing_duration = 8.0
 
 [node name="Enemy" parent="." unique_id=182391035 groups=["enemy"] instance=ExtResource("10_2o85c")]
 unique_name_in_owner = true
@@ -42,11 +45,13 @@ z_index = 200
 position = Vector2(-160, 904.00006)
 scale = Vector2(6, 6)
 
-[node name="Metronome" parent="." unique_id=410590995 instance=ExtResource("11_norpj")]
+[node name="Metronome" parent="." unique_id=410590995 node_paths=PackedStringArray("animation_player") instance=ExtResource("11_norpj")]
 unique_name_in_owner = true
 z_index = 100
 position = Vector2(144, 840)
 scale = Vector2(6, 6)
+animation_player = NodePath("AnimatedSprite2D")
+icons = ExtResource("9_vtipb")
 
 [node name="World" type="CanvasLayer" parent="." unique_id=933170111]
 layer = 10
@@ -82,7 +87,3 @@ layer = 10
 script = ExtResource("11_gd42n")
 parent_2D = NodePath("../Camera")
 metadata/_custom_type_script = "uid://b4lmffueni5k"
-
-[connection signal="combo_break" from="PlayState Host" to="." method="_on_combo_break"]
-[connection signal="create_note" from="PlayState Host" to="." method="_on_create_note"]
-[connection signal="new_event" from="PlayState Host" to="." method="_on_new_event"]

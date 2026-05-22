@@ -784,10 +784,12 @@ func _on_window_about_to_popup() -> void:
 	var events: Array = ChartManager.EVENT_DATA.keys()
 	events = events.filter(func(_name): return !ChartManager.event_tracks.has(_name))
 	
-	print(events)
-	
 	for event in events:
 		%"Event Option".add_item(event)
+		var icon: String = ChartManager.EVENT_DATA.get(event, {}).get("texture", "")
+		if ResourceLoader.exists(icon):
+			%"Event Option".set_item_icon(%"Event Option".item_count - 1, load(icon))
+			%"Event Option".get_popup().set_item_icon_max_width(%"Event Option".item_count - 1, 32)
 
 
 func _on_add_event_track_pressed() -> void:

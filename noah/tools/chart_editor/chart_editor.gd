@@ -77,6 +77,7 @@ func _ready() -> void:
 			get_tree().change_scene_to_file("uid://cq6xqods6w7lw")
 			return
 	
+	get_window().content_scale_size = Vector2(1280, 720)
 	get_viewport().gui_focus_changed.connect(_on_gui_focus_changed)
 	Global.set_window_title("Chart Editor")
 	song_speed = SettingsManager.get_value("gameplay", "song_speed")
