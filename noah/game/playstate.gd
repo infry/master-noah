@@ -380,6 +380,9 @@ func basic_event(time: float, event_name: String, event_parameters: Array):
 			camera.zoom += camera_bop * camera.zoom
 			ui.scale += Vector2.ONE * ui_bop
 		
+		"psych_camera_zoom":
+			var new_zoom = Vector2(float(event_parameters[0]), float(event_parameters[0]))
+			camera.target_zoom = new_zoom
 		"camera_zoom":
 			var new_zoom = Vector2(float(event_parameters[0]), float(event_parameters[0]))
 			var zoom_time = Global.string_to_time(event_parameters[1])

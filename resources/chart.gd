@@ -270,34 +270,33 @@ static func convert_psych(data:Dictionary,events:Array = [], v1:bool = true) -> 
 		var time = i[0]
 		# Event name conversion
 		for j in i[1]:
-			if j[0] == 'Play Animation':
-				j[0] = 'play_animation'
-				
-				var anim = j[1]
-				var char:String = j[2].to_lower()
-				match char:
-					'bf', 'boyfriend':
-						char = 'player'
-					'gf', 'girlfriend':
-						char = 'metronome'
-					_:
-						char = 'enemy'
-				
-				j[1] = char
-				j[2] = anim
+			match j[0]:
+				"Play Animation":
+					j[0] = 'play_animation'
+					
+					var anim = j[1]
+					var char_group:String = j[2].to_lower()
+					match char:
+						'bf', 'boyfriend':
+							char_group = 'player'
+						'gf', 'girlfriend':
+							char_group = 'metronome'
+						_:
+							char_group = 'enemy'
+					
+					j[1] = char_group
+					j[2] = anim
+				"Set Property":
+					if j[1] == 'defaultCamZoom':
+						j[0] = 'psych_camera_zoom'
+						j[1] = j[2]
+				"Change Scroll Speed": #psych changes it by multiplying the base so we r changing it to be direct
+					j[0] = 'scroll_speed'
+					var new_speed = float(j[1]) * chart.scroll_speed
+					j[1] = str(new_speed)
+					
 			if EVENT_NAMES.has(j[0]):
 				j[0] = EVENT_NAMES.get(j[0])
-			
-			if j[0] == "Adjust Camera":
-				var split = j[2].split(",")
-				if j[1] == "zoom":
-					j[0] = "camera_zoom"
-					j[1] = int(split[0])
-					j[2] = split[1]
-				else:
-					j[0] = "bop_rate"
-					j[1] = int(split[0])
-					j[2] = ""
 			
 			# Creates the event
 			## j[1] is the event name, j[2] is the event parameters
@@ -324,7 +323,6 @@ static func convert_vslice(data:Dictionary, meta:Dictionary,diff:String = '') ->
 	var event_data = []
 	var tempo_data = {}
 	var meter_data = {0.0: [4, 16]}
-	var section_time = 0.0
 	
 	# Get tempo at certain time
 	var get_temp_at_struct = func(time:float,tempo_dict:Dictionary) -> float:
@@ -412,7 +410,6 @@ static func convert_cne(data:Dictionary, meta:Dictionary, events:Array = []) -> 
 	var event_data = []
 	var tempo_data = {}
 	var meter_data = {0.0: [4, 16]}
-	var section_time = 0.0
 	
 	# Get tempo at certain time
 	var get_temp_at_struct = func(time:float,tempo_dict:Dictionary) -> float:
@@ -492,9 +489,7 @@ const EVENT_NAMES = {
 	
 	# Psych Engine Names
 	"Add Camera Zoom": "camera_bop",
-	"Change Scroll Speed": "scroll_speed",
 	"Screen Shake": "psych_camera_shake",
-	"Set Cam Zoom": "camera_zoom",
 	
 	# Base Game Names
 	"FocusCamera": "camera_position",
