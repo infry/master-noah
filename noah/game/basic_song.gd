@@ -121,8 +121,12 @@ func get_direction(direction: int) -> StringName:
 func _on_new_event(time: float, event_name: String, event_parameters: Array):
 	match event_name:
 		&"play_animation":
+			var duration: float = -1
+			if !event_parameters[2].is_empty():
+				duration = float(event_parameters[2])
+			
 			get_tree().call_group(event_parameters[0], &"play_animation",
-			event_parameters[1], Character.AnimContext.SPECIAL, event_parameters[2])
+			event_parameters[1], Character.AnimContext.SPECIAL, duration)
 		&"set_prefix":
 			get_tree().set_group(event_parameters[0], &"animation_prefix",
 			event_parameters[1])

@@ -7,3 +7,5 @@ func _on_new_event(time, event_name, event_parameters):
 				%Metronome.get_node("AnimationPlayer").play("look_right")
 			else:
 				%Metronome.get_node("AnimationPlayer").play("look_left")
+	
+	super(time, event_name, event_parameters)
