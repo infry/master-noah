@@ -82,7 +82,9 @@ func _ready() -> void:
 	Global.set_window_title("Chart Editor")
 	song_speed = SettingsManager.get_value("gameplay", "song_speed")
 	
-	if ChartManager.song:
+	if not ChartManager.song:
+		file_button_item_pressed(1)
+	else:
 		var old_song = null
 		var song = ChartManager.song
 		load_song(song, ChartManager.difficulty)
