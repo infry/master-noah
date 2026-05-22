@@ -697,6 +697,9 @@ func load_song(song: Song, difficulty: Variant = null):
 	%Instrumental.stream = load(ChartManager.song.instrumental)
 	play_audios(song_position)
 	
+	%Vocals.stream_paused = true
+	%Instrumental.stream_paused = true
+	
 	%"Song Slider".max_value = %Instrumental.stream.get_length()
 	%"Song Slider".value = 0.0
 	$Conductor.tempo = ChartManager.chart.get_tempo_at(0.0)

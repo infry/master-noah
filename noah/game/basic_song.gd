@@ -47,11 +47,11 @@ func _ready():
 	
 	Signals.play_song_ready_to_start.emit()
 
-
 # Conductor Util
 func _on_conductor_new_beat(current_beat: int, measure_relative: int):
 	playstate_host.ui.icon_bop(GameManager.conductor.seconds_per_beat * 0.5 *
 	(1 / playstate_host.instrumental.pitch_scale))
+
 
 func _on_conductor_new_step(current_step: int, measure_relative: int):
 	if current_step % bop_rate == 0:
@@ -61,11 +61,13 @@ func _on_conductor_new_step(current_step: int, measure_relative: int):
 		if SettingsManager.get_value(SettingsManager.SEC_PREFERENCES, "ui_bops"):
 			playstate_host.ui.scale += playstate_host.ui_bop_strength
 
+
 func _on_create_note(time, lane, note_length, note_type, tempo):
 	if (lane > 3):
 		playstate_host.strums[1].create_note(time, lane % 4, note_length, note_type, tempo)
 	else:
 		playstate_host.strums[0].create_note(time, lane % 4, note_length, note_type, tempo)
+
 
 func note_hit(time: float, lane: int, note_type: Variant, hit_time: float, strum_manager: Variant):
 	var group: StringName = get_group(strum_manager)
@@ -94,6 +96,7 @@ func note_holding(time: float, lane: int, length: float, note_type: Variant, str
 	
 	Signals.play_note_holding.emit(time, lane, length, note_type, strum_manager)
 
+
 func note_miss(time: float, lane: int, length: float, note_type: Variant, hit_time: float, strum_manager: Variant):
 	if !strum_manager.enemy_slot:
 		if note_type == -1:
@@ -112,11 +115,14 @@ func note_miss(time: float, lane: int, length: float, note_type: Variant, hit_ti
 	
 	Signals.play_note_miss.emit(time, lane, length, note_type, hit_time, strum_manager)
 
+
 func get_group(strum_manager: Variant) -> StringName:
 	return &"enemy" if strum_manager.enemy_slot else &"player"
 
+
 func get_direction(direction: int) -> StringName:
 	return [&"left", &"down", &"up", &"right"][direction]
+
 
 func _on_new_event(time: float, event_name: String, event_parameters: Array):
 	match event_name:
@@ -131,8 +137,10 @@ func _on_new_event(time: float, event_name: String, event_parameters: Array):
 			get_tree().set_group(event_parameters[0], &"animation_prefix",
 			event_parameters[1])
 
+
 func _on_combo_break():
 	pass
+
 
 func show_combo(rating: String, _combo: int):
 	if rating != "miss":

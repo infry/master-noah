@@ -395,29 +395,31 @@ func basic_event(time: float, event_name: String, event_parameters: Array):
 			tween.set_trans(_ease[0]).set_ease(_ease[1]).set_parallel(true)
 			tween.tween_property(camera, "target_zoom", new_zoom, zoom_time * song_speed)
 			tween.tween_property(camera, "zoom", new_zoom, zoom_time * song_speed)
+		
 		"bop_rate":
 			host.bop_rate = int(event_parameters[0])
-		"bop_delay":
-			host.bop_rate = int(event_parameters[0])
+		
 		"bop_strength":
-			camera_bop_strength = Vector2(float(event_parameters[0]), float(event_parameters[0]))
-			ui_bop_strength = Vector2(float(event_parameters[1]), float(event_parameters[1]))
+			camera_bop_strength = Vector2.ONE * float(event_parameters[0])
+			ui_bop_strength = Vector2.ONE * float(event_parameters[1])
+		
 		"lerping":
 			var lerping = true if event_parameters[0] == "true" else false
 			ui.lerping = lerping
 			camera.lerping = lerping
+		
 		"scroll_speed":
 			var scroll_speed = float(event_parameters[0])
-			var tween_time = 0.0 if event_parameters[1] == "" else float(event_parameters[1])
+			var tween_time = Global.string_to_time(event_parameters[1])
 			
 			for strum in strums:
 				for lane in strum.strums.size() - 1:
 					var tween = create_tween()
-					tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 					var scroll_speed_scale: float = SettingsManager.get_value(SettingsManager.SEC_GAMEPLAY, "scroll_speed_scale")
 					tween.tween_method(
 						strum.set_scroll_speed, strum.get_scroll_speed(lane), scroll_speed * scroll_speed_scale, tween_time * song_speed
 						)
+		
 		"camera_shake":
 			camera.shake(int(event_parameters[0]), float(event_parameters[1]))
 	

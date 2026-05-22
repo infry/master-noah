@@ -1,9 +1,11 @@
 extends Node
 
-const SICK_RATING_WINDOW = 0.045
-const GOOD_RATING_WINDOW = 0.09
-const BAD_RATING_WINDOW = 0.135
-const SHIT_RATING_WINDOW = 0.16
+const SICK_RATING_WINDOW: float = 0.045
+const GOOD_RATING_WINDOW: float = 0.09
+const BAD_RATING_WINDOW: float = 0.135
+const SHIT_RATING_WINDOW: float = 0.16
+const GOOD_COMBO_FREQUENCY: int = 50
+const GREAT_COMBO_FREQUENCY: int = 200
 
 var song_scene = "res://test/test_scene.tscn"
 
@@ -77,10 +79,9 @@ func _step_change(step: int, measure: int):
 
 func _beat_change(beat: int, measure: int):
 	Signals.play_conductor_beat_hit.emit(beat, measure)
-	
+
 func _ready() -> void:
 	reset_conductor()
-
 	reset_stats()
 
 func started_song(song: Song):
