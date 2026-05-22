@@ -138,7 +138,7 @@ func get_direction(direction: int):
 	return animations[direction]
 
 
-func _on_new_event(time, event_name, event_parameters):
+func _on_new_event(time: float, event_name: String, event_parameters: Array):
 	match event_name:
 		"play_animation":
 			get_tree().call_group(event_parameters[0], &"play_animation",
