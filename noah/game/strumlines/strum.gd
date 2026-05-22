@@ -41,15 +41,15 @@ var offset: float = 0.0
 var note_list: Array[BasicNote] = []
 var pressing: bool = false
 var previous_note = null
-var state = STATE.IDLE
+var state: STATE = STATE.IDLE
 
 var tempo: float = 60.0
-var seconds_per_beat:float = 60.0 / tempo
+var seconds_per_beat: float = 60.0 / tempo
 
 var reset_timer: float = 0.0
 
-@onready var sprite = $OffsetSprite
-@onready var hold_cover_sprite = $"Hold Cover"
+@onready var sprite: Node = $OffsetSprite
+@onready var hold_cover_sprite: Node = $"Hold Cover"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -60,6 +60,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	## Note movement
+	
 	for note in note_list:
 		var time_difference = (note.time - offset) - GameManager.song_position
 		
@@ -203,7 +204,7 @@ func _process(delta):
 			else:
 				state = STATE.IDLE
 	
-	if (reset_timer > 0):
+	if reset_timer > 0:
 		reset_timer -= delta
 		if reset_timer <= 0:
 			reset_timer = 0
@@ -264,7 +265,7 @@ func create_note(time: float, length: float, note_type: Variant, _tempo: float):
 	add_child(note_instance)
 	note_list.append(note_instance)
 	
-	emit_signal("created_note", time, self.get_name(), length, note_type)
+	emit_signal(&"created_note", time, self.get_name(), length, note_type)
 
 # Visuals
 func _on_offset_sprite_animation_finished():
