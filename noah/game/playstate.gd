@@ -109,6 +109,9 @@ func _ready():
 	Signals.play_conductor_beat_hit.connect(new_beat)
 	Signals.play_conductor_step_hit.connect(new_step)
 	
+	strums = ui.strums
+	pause_scene = ui_skin.pause_scene
+	
 	pause_preload = load(pause_scene)
 	GameManager.song_scene = LoadingScreen.scene
 	
@@ -118,7 +121,7 @@ func _ready():
 	if not song_data.events.is_empty() and ResourceLoader.exists(song_data.events):
 		var ext_events = load(song_data.events)
 		if ext_events is ChartEvents:
-			chart.merge_events_into_this(load(song_data.events))
+			chart.merge_events_into_this(ext_events)
 		else:
 			ext_events.free()
 	
@@ -136,10 +139,6 @@ func _ready():
 			play_song(0)
 	
 	Global.set_window_title("Playing: " + song_data.title)
-	
-	pause_scene = ui_skin.pause_scene
-	
-	strums = ui.strums
 	
 	if SettingsManager.get_value(SettingsManager.SEC_GAMEPLAY, "botplay"):
 		if OS.is_debug_build():

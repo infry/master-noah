@@ -38,18 +38,18 @@ var scroll_speed: float = 1.0
 var scroll: float = 1.0
 var song_speed: float = 1.0
 var offset: float = 0.0
-var note_list: Array = []
+var note_list: Array[BasicNote] = []
 var pressing: bool = false
 var previous_note = null
-var state = STATE.IDLE
+var state: STATE = STATE.IDLE
 
 var tempo: float = 60.0
-var seconds_per_beat:float = 60.0 / tempo
+var seconds_per_beat: float = 60.0 / tempo
 
 var reset_timer: float = 0.0
 
-@onready var sprite = $OffsetSprite
-@onready var hold_cover_sprite = $"Hold Cover"
+@onready var sprite: Node = $OffsetSprite
+@onready var hold_cover_sprite: Node = $"Hold Cover"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -60,6 +60,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	## Note movement
+	
 	for note in note_list:
 		var time_difference = (note.time - offset) - GameManager.song_position
 		
@@ -90,11 +91,11 @@ func _process(delta):
 						note.length /= GameManager.seconds_per_beat
 						
 						
-						if note.get_node("Note").visible:
+						if note.note.visible:
 							hold_cover_sprite.play_animation("cover " + strum_name + " start")
 							hold_cover_sprite.visible = true
 						
-						note.get_node("Note").visible = false
+						note.note.visible = false
 						
 						emit_signal(&"note_holding", temp - note.length, self.get_name(), note.length, note.note_type)
 						state = STATE.GLOW
@@ -152,18 +153,19 @@ func _process(delta):
 	if Input.is_action_pressed(input):
 		if can_press:
 			if pressing:
-				if note_list.size() > 0:
+				if !note_list.is_empty():
 					var note = note_list[0]
 					
 					if note.can_press:
-						if note.length > 0:
+						if note.length != 0:
 							state = STATE.GLOW
+						
 						
 							note.position.y = 0
 							var temp = note.length
 							note.length = ((note.time - offset) + (note.start_length * GameManager.seconds_per_beat)) - GameManager.song_position
 							note.length /= GameManager.seconds_per_beat
-							note.get_node("Note").visible = false
+							note.note.visible = false
 							emit_signal(&"note_holding", temp - note.length, self.get_name(), note.length, note.note_type)
 							
 							if !pressing:
@@ -193,7 +195,7 @@ func _process(delta):
 				reset_timer = GameManager.seconds_per_step
 				if hold_cover_sprite.animation != "cover " + strum_name + " end":
 						hold_cover_sprite.visible = false
-				if note_list.size() > 0:
+				if !note_list.is_empty():
 					var note = note_list[0]
 					# Checks if you were holding a note before releasing
 					if note.can_press and note.length > 0:
@@ -202,7 +204,7 @@ func _process(delta):
 			else:
 				state = STATE.IDLE
 	
-	if (reset_timer > 0):
+	if reset_timer > 0:
 		reset_timer -= delta
 		if reset_timer <= 0:
 			reset_timer = 0
