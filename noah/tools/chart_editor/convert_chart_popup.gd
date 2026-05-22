@@ -76,7 +76,10 @@ func new_file(files: Array[String]):
 		match chart_format:
 			
 			Chart.ChartFormat.VSLICE:
-				var meta_file = file.replace('chart', 'metadata')
+				var dir = file.get_base_dir()
+				
+				var meta_file = file.substr(dir.length())
+				meta_file = dir + meta_file.replace('chart', 'metadata')
 				
 				assert(FileAccess.file_exists(meta_file), 'failed to find vslice chart metadata.json')
 				
