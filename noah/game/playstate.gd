@@ -53,7 +53,7 @@ var position_delta: float = 0.0
 var position_lerp: float = 0.0
 var sync_timer: float = 0.0
 var song_speed: float = 1.0
-
+var scroll_speed: float = 1.0
 # The index of the latest loaded note
 var current_note: int = -1
 # The index of the latest loaded event
@@ -146,8 +146,9 @@ func _ready():
 	if SettingsManager.get_value(SettingsManager.SEC_GAMEPLAY, "downscroll"):
 		ui.downscroll_ui()
 	
-	get_tree().call_group(&"strums", "set_scroll_speed", chart.scroll_speed
-	* SettingsManager.get_value(SettingsManager.SEC_GAMEPLAY, "scroll_speed_scale"))
+	scroll_speed = chart.scroll_speed * SettingsManager.get_value(SettingsManager.SEC_GAMEPLAY, "scroll_speed_scale")
+	
+	get_tree().call_group(&"strums", "set_scroll_speed", scroll_speed)
 	get_tree().call_group(&"strums", "connect", "note_hit", host.note_hit)
 	get_tree().call_group(&"strums", "connect", "note_holding", host.note_holding)
 	get_tree().call_group(&"strums", "connect", "note_miss", host.note_miss)
@@ -229,7 +230,11 @@ func _process(delta):
 		if current_note < notes_list.size():
 			var note = notes_list[current_note]
 			
-			if note[0] <= (GameManager.song_position + GameManager.conductor.seconds_per_beat * 4):
+			var spawn_time = GameManager.song_position + GameManager.conductor.seconds_per_beat * 4
+			if scroll_speed < 1:
+				spawn_time /= scroll_speed 
+			
+			if note[0] <= (spawn_time):
 				var time: float = note[0]
 				var lane: int = note[1]
 				var length: float = note[2]
@@ -406,15 +411,15 @@ func basic_event(time: float, event_name: String, event_parameters: Array):
 			camera.lerping = lerping
 		
 		"scroll_speed":
-			var scroll_speed = float(event_parameters[0])
 			var tween_time = Global.string_to_time(event_parameters[1])
+			
+			scroll_speed = float(event_parameters[0]) * SettingsManager.get_value(SettingsManager.SEC_GAMEPLAY, "scroll_speed_scale")
 			
 			for strum in strums:
 				for lane in strum.strums.size() - 1:
 					var tween = create_tween()
-					var scroll_speed_scale: float = SettingsManager.get_value(SettingsManager.SEC_GAMEPLAY, "scroll_speed_scale")
 					tween.tween_method(
-						strum.set_scroll_speed, strum.get_scroll_speed(lane), scroll_speed * scroll_speed_scale, tween_time * song_speed
+						strum.set_scroll_speed, strum.get_scroll_speed(lane), scroll_speed, tween_time * song_speed
 						)
 		
 		"camera_shake":
