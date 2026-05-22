@@ -398,10 +398,9 @@ func basic_event(time: float, event_name: String, event_parameters: Array):
 			host.bop_rate = int(event_parameters[0])
 		"bop_delay":
 			host.bop_rate = int(event_parameters[0])
-		"camera_bop_strength":
+		"bop_strength":
 			camera_bop_strength = Vector2(float(event_parameters[0]), float(event_parameters[0]))
-		"ui_bop_strength":
-			ui_bop_strength = Vector2(float(event_parameters[0]), float(event_parameters[0]))
+			ui_bop_strength = Vector2(float(event_parameters[1]), float(event_parameters[1]))
 		"lerping":
 			var lerping = true if event_parameters[0] == "true" else false
 			ui.lerping = lerping
