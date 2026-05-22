@@ -391,10 +391,7 @@ func basic_event(time: float, event_name: String, event_parameters: Array):
 			if ease_string != null:
 				_ease = Global.string_to_ease(ease_string)
 			
-			var tween = create_tween()
-			tween.set_trans(_ease[0]).set_ease(_ease[1]).set_parallel(true)
-			tween.tween_property(camera, "target_zoom", new_zoom, zoom_time * song_speed)
-			tween.tween_property(camera, "zoom", new_zoom, zoom_time * song_speed)
+			camera.tween_zoom(new_zoom, zoom_time * song_speed, _ease[0], _ease[1])
 		
 		"bop_rate":
 			host.bop_rate = int(event_parameters[0])
