@@ -2,11 +2,14 @@ extends HBoxContainer
 
 signal removed
 
-var event: String
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	%"Track Name".text = event
+var event: String:
+	set(v):
+		%"Track Name".text = v
+		var icon: String = ChartManager.EVENT_DATA.get(v, {}).get("texture", "")
+		if ResourceLoader.exists(icon):
+			%"Track Name".right_icon = load(icon)
+		
+		event = v
 
 
 func _on_remove_track_pressed() -> void:

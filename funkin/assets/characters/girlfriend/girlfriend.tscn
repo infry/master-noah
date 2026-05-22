@@ -45,6 +45,7 @@ animations = [{
 
 [node name="Girlfriend" type="Node2D" unique_id=1857178016 node_paths=PackedStringArray("animation_player") groups=["metronome"]]
 script = ExtResource("1_krhuq")
+animation_player = NodePath("AnimatedSprite2D")
 animation_names = Dictionary[StringName, StringName]({
 &"cheer": &"GF Cheer",
 &"cheer_200": &"GF Cheer",
@@ -77,9 +78,9 @@ dance_animations = Array[StringName]([&"idle_left", &"idle_right"])
 dance_rate = 4
 icons = SubResource("SpriteFrames_v8umh")
 color = Color(0.619608, 0.0784314, 0.282353, 1)
-animation_player = NodePath("AnimatedSprite2D")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=80497307]
+use_parent_material = true
 position = Vector2(0, -320)
 sprite_frames = ExtResource("3_mjknh")
 animation = &"idle_left"

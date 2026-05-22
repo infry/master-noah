@@ -67,12 +67,12 @@ func _process(delta: float) -> void:
 		$Conductor.offset = ChartManager.chart.get_tempo_time_at(time) + ChartManager.chart.offset
 		$"Grid Layer/Parallax2D".scroll_offset.x = time_to_y_position($Conductor.offset - ChartManager.chart.offset)
 	
-	%"Lower UI".get_node("%Current Time Label").text = Global.float_to_time(song_position + start_offset)
+	%"Lower UI".get_node("%Current Time Label").text = Global.format_time(song_position + start_offset)
 	if song_speed != 1:
 		%"Lower UI".get_node("%Current Time Label").text += str(" (", song_speed, "x)")
 	
 	if ChartManager.song:
-		%"Lower UI".get_node("%Time Left Label").text = "-" + Global.float_to_time(%Instrumental.stream.get_length() - song_position)
+		%"Lower UI".get_node("%Time Left Label").text = "-" + Global.format_time(%Instrumental.stream.get_length() - song_position)
 	else:
 		%"Lower UI".get_node("%Time Left Label").text = "- ??:??"
 	
@@ -458,7 +458,7 @@ func update_grid():
 	
 	$"UI/Event Tracks".position.y = -%Grid.get_size().y / 2 - 4
 	$"UI/Event Tracks".size.y = 0
-	$"UI/Event Tracks".custom_minimum_size.y = %Grid.get_size().y + (ChartManager.event_tracks.size() * 2)
+	#$"UI/Event Tracks".custom_minimum_size.y = %Grid.get_size().y + (ChartManager.event_tracks.size() * 1)
 	
 	get_tree().call_group(&"tracks",  &"queue_free")
 	for track in ChartManager.event_tracks:
@@ -472,7 +472,7 @@ func update_grid():
 		track_instance.connect(&"removed", self.remove_track.bind(track_instance))
 	
 	await Engine.get_main_loop().process_frame
-	$"UI/Event Tracks".size.y = %Grid.get_size().y + (ChartManager.event_tracks.size() * 2)
+	$"UI/Event Tracks".size.y = %Grid.get_size().y + (ChartManager.event_tracks.size() * 1)
 
 
 func remove_track(node):
@@ -735,7 +735,7 @@ func _on_event_parameters_about_to_popup() -> void:
 		
 		line_edit.placeholder_text = _name
 		if (i < parameters.size()):
-			line_edit.text = parameters[i]
+			line_edit.text = str(parameters[i])
 		
 		%"Event Parameters".add_child(line_edit)
 		i += 1
@@ -763,10 +763,12 @@ func _on_place_event_pressed() -> void:
 		undo_redo.add_undo_property(event_nodes[editing - current_visible_events_L],
 		"parameters", temp)
 		undo_redo.add_undo_method(self.change_parameters.bind(editing, temp))
-		undo_redo.add_do_reference(%"History Window".add_action(action))
+		undo_redo.add_do_reference(%"Upper UI".get_node("%History Window").add_action(action))
 		undo_redo.commit_action()
 		%"Note Place".play()
 		%"Event Creator".hide()
+	
+	auto_save()
 
 
 func change_parameters(i: int, parameters: Array) -> void:
@@ -784,10 +786,12 @@ func _on_window_about_to_popup() -> void:
 	var events: Array = ChartManager.EVENT_DATA.keys()
 	events = events.filter(func(_name): return !ChartManager.event_tracks.has(_name))
 	
-	print(events)
-	
 	for event in events:
 		%"Event Option".add_item(event)
+		var icon: String = ChartManager.EVENT_DATA.get(event, {}).get("texture", "")
+		if ResourceLoader.exists(icon):
+			%"Event Option".set_item_icon(%"Event Option".item_count - 1, load(icon))
+			%"Event Option".get_popup().set_item_icon_max_width(%"Event Option".item_count - 1, 32)
 
 
 func _on_add_event_track_pressed() -> void:

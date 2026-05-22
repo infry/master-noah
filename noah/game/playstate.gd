@@ -10,16 +10,10 @@ const MAX_SCORE: int = 500
 const HOLD_SCORE: float = 250
 const HOLD_HEALTH: float = 6
 
-signal create_note(time: float, lane: int, note_length: float, note_type: Variant, tempo: float)
-signal new_event(time: float, event_name: String, event_parameters: Array)
-signal combo_break()
-signal setup_finished()
-
 @onready var countdown_node = load("uid://daky0nn8plbe4")
 @onready var song_data: Song
 @onready var vocals: AudioStreamPlayer
 @onready var instrumental: AudioStreamPlayer
-@onready var conductor: Conductor
 @onready var strums: Array = []
 @onready var characters: Array = []
 
@@ -108,10 +102,10 @@ func _ready():
 	vocals.play()
 	self.add_child(instrumental)
 	
-	conductor = Conductor.new()
-	self.add_child(conductor)
-	conductor.connect(&"new_beat", self.new_beat)
-	conductor.connect(&"new_step", self.new_step)
+	GameManager.reset_conductor()
+	
+	Signals.play_conductor_beat_hit.connect(new_beat)
+	Signals.play_conductor_step_hit.connect(new_step)
 	
 	strums = ui.strums
 	pause_scene = ui_skin.pause_scene
@@ -161,7 +155,7 @@ func _ready():
 	if SettingsManager.get_value(SettingsManager.SEC_GAMEPLAY, "downscroll"):
 		get_tree().call_group(&"strums", "set_scroll", -1)
 	
-	emit_signal("setup_finished")
+	Signals.play_setup_finished.emit()
 
 
 func _process(delta):
@@ -176,9 +170,6 @@ func _process(delta):
 		DeathScreen.camera_zoom = camera.zoom
 		GameManager.song_scene = get_tree().current_scene.scene_file_path
 		get_tree().change_scene_to_file(death_scene)
-	
-	GameManager.seconds_per_beat = conductor.seconds_per_beat
-	GameManager.seconds_per_step = conductor.seconds_per_step
 	
 	# Why is this a thing I have to do
 	if get_tree() != null:
@@ -200,8 +191,7 @@ func _process(delta):
 	if !song_started and song_starting:
 		song_start_offset += delta
 		GameManager.song_position = song_start_offset
-		# I am subtracting a beat so the current beat clamps at -1
-		conductor.time = GameManager.song_position
+		GameManager.conductor.time = GameManager.song_position
 		
 		if song_start_offset >= max(chart.offset, song_start_time):
 			play_audios(song_start_time)
@@ -211,8 +201,8 @@ func _process(delta):
 				AudioServer.get_time_since_last_mix() - \
 				AudioServer.get_output_latency()
 		
-		conductor.offset = chart.get_tempo_time_at(GameManager.song_position)
-		conductor.offset += chart.offset
+		GameManager.conductor.offset = chart.get_tempo_time_at(GameManager.song_position)
+		GameManager.conductor.offset += chart.offset
 		
 		# Idk how exactly this works I stole this code from sqirradotdev
 		position_delta = abs(position_lerp - GameManager.song_position)
@@ -226,10 +216,10 @@ func _process(delta):
 		GameManager.song_position = position_lerp
 		sync_timer -= delta
 	
-	conductor.tempo = chart.get_tempo_at(GameManager.song_position)
+	GameManager.conductor.tempo = chart.get_tempo_at(GameManager.song_position)
 	var meter: Array = chart.get_meter_at(GameManager.song_position)
-	conductor.beats_per_measure = meter[0]
-	conductor.steps_per_measure = meter[1]
+	GameManager.conductor.beats_per_measure = meter[0]
+	GameManager.conductor.steps_per_measure = meter[1]
 	
 	# Instead of before where I would do a linear search per section, a faster method
 	# would just be to iterate through as the song is playing, making it faster
@@ -239,13 +229,13 @@ func _process(delta):
 		if current_note < notes_list.size():
 			var note = notes_list[current_note]
 			
-			if note[0] <= (GameManager.song_position + conductor.seconds_per_beat * 4):
+			if note[0] <= (GameManager.song_position + GameManager.conductor.seconds_per_beat * 4):
 				var time: float = note[0]
 				var lane: int = note[1]
 				var length: float = note[2]
-				var type = note[3]
+				var type: Variant = note[3]
 				
-				emit_signal("create_note", time, lane, length, type, chart.get_tempo_at(time))
+				Signals.play_note_created.emit(time, lane, length, type, chart.get_tempo_at(time))
 				current_note += 1
 	
 	if instrumental.playing:
@@ -264,26 +254,24 @@ func _process(delta):
 
 
 func play_song(time: float):
-	await host.initiated
+	await Signals.play_song_ready_to_start
 	
 	song_starting = true
 	
 	GameManager.started_song(song_data)
-	conductor.stream_player = instrumental
-	conductor.tempo = chart.get_tempo_at(-chart.offset + time)
-	conductor.seconds_per_beat = 60.0 / conductor.tempo
-	conductor.offset = chart.offset + SettingsManager.get_value(SettingsManager.SEC_GAMEPLAY, "offset")
+	GameManager.conductor.stream_player = instrumental
+	GameManager.conductor.tempo = chart.get_tempo_at(-chart.offset + time)
+	GameManager.conductor.seconds_per_beat = 60.0 / GameManager.conductor.tempo
 	
-	GameManager.seconds_per_beat = conductor.seconds_per_beat
-	GameManager.offset = conductor.offset
+	GameManager.conductor.offset = chart.offset + SettingsManager.get_value(SettingsManager.SEC_GAMEPLAY, "offset")
 	
 	song_started = false
 	song_start_time = time + chart.offset
-	song_start_offset = song_start_time - (conductor.seconds_per_beat * 4)
+	song_start_offset = song_start_time - (GameManager.conductor.seconds_per_beat * 4)
 	GameManager.song_position = song_start_offset
-	conductor.time = song_start_time
+	GameManager.conductor.time = song_start_time
 	
-	if time >= conductor.seconds_per_beat * 4:
+	if time >= GameManager.conductor.seconds_per_beat * 4:
 		play_audios(song_start_offset)
 	else:
 		var countdown_instance = countdown_node.instantiate()
@@ -376,24 +364,25 @@ func basic_event(time: float, event_name: String, event_parameters: Array):
 			if host.camera_positions.size() == 0:
 				printerr('(PlayState): no camera_positions exist')
 				return
-			var marker = host.camera_positions[int(event_parameters[0])]
-			if not marker:
+			var index: int = int(event_parameters[0])
+			var marker = host.camera_positions[index]
+			if !marker:
+				printerr("(PlayState): Marker does not exist at index: ", index)
 				return
 			
 			var position = marker.global_position
 			camera.position = position
-			
+		
 		"camera_bop":
 			var camera_bop = float(event_parameters[0])
 			var ui_bop = float(event_parameters[1])
 			
 			camera.zoom += camera_bop * camera.zoom
-			
-			ui.scale += Vector2(ui_bop, ui_bop)
+			ui.scale += Vector2.ONE * ui_bop
+		
 		"camera_zoom":
 			var new_zoom = Vector2(float(event_parameters[0]), float(event_parameters[0]))
-			@warning_ignore("incompatible_ternary")
-			var zoom_time = 0 if event_parameters[1] == "" else float(event_parameters[1])
+			var zoom_time = Global.string_to_time(event_parameters[1])
 			var ease_string = event_parameters.get(2)
 			var _ease = [Tween.TRANS_CUBIC, Tween.EASE_OUT]
 			if ease_string != null:
@@ -403,34 +392,35 @@ func basic_event(time: float, event_name: String, event_parameters: Array):
 			tween.set_trans(_ease[0]).set_ease(_ease[1]).set_parallel(true)
 			tween.tween_property(camera, "target_zoom", new_zoom, zoom_time * song_speed)
 			tween.tween_property(camera, "zoom", new_zoom, zoom_time * song_speed)
+		
 		"bop_rate":
 			host.bop_rate = int(event_parameters[0])
-		"bop_delay":
-			host.bop_rate = int(event_parameters[0])
-		"camera_bop_strength":
-			camera_bop_strength = Vector2(float(event_parameters[0]), float(event_parameters[0]))
-		"ui_bop_strength":
-			ui_bop_strength = Vector2(float(event_parameters[0]), float(event_parameters[0]))
+		
+		"bop_strength":
+			camera_bop_strength = Vector2.ONE * float(event_parameters[0])
+			ui_bop_strength = Vector2.ONE * float(event_parameters[1])
+		
 		"lerping":
 			var lerping = true if event_parameters[0] == "true" else false
 			ui.lerping = lerping
 			camera.lerping = lerping
+		
 		"scroll_speed":
 			var scroll_speed = float(event_parameters[0])
-			var tween_time = 0.0 if event_parameters[1] == "" else float(event_parameters[1])
+			var tween_time = Global.string_to_time(event_parameters[1])
 			
 			for strum in strums:
 				for lane in strum.strums.size() - 1:
 					var tween = create_tween()
-					tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 					var scroll_speed_scale: float = SettingsManager.get_value(SettingsManager.SEC_GAMEPLAY, "scroll_speed_scale")
 					tween.tween_method(
 						strum.set_scroll_speed, strum.get_scroll_speed(lane), scroll_speed * scroll_speed_scale, tween_time * song_speed
 						)
+		
 		"camera_shake":
 			camera.shake(int(event_parameters[0]), float(event_parameters[1]))
 	
-	emit_signal("new_event", time, event_name, event_parameters)
+	Signals.play_new_event.emit(time, event_name, event_parameters)
 
 func song_finished():
 	if GameManager.freeplay:
@@ -484,11 +474,11 @@ func note_hit(time, lane, note_type, hit_time, strum_manager):
 			"bad":
 				health -= 0.35
 				combo = -1
-				emit_signal("combo_break")
+				Signals.play_combo_break.emit()
 			"shit":
 				health -= 0.35
 				combo = -1
-				emit_signal("combo_break")
+				Signals.play_combo_break.emit()
 			_:
 				note_miss(time, lane, 0, note_type, hit_time, strum_manager)
 		
@@ -522,4 +512,4 @@ func note_miss(time, lane, length, note_type, hit_time, strum_manager):
 			GameManager.tallies["miss"] = misses
 			GameManager.tallies["total_notes"] += 1
 			
-			emit_signal("combo_break")
+			Signals.play_combo_break.emit()

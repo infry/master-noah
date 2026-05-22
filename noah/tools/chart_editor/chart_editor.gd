@@ -77,6 +77,7 @@ func _ready() -> void:
 			get_tree().change_scene_to_file("uid://cq6xqods6w7lw")
 			return
 	
+	get_window().content_scale_size = Vector2(1280, 720)
 	get_viewport().gui_focus_changed.connect(_on_gui_focus_changed)
 	Global.set_window_title("Chart Editor")
 	song_speed = SettingsManager.get_value("gameplay", "song_speed")
@@ -339,13 +340,13 @@ func _process(delta: float) -> void:
 		$Conductor.offset = ChartManager.chart.get_tempo_time_at(time) + ChartManager.chart.offset
 		$"Grid Layer/Parallax2D".scroll_offset.y = time_to_y_position($Conductor.offset - ChartManager.chart.offset)
 	
-	%"Lower UI".get_node("%Current Time Label").text = Global.float_to_time(song_position + start_offset)
+	%"Lower UI".get_node("%Current Time Label").text = Global.format_time(song_position + start_offset)
 	
 	if song_speed != 1:
 		%"Lower UI".get_node("%Current Time Label").text += str(" (", song_speed, "x)")
 	
 	if ChartManager.song:
-		%"Lower UI".get_node("%Time Left Label").text = "-" + Global.float_to_time(%Instrumental.stream.get_length() - song_position)
+		%"Lower UI".get_node("%Time Left Label").text = "-" + Global.format_time(%Instrumental.stream.get_length() - song_position)
 	else:
 		%"Lower UI".get_node("%Time Left Label").text = "- ??:??"
 	
@@ -696,6 +697,9 @@ func load_song(song: Song, difficulty: Variant = null):
 	%Instrumental.stream = load(ChartManager.song.instrumental)
 	play_audios(song_position)
 	
+	%Vocals.stream_paused = true
+	%Instrumental.stream_paused = true
+	
 	%"Song Slider".max_value = %Instrumental.stream.get_length()
 	%"Song Slider".value = 0.0
 	$Conductor.tempo = ChartManager.chart.get_tempo_at(0.0)
@@ -712,6 +716,8 @@ func load_song(song: Song, difficulty: Variant = null):
 	%"Upper UI".get_node("%Metadata Window").update_stats()
 	
 	load_chart(ChartManager.chart)
+	chart_snap = $Conductor.steps_per_measure
+	current_snap = SNAPS.find($Conductor.steps_per_measure)
 	#load_waveforms()
 	can_chart = true
 
@@ -751,6 +757,7 @@ func load_chart(file: Chart, ghost: bool = false):
 	can_chart = true
 	load_section(song_position)
 	update_grid()
+	load_dividers()
 
 ## Loads all the notes and waveforms for the next two waveforms.
 func load_section(time: float):
@@ -950,7 +957,7 @@ sorted: bool = false, sort_index: int = -1) -> int:
 			selected_note_nodes = [note_instance]
 			min_lane = 0
 			max_lane = ChartManager.strum_count - 1
-			output = note_nodes.size() - 1
+			output = L
 		
 		# Preventing fake notes
 		current_visible_notes_L = max(min(L, current_visible_notes_L), 0)
@@ -1009,21 +1016,18 @@ sorted: bool = false, sort_index: int = -1) -> int:
 			
 			output = L
 		else:
-			if current_visible_notes_L == -1:
-				current_visible_notes_L = 0
-			
 			event_nodes.append(event_instance)
 			ChartManager.chart.chart_data["events"].append([time, event, parameters])
-			selected_notes = [ChartManager.chart.get_events_data().size() - 1]
+			L = ChartManager.chart.get_events_data().size() - 1
+			selected_notes = [L]
 			selected_note_nodes = [event_instance]
 			min_lane = 0
 			max_lane = ChartManager.strum_count - 1
-			output = event_nodes.size() - 1
+			output = L
 		
 		# Preventing fake events
 		current_visible_events_L = max(min(L, current_visible_events_L), 0)
 		current_visible_events_R += 1
-		
 	else:
 		if sorted:
 			var L: int = sort_index
@@ -1675,12 +1679,15 @@ func test_button_item_pressed(id):
 		_:
 			print("id: ", id)
 
+
 func disable_charting():
 	can_chart = false
+
 
 func close_popup():
 	can_chart = true
 	%"Close Window".play()
+
 
 func undo():
 	if undo_redo.has_undo():

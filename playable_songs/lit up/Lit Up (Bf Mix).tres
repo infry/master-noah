@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Song" format=3 uid="uid://dlr3l60wbh750"]
+[gd_resource type="Resource" script_class="Song" format=3 uid="uid://dedqa3v4nelu6"]
 
 [ext_resource type="SpriteFrames" uid="uid://digynxqrdoj3g" path="res://funkin/assets/characters/darnell/darnell.tres" id="1_5hr86"]
 [ext_resource type="Script" uid="uid://watdarflaprc" path="res://resources/song.gd" id="2_j6ya2"]
@@ -20,6 +20,7 @@ difficulties = Dictionary[String, Dictionary]({
 "chart": "res://playable_songs/lit up/charts/Lit Up (Bf Mix)-normal.tres"
 }
 })
+events = "res://playable_songs/lit up/charts/events.tres"
 title = "Lit Up (Bf Mix)"
 artist = "Saruky"
 icons = ExtResource("1_5hr86")

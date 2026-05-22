@@ -57,7 +57,14 @@ class_name Alphabet
 	"j": Vector2(0, 15),
 	"p": Vector2(0, 15),
 	"q": Vector2(0, 15),
-	"y": Vector2(0, 15)
+	"y": Vector2(0, 15),
+	"\'": Vector2(0, -25),
+	"-": Vector2(0, -18),
+	"=": Vector2(0, -10),
+	"+": Vector2(0, -8),
+	"\"": Vector2(0, -18),
+	"”": Vector2(0, -18),
+	"“": Vector2(0, -18),
 }:
 	set(value):
 		glyph_offsets = value
@@ -83,6 +90,7 @@ class_name Alphabet
 	"→": &"right arrow",
 	"“": &"start parentheses",
 	"↑": &"up arrow",
+	"\"": &"start parentheses",
 }:
 	set(value):
 		glyph_name_overrides = value
