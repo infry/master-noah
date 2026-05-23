@@ -88,7 +88,6 @@ func _process(delta):
 						note.length = time_difference + (note.start_length * GameManager.seconds_per_beat)
 						note.length /= GameManager.seconds_per_beat
 						
-						
 						if note.note.visible:
 							hold_cover_sprite.play_animation("cover " + strum_name + " start")
 							hold_cover_sprite.visible = true
@@ -292,7 +291,7 @@ func release_note():
 				# Checks if you were holding a note before releasing
 				if note.can_press and note.length > 0:
 					note.holding = false
-					note.start_length = note.length
+					note.time -= note.start_length * GameManager.seconds_per_beat + GameManager.BAD_RATING_WINDOW
 					emit_signal(&"note_holding", 0.0, self, 0.0, note.note_type)
 		else:
 			state = STATE.IDLE
