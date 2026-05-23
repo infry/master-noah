@@ -83,7 +83,6 @@ func _process(delta):
 						previous_note = note
 					
 					if note.length > 0:
-						hold_cover_sprite.play_animation("cover " + strum_name)
 						note.holding = true
 						var temp = note.length
 						note.length = time_difference + (note.start_length * GameManager.seconds_per_beat)
@@ -130,6 +129,7 @@ func _process(delta):
 				if note.can_press:
 					if note.length <= 0:
 						state = STATE.GLOW
+						coyote_timer = 0
 						
 						note_list.erase(note)
 						note.queue_free()
@@ -137,10 +137,10 @@ func _process(delta):
 						var time_difference: float = (note.time - offset) - (GameManager.song_position)
 						emit_signal(&"note_hit", note.time, self, note.note_type, time_difference + (note.length * GameManager.seconds_per_beat))
 					else:
-						hold_cover_sprite.play_animation("cover " + strum_name)
 						var time_difference = (note.time - offset) - (GameManager.song_position)
 						if note != previous_note:
 							emit_signal(&"note_hit", note.time, self, note.note_type, time_difference)
+						
 						coyote_timer = 0
 						
 						if !pressing:
@@ -216,7 +216,6 @@ func _process(delta):
 		sprite.play_animation(strum_name + " glow", false)
 
 # Util
-
 func set_skin(new_skin: NoteSkin):
 	note_skin = new_skin
 	
@@ -274,10 +273,10 @@ func _on_offset_sprite_animation_finished():
 
 
 func _on_hold_cover_animation_finished():
-	if hold_cover_sprite.animation == "cover " + strum_name + " start":
+	if hold_cover_sprite.animation == hold_cover_sprite.animation_names.get("cover " + strum_name + " start"):
 		hold_cover_sprite.play_animation("cover " + strum_name)
 	
-	if hold_cover_sprite.animation == "cover " + strum_name + " end":
+	if hold_cover_sprite.animation == hold_cover_sprite.animation_names.get("cover " + strum_name + " end"):
 		hold_cover_sprite.visible = false
 
 
@@ -307,7 +306,7 @@ func release_note():
 				if note.can_press and note.length > 0:
 					note.holding = false
 					coyote_timer = GameManager.HOLD_NOTE_LENIENCY
-					#note.time = GameManager.song_position
+					note.time = GameManager.song_position
 					note.start_length = note.length
 		else:
 			state = STATE.IDLE
