@@ -139,13 +139,16 @@ func _process(delta):
 					else:
 						hold_cover_sprite.play_animation("cover " + strum_name)
 						var time_difference = (note.time - offset) - (GameManager.song_position)
-						emit_signal(&"note_hit", note.time, self, note.note_type, time_difference)
+						if note != previous_note:
+							emit_signal(&"note_hit", note.time, self, note.note_type, time_difference)
+						
 						if !pressing:
 							hold_cover_sprite.play_animation("cover " + strum_name + " start")
 							hold_cover_sprite.visible = true
 						
 						pressing = true
 						note.holding = true
+						previous_note = note
 				else:
 					if !SettingsManager.get_value(SettingsManager.SEC_GAMEPLAY, "ghost_tapping"):
 						emit_signal(&"note_miss", 0, self, 0, -1, 0)
