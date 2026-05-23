@@ -55,6 +55,7 @@ var reset_timer: float = 0.0
 func _ready():
 	sprite.play_animation(strum_name)
 	hold_cover_sprite.visible = false
+	Signals.connect(&"play_unpaused", self._on_unpaused)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -291,3 +292,13 @@ func create_splash(animation_name: String = strum_name + " splash"):
 			
 			add_child(splash_instance)
 			splash_instance.get_node("OffsetSprite").play_animation(animation_name)
+
+
+func _on_unpaused():
+	if pressing:
+		if !note_list.is_empty():
+			note_list[0].holding = false
+		
+		pressing = false
+		hold_cover_sprite.visible = false
+		state = STATE.IDLE

@@ -16,3 +16,6 @@ signal play_note_holding(time: float, lane: int, note_length:float, note_type: V
 signal play_note_created(time: float, lane: int, note_length: float, note_type: Variant, tempo: float)
 signal play_new_event(event_name: String, params: Array, time: float)
 signal play_combo_break
+
+signal play_paused()
+signal play_unpaused()
