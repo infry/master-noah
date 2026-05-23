@@ -172,7 +172,6 @@ func _process(delta):
 							note.length /= GameManager.seconds_per_beat
 							note.note.visible = false
 							emit_signal(&"note_holding", temp - note.length, self, note.length, note.note_type)
-							print(note.time)
 							
 							if !pressing:
 								hold_cover_sprite.play_animation("cover " + strum_name + " start")
