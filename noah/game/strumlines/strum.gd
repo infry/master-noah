@@ -47,6 +47,7 @@ var tempo: float = 60.0
 var seconds_per_beat: float = 60.0 / tempo
 
 var reset_timer: float = 0.0
+var coyote_timer: float = 0.0
 
 @onready var sprite: Node = $OffsetSprite
 @onready var hold_cover_sprite: Node = $"Hold Cover"
@@ -109,15 +110,19 @@ func _process(delta):
 						note.queue_free()
 					continue
 		
-		if (time_difference + (note.start_length * GameManager.seconds_per_beat - offset - delta)) <= -GameManager.SHIT_RATING_WINDOW:
-				note_list.erase(note)
-				note.queue_free()
-				
-				emit_signal(&"note_miss", note.time - time_difference, self,
-				note.length, note.note_type, time_difference + (note.length * GameManager.seconds_per_beat))
+		var relative_time: float = time_difference + (note.start_length * GameManager.seconds_per_beat - offset)
+		if relative_time <= -GameManager.SHIT_RATING_WINDOW and coyote_timer <= 0:
+			note_list.erase(note)
+			note.queue_free()
+			
+			emit_signal(&"note_miss", note.time - time_difference, self, note.length, note.note_type, relative_time)
+	
+	if coyote_timer > 0:
+		coyote_timer -= delta
+		if coyote_timer <= 0:
+			note_list[0].time -= note_list[0].length * GameManager.seconds_per_beat + GameManager.BAD_RATING_WINDOW
 	
 	# Inputs
-	
 	if Input.is_action_just_pressed(input):
 		if can_press:
 			if !note_list.is_empty():
@@ -291,7 +296,9 @@ func release_note():
 				# Checks if you were holding a note before releasing
 				if note.can_press and note.length > 0:
 					note.holding = false
-					note.time -= note.start_length * GameManager.seconds_per_beat + GameManager.BAD_RATING_WINDOW
+					coyote_timer = GameManager.HOLD_NOTE_LENIENCY
+					note.start_length = note.length
+					note.time = GameManager.song_position
 					emit_signal(&"note_holding", 0.0, self, 0.0, note.note_type)
 		else:
 			state = STATE.IDLE
