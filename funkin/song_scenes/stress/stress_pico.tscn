@@ -5,9 +5,6 @@
 [ext_resource type="Resource" uid="uid://cj2hoqrld81vv" path="res://funkin/assets/game/default/default_note_skin.tres" id="4_4bxi2"]
 [ext_resource type="Resource" uid="uid://cykk1h52kdqv2" path="res://funkin/assets/game/default/default_ui_skin.tres" id="5_t15xn"]
 [ext_resource type="PackedScene" uid="uid://cmiw0sq3dx0ge" path="res://funkin/assets/stages/battlefield/stage.tscn" id="7_th3hl"]
-[ext_resource type="AudioStream" uid="uid://bmggbtser1g3u" path="res://funkin/assets/sounds/game_sounds/miss sounds/miss 1.ogg" id="8_m85lx"]
-[ext_resource type="AudioStream" uid="uid://cfnrxgladhi2w" path="res://funkin/assets/sounds/game_sounds/miss sounds/miss 2.ogg" id="9_l37ub"]
-[ext_resource type="AudioStream" uid="uid://cqne25yeqb7op" path="res://funkin/assets/sounds/game_sounds/miss sounds/miss 3.ogg" id="10_56sr7"]
 [ext_resource type="Script" uid="uid://b1blhjns06ilt" path="res://noah/conductor.gd" id="11_s6vog"]
 [ext_resource type="PackedScene" uid="uid://bs78qo116i5i8" path="res://funkin/assets/characters/pico/pico.tscn" id="12_5fyjp"]
 [ext_resource type="Shader" uid="uid://boq6lqipwmoli" path="res://funkin/assets/shaders/rimlight.gdshader" id="13_th3hl"]
@@ -15,14 +12,6 @@
 [ext_resource type="PackedScene" uid="uid://biw6xh624onjh" path="res://funkin/assets/characters/nene/nene.tscn" id="15_th3hl"]
 [ext_resource type="PackedScene" uid="uid://cigsmwajnw2jq" path="res://noah/game/basic_ui.tscn" id="16_owg0q"]
 [ext_resource type="Script" uid="uid://b4lmffueni5k" path="res://noah/game/camera_controller.gd" id="16_v2n7e"]
-
-[sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_oxpka"]
-
-[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_1fe3a"]
-streams_count = 3
-stream_0/stream = ExtResource("8_m85lx")
-stream_1/stream = ExtResource("9_l37ub")
-stream_2/stream = ExtResource("10_56sr7")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kuluq"]
 shader = ExtResource("13_th3hl")
@@ -110,77 +99,47 @@ position_smoothing_speed = 3.0
 [node name="Stage" parent="." unique_id=1380889064 instance=ExtResource("7_th3hl")]
 unique_name_in_owner = true
 
-[node name="Music" type="Node" parent="." unique_id=1201627107]
-
-[node name="Vocals" type="AudioStreamPlayer" parent="Music" unique_id=1038264070]
-stream = SubResource("AudioStreamPolyphonic_oxpka")
-bus = &"Music"
-
-[node name="Instrumental" type="AudioStreamPlayer" parent="Music" unique_id=1480220117]
-bus = &"Music"
-
-[node name="Hit Sound" type="AudioStreamPlayer" parent="Music" unique_id=668687589]
-bus = &"SFX"
-
-[node name="Miss Sound" type="AudioStreamPlayer" parent="Music" unique_id=1762104389]
-unique_name_in_owner = true
-stream = SubResource("AudioStreamRandomizer_1fe3a")
-bus = &"SFX"
-
-[node name="Anti-Spam Sound" type="AudioStreamPlayer" parent="Music" unique_id=67838229]
-unique_name_in_owner = true
-stream = SubResource("AudioStreamRandomizer_1fe3a")
-volume_db = -8.0
-bus = &"SFX"
-
 [node name="Conductor" type="Node" parent="." unique_id=304755201]
 script = ExtResource("11_s6vog")
-stream_player = NodePath("../Music/Instrumental")
+stream_player = NodePath("")
 
-[node name="World" type="CanvasLayer" parent="." unique_id=1511090464]
-layer = 10
-follow_viewport_enabled = true
-
-[node name="Position 1" type="Marker2D" parent="World" unique_id=1756230532 groups=["camera_positions"]]
+[node name="Position 1" type="Marker2D" parent="." unique_id=1756230532 groups=["camera_positions"]]
 unique_name_in_owner = true
 position = Vector2(826.5, 354.5)
 gizmo_extents = 18.3
 
-[node name="Position 2" type="Marker2D" parent="World" unique_id=1592606523 groups=["camera_positions"]]
+[node name="Position 2" type="Marker2D" parent="." unique_id=1592606523 groups=["camera_positions"]]
 unique_name_in_owner = true
 position = Vector2(256, 336)
 gizmo_extents = 26.5
 
-[node name="Position 3" type="Marker2D" parent="World" unique_id=1997711992 groups=["camera_positions"]]
+[node name="Position 3" type="Marker2D" parent="." unique_id=1997711992 groups=["camera_positions"]]
 unique_name_in_owner = true
 position = Vector2(576, 208)
 gizmo_extents = 26.5
 
-[node name="Rating Marker" type="Marker2D" parent="World" unique_id=2083421907]
+[node name="Rating Marker" type="Marker2D" parent="." unique_id=2083421907]
+unique_name_in_owner = true
 position = Vector2(710, 222)
 gizmo_extents = 30.0
 
-[node name="Combo Marker" type="Marker2D" parent="World" unique_id=1293514615]
+[node name="Combo Marker" type="Marker2D" parent="." unique_id=1293514615]
+unique_name_in_owner = true
 position = Vector2(838, 270)
 gizmo_extents = 40.0
 
-[node name="Characters" type="CanvasLayer" parent="." unique_id=1282712720]
-layer = -1
-offset = Vector2(640, 360)
-transform = Transform2D(1, 0, 0, 1, 640, 360)
-follow_viewport_enabled = true
-
-[node name="Player" parent="Characters" unique_id=365406272 groups=["player"] instance=ExtResource("12_5fyjp")]
+[node name="Player" parent="." unique_id=365406272 groups=["player"] instance=ExtResource("12_5fyjp")]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_kuluq")
-position = Vector2(392, 266)
+position = Vector2(1032, 626)
 scale = Vector2(0.9, 0.9)
 
-[node name="Enemy" parent="Characters" unique_id=1619097661 groups=["enemy"] instance=ExtResource("14_ctps2")]
+[node name="Enemy" parent="." unique_id=1619097661 groups=["enemy"] instance=ExtResource("14_ctps2")]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_th3hl")
-position = Vector2(-568, 264)
-scale = Vector2(-0.9, 0.9)
+position = Vector2(72, 624)
+rotation = 3.1415927
+scale = Vector2(0.9, -0.9)
 animation_names = Dictionary[StringName, StringName]({
 &"down": &"Tankman DOWN note 1",
 &"idle": &"Tankman Idle Dance 1",
@@ -195,13 +154,13 @@ animation_names = Dictionary[StringName, StringName]({
 &"up": &"Tankman UP note 1"
 })
 
-[node name="Metronome" parent="Characters" unique_id=636097617 node_paths=PackedStringArray("music_host") instance=ExtResource("15_th3hl")]
+[node name="Metronome" parent="." unique_id=636097617 node_paths=PackedStringArray("music_host") instance=ExtResource("15_th3hl")]
 unique_name_in_owner = true
 z_index = -2
 material = SubResource("ShaderMaterial_0hbr4")
-position = Vector2(-88, 232)
+position = Vector2(552, 592)
 scale = Vector2(0.9, 0.9)
-music_host = NodePath("../../Music/Instrumental")
+music_host = NodePath("")
 slope = 0.3
 update_rate = 0.04
 

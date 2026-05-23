@@ -9,8 +9,8 @@ var camera_positions: Array = []
 @onready var player: Node = %Player
 @onready var enemy: Node = %Enemy
 
-@onready var rating_marker = $"World/Rating Marker"
-@onready var combo_marker = $"World/Combo Marker"
+@onready var rating_marker = %"Rating Marker"
+@onready var combo_marker = %"Combo Marker"
 
 @onready var rating_node = load("uid://0l7bo1bqcbcj")
 @onready var combo_numbers_manager_node = load("uid://bvreww5500i5g")
