@@ -240,7 +240,7 @@ func _process(delta):
 				var length: float = note[2]
 				var type: Variant = note[3]
 				
-				Signals.play_note_created.emit(time, lane, length, type, chart.get_tempo_at(time))
+				Signals.play_create_note.emit(time, lane, length, type, chart.get_tempo_at(time))
 				current_note += 1
 	
 	if instrumental.playing:

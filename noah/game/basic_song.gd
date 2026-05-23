@@ -40,7 +40,7 @@ func _ready():
 	Signals.play_conductor_beat_hit.connect(_on_conductor_new_beat)
 	
 	Signals.play_combo_break.connect(_on_combo_break)
-	Signals.play_note_created.connect(_on_create_note)
+	Signals.play_create_note.connect(_on_create_note)
 	Signals.play_new_event.connect(_on_new_event)
 	
 	await Engine.get_main_loop().process_frame
