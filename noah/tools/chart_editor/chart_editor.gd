@@ -29,7 +29,6 @@ static var song_position: float = 0.0
 var backup_chart: Chart = null
 # So it turns out that the track ID's are not sequential and can be whatever number they want, I did this so it'd be easier
 var vocal_tracks: Array = []
-var scene: String
 
 ## Editor Variables
 var start_offset: float = 0.0
@@ -692,7 +691,6 @@ func load_song(song: Song, difficulty: Variant = null):
 		difficulty = ChartManager.song.difficulties.keys()[0]
 	var difficulty_data: Dictionary = song.difficulties.get(difficulty)
 	ChartManager.chart = Chart.load(difficulty_data.chart)
-	scene = difficulty_data.get("scene", song.scene)
 	ChartManager.difficulty = difficulty
 	undo_redo.clear_history()
 	get_tree().call_group(&"history", &"queue_free")
@@ -1651,12 +1649,12 @@ func window_button_item_pressed(id):
 func test_button_item_pressed(id):
 	match id:
 		0:
-			if ResourceLoader.exists(scene):
+			if ResourceLoader.exists(ChartManager.song.scene):
 				GameManager.current_song = ChartManager.song
 				GameManager.difficulty = ChartManager.difficulty
 				GameManager.freeplay = true
 				GameManager.play_mode = GameManager.PLAY_MODE.CHARTING
-				Global.change_scene_to(scene)
+				Global.change_scene_to(ChartManager.song.scene)
 				self.process_mode = Node.PROCESS_MODE_DISABLED
 			else:
 				printerr("(Chart Editor) Scene does not exist")
