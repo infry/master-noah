@@ -231,7 +231,7 @@ static func convert_psych(data:Dictionary,events:Array = [], v1:bool = true) -> 
 		if i.get("gfSection", false):
 			camera_position = 2
 		
-		event_data.append([index * seconds_per_measure, "camera_position", [camera_position]])
+		event_data.append([section_time, "camera_position", [camera_position]])
 		
 		for j in i.sectionNotes:
 			# Format: time, lane, length in notes, note type
