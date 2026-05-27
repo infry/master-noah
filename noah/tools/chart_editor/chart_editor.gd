@@ -717,7 +717,7 @@ func load_song(song: Song, difficulty: Variant = null):
 	
 	load_chart(ChartManager.chart)
 	chart_snap = $Conductor.steps_per_measure
-	current_snap = SNAPS.find($Conductor.steps_per_measure)
+	current_snap = SNAPS.bsearch($Conductor.steps_per_measure)
 	#load_waveforms()
 	can_chart = true
 

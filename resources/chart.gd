@@ -135,21 +135,18 @@ static func load(path:String) -> Chart:
 						return convert_psych(json, events)
 						
 					ChartFormat.VSLICE:
-						var dir = file.get_base_dir()
-				
-						var meta_path = file.substr(dir.length())
-						meta_path = dir + meta_path.replace('chart', 'metadata')
+						var meta_path: String = path.get_basename()
+						meta_path = meta_path.replace('chart-', 'metadata-') + ".json"
 						
-						assert(FileAccess.file_exists(meta_path), 'failed to find vslice chart metadata.json')
+						assert(FileAccess.file_exists(meta_path), str('failed to find vslice chart metadata.json at: ', meta_path))
 						
-						var meta_file = FileAccess.open(meta_path, FileAccess.READ)
+						var meta_file: FileAccess = FileAccess.open(meta_path, FileAccess.READ)
 						var meta_json = JSON.parse_string(meta_file.get_as_text())
 						if meta_json:
 							return convert_vslice(json, meta_json)
 					
 					ChartFormat.CODENAME:
-						
-						var meta_path = path.get_base_dir() + '/meta.json'
+						var meta_path: String = path.get_base_dir() + '/meta.json'
 						
 						assert(FileAccess.file_exists(meta_path), 'failed to find cne chart meta.json')
 						
