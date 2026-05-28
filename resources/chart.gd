@@ -136,7 +136,7 @@ static func load(path:String) -> Chart:
 						
 					ChartFormat.VSLICE:
 						var meta_path: String = path.get_basename()
-						meta_path = meta_path.replace('chart-', 'metadata-') + ".json"
+						meta_path = meta_path.replace('-chart', '-metadata') + ".json"
 						
 						assert(FileAccess.file_exists(meta_path), str('failed to find vslice chart metadata.json at: ', meta_path))
 						
@@ -309,8 +309,8 @@ static func convert_psych(data:Dictionary,events:Array = [], v1:bool = true) -> 
 	return chart
 
 static func convert_vslice(data:Dictionary, meta:Dictionary,diff:String = '') -> Chart:
-	
-	if diff.is_empty(): diff = GameManager.difficulty
+	if diff.is_empty():
+		diff = GameManager.difficulty
 	
 	var chart = Chart.new()
 	
@@ -329,7 +329,6 @@ static func convert_vslice(data:Dictionary, meta:Dictionary,diff:String = '') ->
 				continue
 		
 		return output
-	
 	
 	chart.scroll_speed = data.scrollSpeed[diff]
 	
@@ -398,7 +397,6 @@ static func convert_vslice(data:Dictionary, meta:Dictionary,diff:String = '') ->
 	return chart
 
 static func convert_cne(data:Dictionary, meta:Dictionary, events:Array = []) -> Chart:
-	
 	var chart = Chart.new()
 	
 	var note_data = []

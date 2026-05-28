@@ -11,13 +11,13 @@ tempo = 176.0
 scene = "uid://bg3coqaywlx5b"
 difficulties = Dictionary[String, Dictionary]({
 "easy": {
-"chart": "res://playable_songs/lit up/charts/Lit Up (Bf Mix)-easy.tres"
+"chart": "res://playable_songs/lit up/charts/lit-up-chart-bf.json"
 },
 "hard": {
-"chart": "res://playable_songs/lit up/charts/Lit Up (Bf Mix)-hard.tres"
+"chart": "res://playable_songs/lit up/charts/lit-up-chart-bf.json"
 },
 "normal": {
-"chart": "res://playable_songs/lit up/charts/Lit Up (Bf Mix)-normal.tres"
+"chart": "res://playable_songs/lit up/charts/lit-up-chart-bf.json"
 }
 })
 events = "res://playable_songs/lit up/charts/events.tres"
