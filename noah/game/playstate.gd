@@ -499,7 +499,7 @@ func note_holding(time, lane, length, note_type, strum_manager):
 	
 	if !strum_manager.enemy_slot:
 		health += abs(time) * 4
-		score += int(abs(time) * HOLD_SCORE)
+		score += floor(abs(time) * HOLD_SCORE)
 
 
 func note_miss(time, lane, length, note_type, hit_time, strum_manager):
