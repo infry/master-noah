@@ -60,7 +60,7 @@ var current_focus_owner = null
 var current_focus_viewport: Viewport = null
 var current_visible_notes_L: int = -1
 var current_visible_notes_R: int = -1
-var current_note_type = 0
+var current_note_type: String = ""
 
 var event_nodes: Array = []
 var current_visible_events_L: int = -1
@@ -906,7 +906,7 @@ func new_file(path: String, song: Song):
 
 ## Adds an instance of a note on the chart editor, placed boolean adds it to the chart data.
 ## Reset the select notes and note nodes list before calling moved
-func place_note(time: float, lane: int, length: float, type: Variant, placed: bool = false, moved: bool = false,
+func place_note(time: float, lane: int, length: float, type: String, placed: bool = false, moved: bool = false,
 sorted: bool = false, sort_index: int = -1) -> int:
 	var directions: Array = ["left", "down", "up", "right"]
 	
@@ -2042,9 +2042,6 @@ func _on_conductor_new_steps_per_measure(_steps_per_measure: int) -> void:
 
 
 func set_note_type(note_type):
-	if note_type == "":
-		note_type = 0
-	
 	current_note_type = note_type
 
 
