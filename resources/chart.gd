@@ -250,7 +250,7 @@ static func convert_psych(data:Dictionary,events:Array = [], v1:bool = true) -> 
 			if j.size() == 4:
 				note.append(j[3])
 			else:
-				note.append(0)
+				note.append("")
 			
 			note_data.append(note)
 		
@@ -350,7 +350,7 @@ static func convert_vslice(data:Dictionary, meta:Dictionary,diff:String = '') ->
 		if i.has("l"):
 			length = i.l / 1000.0 / seconds_per_beat
 		
-		var note_type = i.get("k", 0)
+		var note_type: String = i.get("k", "")
 		note_data.append([time, lane, length, note_type])
 	
 	note_data.sort_custom(sort_notes)

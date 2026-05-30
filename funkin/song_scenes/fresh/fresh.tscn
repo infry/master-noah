@@ -78,7 +78,7 @@ metadata/_custom_type_script = "uid://b4lmffueni5k"
 
 [node name="Position 1" type="Marker2D" parent="." unique_id=897522505 groups=["camera_positions"]]
 unique_name_in_owner = true
-position = Vector2(808, 496)
+position = Vector2(808, 558)
 gizmo_extents = 18.3
 
 [node name="Position 2" type="Marker2D" parent="." unique_id=1368278145 groups=["camera_positions"]]

@@ -2,9 +2,9 @@
 extends Node2D
 class_name StrumManager
 
-signal note_hit(time: float, lane: int, note_type: Variant, hit_time: float, manager: Node2D)
-signal note_holding(time: float, lane: int, length: float, note_type: Variant, manager: Node2D)
-signal note_miss(time: float, lane: int, length: float, note_type: Variant, hit_time: float, manager: Node2D)
+signal note_hit(time: float, lane: int, note_type: String, hit_time: float, manager: Node2D)
+signal note_holding(time: float, lane: int, length: float, note_type: String, manager: Node2D)
+signal note_miss(time: float, lane: int, length: float, note_type: String, hit_time: float, manager: Node2D)
 
 @export var note_skin: NoteSkin = NoteSkin.new()
 ## List of NodePaths of the strumlines.
@@ -98,7 +98,7 @@ func note_types(_note_types: Array):
 		strum.note_types = _note_types
 
 
-func create_note(time: float, lane: int, length: float, note_type: Variant, tempo: float):
+func create_note(time: float, lane: int, length: float, note_type: String, tempo: float):
 	var strum = strums[lane]
 	strum.create_note(time, length, note_type, tempo)
 
