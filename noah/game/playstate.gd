@@ -506,7 +506,7 @@ func note_miss(time, lane, length, note_type, hit_time, strum_manager):
 	if vocal_tracks.size() > strum_manager.id: playback.set_stream_volume(vocal_tracks[strum_manager.id], -80.0)
 	
 	if !strum_manager.enemy_slot:
-		if int(note_type) == -1:
+		if note_type == &"spam":
 			score -= 10
 			health -= 1
 		else:

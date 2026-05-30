@@ -12,10 +12,10 @@ const NOTE_TYPES: Dictionary = {
 	"alt_prefix": ""
 }
 
-signal created_note(time: float, strum: Strum, length: float, note_type: Variant)
-signal note_hit(time: float, strum: Strum, note_type: Variant, hit_time: float)
-signal note_holding(time: float, strum: Strum, length: float, note_type: Variant)
-signal note_miss(time: float, strum: Strum, length: float, note_type: Variant, hit_time: float)
+signal created_note(time: float, strum: Strum, length: float, note_type: String)
+signal note_hit(time: float, strum: Strum, note_type: String, hit_time: float)
+signal note_holding(time: float, strum: Strum, length: float, note_type: String)
+signal note_miss(time: float, strum: Strum, length: float, note_type: String, hit_time: float)
 
 @export var note_skin: NoteSkin
 ## Name of the input in the [code]InputMap[/code]
@@ -154,10 +154,10 @@ func _process(delta):
 						previous_note = note
 				else:
 					if !SettingsManager.get_value(SettingsManager.SEC_GAMEPLAY, "ghost_tapping"):
-						emit_signal(&"note_miss", 0, self, 0, -1, 0)
+						emit_signal(&"note_miss", 0, self, 0, "spam", 0)
 			else:
 				if !SettingsManager.get_value(SettingsManager.SEC_GAMEPLAY, "ghost_tapping"):
-					emit_signal(&"note_miss", 0, self, 0, -1, 0)
+					emit_signal(&"note_miss", 0, self, 0, "spam", 0)
 	
 	if Input.is_action_pressed(input):
 		if can_press:
@@ -238,7 +238,7 @@ func set_skin(new_skin: NoteSkin):
 		hold_cover_sprite.texture_filter = TEXTURE_FILTER_NEAREST
 
 
-func create_note(time: float, length: float, note_type: Variant, _tempo: float):
+func create_note(time: float, length: float, note_type: String, _tempo: float):
 	self.tempo = tempo
 	
 	var note_instance = NOTE_PRELOAD.instantiate()
