@@ -71,10 +71,8 @@ func _on_create_note(time, lane, note_length, note_type, tempo):
 
 func note_hit(time: float, lane: int, note_type: Variant, hit_time: float, strum_manager: Variant):
 	var group: StringName = get_group_from_manager(strum_manager)
-	
-	
-	
 	var anim_to_play = get_direction(lane % 4)
+	
 	if str(note_type) == &"alt_prefix":
 		anim_to_play = &"alt_" + anim_to_play
 	
