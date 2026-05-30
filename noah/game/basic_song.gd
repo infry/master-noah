@@ -140,7 +140,7 @@ func _on_new_event(time: float, event_name: String, event_parameters: Array):
 				duration = Global.string_to_time(event_parameters[2])
 			
 			get_tree().call_group(event_parameters[0], &"play_animation",
-			event_parameters[1], Character.AnimContext.SPECIAL, duration)
+			event_parameters[1], Character.AnimContext.SPECIAL, true, duration)
 		&"set_prefix":
 			get_tree().set_group(event_parameters[0], &"animation_prefix",
 			event_parameters[1])

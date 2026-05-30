@@ -136,7 +136,7 @@ func play_animation(anim_id: StringName = &"", context: AnimContext = AnimContex
 		printerr("(Character[", self.name, "]) ",'does not have "', animation_name, '" animation')
 		return
 	
-	if context != AnimContext.SPECIAL and current_context == AnimContext.SPECIAL and context != AnimContext.DANCE:
+	if context != AnimContext.SPECIAL and current_context == AnimContext.SPECIAL and !holding:
 		return
 	
 	# Will not run idle animation if you can not run
@@ -159,7 +159,7 @@ func play_animation(anim_id: StringName = &"", context: AnimContext = AnimContex
 	
 	if (time >= 0):
 		# Calculates the speed it would need to go at the time requested
-		animation_player.play(animation_name, frame_count / (animation_speed * time))
+		animation_player.play(animation_name, animation_speed / (frame_count * time))
 		set_sing_timer(time)
 	else:
 		animation_player.play(animation_name, 1)
