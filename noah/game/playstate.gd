@@ -501,12 +501,13 @@ func note_holding(time, lane, length, note_type, strum_manager):
 		health += abs(time) * 4
 		score += int(abs(time) * HOLD_SCORE)
 
+
 func note_miss(time, lane, length, note_type, hit_time, strum_manager):
 	var playback = vocals.get_stream_playback()
 	if vocal_tracks.size() > strum_manager.id: playback.set_stream_volume(vocal_tracks[strum_manager.id], -80.0)
 	
 	if !strum_manager.enemy_slot:
-		if note_type == &"spam":
+		if note_type == "spam":
 			score -= 10
 			health -= 1
 		else:
