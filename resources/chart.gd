@@ -248,7 +248,13 @@ static func convert_psych(data:Dictionary,events:Array = [], v1:bool = true) -> 
 			
 			# Deals with note types
 			if j.size() == 4:
-				note.append(j[3])
+				match j[3]:
+					"No Animation":
+						note.append('no_animation')
+					"Alt Animation":
+						note.append('alt_prefix')
+					_:
+						note.append(j[3])
 			else:
 				note.append("")
 			
